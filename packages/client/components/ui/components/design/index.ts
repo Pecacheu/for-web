@@ -35,7 +35,7 @@ export { type CategorySelectOption, CategoryButton } from "./CategoryButton";
 export { Checkbox } from "./Checkbox";
 export { DataTable } from "./DataTable";
 export { type DialogProps, Dialog } from "./Dialog";
-export { FloatingSelect } from "./FloatingSelect";
+export { ControlSelect, FloatingSelect } from "./FloatingSelect";
 export { IconButton } from "./IconButton";
 export { List } from "./List";
 export { CircularProgress } from "./LoadingProgress";
