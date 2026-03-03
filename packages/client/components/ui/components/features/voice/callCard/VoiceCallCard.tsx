@@ -279,10 +279,20 @@ function VoiceCallCard(props: { channel: Channel }) {
   const inCall = () => voice.channel()?.id === props.channel.id;
 
   return (
-    <Show when={inCall()}>
+    <Show
+      when={
+        inCall() ||
+        (props.channel.type === "TextChannel" && props.channel.isVoice)
+      }
+    >
       <Base>
         <Card active={inCall()}>
-          <VoiceCallCardActiveRoom />
+          <Show
+            when={inCall()}
+            fallback={<VoiceCallCardPreview channel={props.channel} />}
+          >
+            <VoiceCallCardActiveRoom />
+          </Show>
         </Card>
       </Base>
     </Show>
