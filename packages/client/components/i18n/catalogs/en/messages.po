@@ -1177,8 +1177,8 @@ msgid "Emoji Name"
 msgstr "Emoji Name"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Emoji Pack (affects your messages only)"
-msgstr "Emoji Pack (affects your messages only)"
+#~ msgid "Emoji Pack (affects your messages only)"
+#~ msgstr "Emoji Pack (affects your messages only)"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Emojis"
@@ -1448,8 +1448,8 @@ msgid "Instead of closing, Stoat will hide in your tray."
 msgstr "Instead of closing, Stoat will hide in your tray."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Interface Font"
-msgstr "Interface Font"
+#~ msgid "Interface Font"
+#~ msgstr "Interface Font"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Invisible"
@@ -1790,8 +1790,8 @@ msgid "Monochrome"
 msgstr "Monochrome"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Monospace Font"
-msgstr "Monospace Font"
+#~ msgid "Monospace Font"
+#~ msgstr "Monospace Font"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "More Contrast"
