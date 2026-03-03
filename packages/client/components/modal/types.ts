@@ -323,4 +323,7 @@ export type Modals =
       qualities: { name: string; fullName: string }[];
       callback: (qualityName: ScreenShareQualityName) => void;
       onCancel: () => void;
+    }
+  | {
+      type: "swap_user";
     };
