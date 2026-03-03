@@ -23,6 +23,7 @@ import { InRoom, useVoice } from "@revolt/rtc";
 
 import { VoiceCallCardActiveRoom } from "./VoiceCallCardActiveRoom";
 import { VoiceCallCardPiP } from "./VoiceCallCardPiP";
+import { VoiceCallCardPreview } from "./VoiceCallCardPreview";
 
 type State =
   | {
@@ -305,10 +306,20 @@ function VoiceCallCard(props: { channel: Channel }) {
   });
 
   return (
-    <Show when={inCall()}>
+    <Show
+      when={
+        inCall() ||
+        (props.channel.type === "TextChannel" && props.channel.isVoice)
+      }
+    >
       <Base>
         <Card ref={viewRef} active={inCall()}>
-          <VoiceCallCardActiveRoom />
+          <Show
+            when={inCall()}
+            fallback={<VoiceCallCardPreview channel={props.channel} />}
+          >
+            <VoiceCallCardActiveRoom />
+          </Show>
         </Card>
       </Base>
     </Show>
