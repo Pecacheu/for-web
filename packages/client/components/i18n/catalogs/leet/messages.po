@@ -282,6 +282,10 @@ msgstr ""
 msgid "Add a new friend"
 msgstr ""
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "4DD F213ND"
@@ -615,6 +619,10 @@ msgstr "CH3CK Y0U2 M41L!"
 msgid "Choose a username"
 msgstr ""
 
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
 msgstr ""
@@ -642,6 +650,7 @@ msgstr "CL13N7 53771N65"
 #: components/modal/modals/UserProfileRoles.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/ServerInfo.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
@@ -2595,6 +2604,10 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
 msgstr "5UPP027 7H3 P20J3C7 8Y D0N471N6 - 7H4NK Y0U!"
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"

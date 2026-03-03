@@ -282,6 +282,10 @@ msgstr ""
 msgid "Add a new friend"
 msgstr ""
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr ""
@@ -615,6 +619,10 @@ msgstr "உங்கள் மின்னஞ்சல் சரிபார்�
 msgid "Choose a username"
 msgstr ""
 
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
 msgstr ""
@@ -642,6 +650,7 @@ msgstr "வாடிக்கையாளர் அமைப்புகள்"
 #: components/modal/modals/UserProfileRoles.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/ServerInfo.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
@@ -2594,6 +2603,10 @@ msgstr ""
 
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
+msgstr ""
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
 msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
