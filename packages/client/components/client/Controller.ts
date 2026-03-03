@@ -190,7 +190,6 @@ class Lifecycle {
             this.client.connect();
           }
         });
-
         break;
       case State.Connecting:
       case State.Reconnecting:
@@ -203,10 +202,12 @@ class Lifecycle {
         break;
       case State.Dispose:
         this.dispose();
-        this.transition({
-          type: TransitionType.Ready,
-        });
-        this.#setLoadedOnce(false);
+        if (this.#controller.state.auth.getSession()) {
+          this.#controller.loginCached(false);
+        } else {
+          this.transition({ type: TransitionType.Ready });
+          this.#setLoadedOnce(false);
+        }
         break;
       case State.Disconnected:
         this.#connectionFailures++;
@@ -247,21 +248,28 @@ class Lifecycle {
 
     const currentState = this.state();
     switch (currentState) {
+      case State.Dispose:
+        if (transition.type === TransitionType.Ready) {
+          this.#enter(State.Ready);
+        }
+      // eslint-disable-next-line no-fallthrough
       case State.Ready:
-        if (transition.type === TransitionType.LoginUncached) {
-          this.client.useExistingSession({
-            ...transition.session,
-            user_id: transition.session.userId,
-          });
+        switch (transition.type) {
+          case TransitionType.LoginUncached:
+            this.client.useExistingSession({
+              ...transition.session,
+              user_id: transition.session.userId,
+            });
 
-          this.#enter(State.LoggingIn);
-        } else if (transition.type === TransitionType.LoginCached) {
-          this.client.useExistingSession({
-            ...transition.session,
-            user_id: transition.session.userId,
-          });
+            this.#enter(State.LoggingIn);
+            break;
+          case TransitionType.LoginCached:
+            this.client.useExistingSession({
+              ...transition.session,
+              user_id: transition.session.userId,
+            });
 
-          this.#enter(State.Connecting);
+            this.#enter(State.Connecting);
         }
         break;
       case State.LoggingIn:
@@ -289,11 +297,6 @@ class Lifecycle {
       case State.Error:
         if (transition.type === TransitionType.Dismiss) {
           this.#enter(State.Dispose);
-        }
-        break;
-      case State.Dispose:
-        if (transition.type === TransitionType.Ready) {
-          this.#enter(State.Ready);
         }
         break;
       case State.Connecting:
@@ -458,17 +461,12 @@ export default class ClientController {
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.swapAccount = this.swapAccount.bind(this);
     this.selectUsername = this.selectUsername.bind(this);
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.isError = this.isError.bind(this);
 
-    const session = state.auth.getSession();
-    if (session) {
-      this.lifecycle.transition({
-        type: TransitionType.LoginCached,
-        session,
-      });
-    }
+    this.loginCached(true);
   }
 
   getCurrentClient() {
@@ -487,6 +485,17 @@ export default class ClientController {
 
   isError() {
     return this.lifecycle.state() === State.Error;
+  }
+
+  loginCached(unhold: boolean) {
+    const session = this.state.auth.getSession(unhold);
+    if (session)
+      this.lifecycle.transition({
+        type: unhold
+          ? TransitionType.LoginCached
+          : TransitionType.LoginUncached,
+        session,
+      });
   }
 
   /**
@@ -550,9 +559,7 @@ export default class ClientController {
         }
       }
 
-      if (session.result === "MFA") {
-        throw "Cancelled";
-      }
+      if (session.result === "MFA") throw "Cancelled";
     }
 
     if (session.result === "Disabled") {
@@ -568,11 +575,16 @@ export default class ClientController {
       valid: false,
     };
 
-    this.state.auth.setSession(createdSession);
-    this.lifecycle.transition({
-      type: TransitionType.LoginUncached,
-      session: createdSession,
-    });
+    try {
+      this.state.auth.addSession(createdSession);
+      this.lifecycle.transition({
+        type: TransitionType.LoginUncached,
+        session: createdSession,
+      });
+      return true;
+    } catch (e) {
+      modals.openModal({ type: "error2", error: e });
+    }
   }
 
   async selectUsername(username: string) {
@@ -585,8 +597,25 @@ export default class ClientController {
     });
   }
 
-  logout() {
-    this.state.auth.removeSession();
+  #cacheUserInfo() {
+    const user = this.lifecycle.client.user;
+    if (user) this.state.auth.cacheUserInfo(user);
+  }
+
+  swapAccount(userId: string) {
+    this.#cacheUserInfo();
+    this.state.auth.swapSession(userId);
+    this.lifecycle.transition({
+      type: TransitionType.Logout,
+    });
+  }
+
+  logout(delSes = true) {
+    if (delSes) this.state.auth.removeSession();
+    else {
+      this.#cacheUserInfo();
+      this.state.auth.holdSession();
+    }
     this.lifecycle.transition({
       type: TransitionType.Logout,
     });

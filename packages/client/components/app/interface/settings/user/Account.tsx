@@ -13,6 +13,7 @@ import { CategoryButton, Column, Row, iconSize } from "@revolt/ui";
 import MdAlternateEmail from "@material-design-icons/svg/outlined/alternate_email.svg?component-solid";
 import MdBlock from "@material-design-icons/svg/outlined/block.svg?component-solid";
 import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
+import MdAddUser from "@material-design-icons/svg/outlined/group_add.svg?component-solid";
 import MdLock from "@material-design-icons/svg/outlined/lock.svg?component-solid";
 import MdMail from "@material-design-icons/svg/outlined/mail.svg?component-solid";
 import MdPassword from "@material-design-icons/svg/outlined/password.svg?component-solid";
@@ -20,12 +21,13 @@ import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.sv
 
 import { useSettingsNavigation } from "../Settings";
 
+import { t } from "@lingui/core/macro";
 import { UserSummary } from "./account/index";
 
 /**
  * Account Page
  */
-export function MyAccount() {
+export function MyAccount(props: { onClose?: () => void }) {
   const client = useClient();
   const profile = createOwnProfileResource();
   const { navigate } = useSettingsNavigation();
@@ -38,7 +40,7 @@ export function MyAccount() {
         onEdit={() => navigate("profile")}
         showBadges
       />
-      <EditAccount />
+      <EditAccount onClose={props.onClose} />
       <MultiFactorAuth />
       <ManageAccount />
     </Column>
@@ -48,13 +50,25 @@ export function MyAccount() {
 /**
  * Edit account details
  */
-function EditAccount() {
+function EditAccount(props: { onClose?: () => void }) {
   const client = useClient();
   const { openModal } = useModals();
+  const { logout } = useClientLifecycle();
   const [email, setEmail] = createSignal("•••••••••••@•••••••••••");
 
   return (
     <CategoryButton.Group>
+      <CategoryButton
+        action="chevron"
+        onClick={() => {
+          props.onClose?.();
+          logout(false);
+        }}
+        icon={<MdAddUser {...iconSize(22)} />}
+        description={t`Add an additional account login for fast-switching`}
+      >
+        <Trans>Add an account</Trans>
+      </CategoryButton>
       <CategoryButton
         action="chevron"
         onClick={() =>
