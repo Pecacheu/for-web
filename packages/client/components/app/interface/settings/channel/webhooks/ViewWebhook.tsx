@@ -6,7 +6,6 @@ import { useMutation } from "@tanstack/solid-query";
 import { API, ChannelWebhook } from "stoat.js";
 
 import { useClient } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import {
   CategoryButton,
@@ -65,7 +64,7 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
 
         const [key, value] = client().authenticationHeader;
         const data: { id: string } = await fetch(
-          `${CONFIGURATION.DEFAULT_MEDIA_URL}/avatars`,
+          `${instance.mediaUrl}/avatars`,
           {
             method: "POST",
             body,
