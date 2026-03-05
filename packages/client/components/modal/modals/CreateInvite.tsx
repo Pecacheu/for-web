@@ -4,7 +4,6 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { useMutation } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
-import { CONFIGURATION } from "@revolt/common";
 import { Dialog, DialogProps } from "@revolt/ui";
 
 import { useModals } from "..";
