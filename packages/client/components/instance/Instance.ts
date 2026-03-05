@@ -9,10 +9,13 @@ export default class Instance {
   readonly maxEmoji: number;
   readonly enableVideo: boolean;
 
-  // Not implemented, but shouldn't be too bad for now
+  // Not implemented, but should be fine for now
   // readonly maxReplies: number;
   // readonly maxAttachments: number;
   // readonly maxFileSize: number;
+  // DEVELOPMENT_SESSION_ID
+  // DEVELOPMENT_TOKEN
+  // DEVELOPMENT_USER_ID
 
   constructor(
     apiUrl: string,
