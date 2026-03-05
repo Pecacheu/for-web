@@ -1,7 +1,6 @@
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useApi } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
 import { useNavigate } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 

@@ -14,7 +14,6 @@ import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
-import env from "@revolt/common/lib/env";
 import { useInstance } from "@revolt/instance";
 import {
   CircularProgress,
