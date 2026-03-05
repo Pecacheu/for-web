@@ -6,6 +6,10 @@ export default class Instance {
   readonly proxyUrl: string;
   readonly gifboxUrl: string;
   readonly hcaptcha_sitekey: string;
+  // Not implemented, but shouldn't be too bad for now
+  // readonly maxReplies: number;
+  // readonly maxAttachments: number;
+  readonly maxEmoji: number;
 
   constructor(
     apiUrl: string,
@@ -14,6 +18,7 @@ export default class Instance {
     proxyUrl: string,
     gifboxUrl: string,
     hcaptcha_sitekey: string,
+    maxEmoji: number,
   ) {
     this.isStoat = [
       // historically...
@@ -29,5 +34,6 @@ export default class Instance {
     this.proxyUrl = proxyUrl;
     this.gifboxUrl = gifboxUrl;
     this.hcaptcha_sitekey = hcaptcha_sitekey;
+    this.maxEmoji = maxEmoji;
   }
 }
