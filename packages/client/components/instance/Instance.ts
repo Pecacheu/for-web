@@ -1,4 +1,5 @@
 export default class Instance {
+  readonly isStoat: boolean;
   readonly apiUrl: string;
   readonly wsUrl: string;
   readonly mediaUrl: string;
@@ -12,6 +13,14 @@ export default class Instance {
     proxyUrl: string,
     gifboxUrl: string,
   ) {
+    this.isStoat = [
+      // historically...
+      "https://api.revolt.chat",
+      "https://beta.revolt.chat/api",
+      "https://revolt.chat/api",
+      // ... and now:
+      "https://stoat.chat/api",
+    ].includes(apiUrl);
     this.apiUrl = apiUrl;
     this.wsUrl = wsUrl;
     this.mediaUrl = mediaUrl;
