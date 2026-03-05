@@ -159,7 +159,7 @@ class Lifecycle {
         },
       },
       vapid: String(),
-      ws: CONFIGURATION.DEFAULT_WS_URL,
+      ws: this.#controller.instance.wsUrl,
     };
 
     this.client.events.on("state", this.onState);
