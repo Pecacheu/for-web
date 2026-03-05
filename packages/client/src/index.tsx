@@ -32,6 +32,7 @@ import { FloatingManager, LoadTheme } from "@revolt/ui";
 /* @refresh reload */
 import "@revolt/ui/styles";
 
+import { InstanceContext } from "@revolt/instance";
 import AuthPage from "./Auth";
 import Interface from "./Interface";
 import "./index.css";
@@ -116,22 +117,24 @@ function MountContext(props: { children?: JSX.Element }) {
   const client = new QueryClient();
 
   return (
-    <KeybindContext>
-      <ModalContext>
-        <ClientContext state={state}>
-          <I18nProvider>
-            <VoiceContext>
-              <QueryClientProvider client={client}>
-                {props.children}
-                <ModalRenderer />
-                <FloatingManager />
-              </QueryClientProvider>
-            </VoiceContext>
-          </I18nProvider>
-          <SyncWorker />
-        </ClientContext>
-      </ModalContext>
-    </KeybindContext>
+    <InstanceContext>
+      <KeybindContext>
+        <ModalContext>
+          <ClientContext state={state}>
+            <I18nProvider>
+              <VoiceContext>
+                <QueryClientProvider client={client}>
+                  {props.children}
+                  <ModalRenderer />
+                  <FloatingManager />
+                </QueryClientProvider>
+              </VoiceContext>
+            </I18nProvider>
+            <SyncWorker />
+          </ClientContext>
+        </ModalContext>
+      </KeybindContext>
+    </InstanceContext>
   );
 }
 
