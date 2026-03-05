@@ -7,7 +7,12 @@ const instanceContext = createContext<Instance>();
 export function InstanceContext(props: { children: JSXElement }) {
   return (
     <instanceContext.Provider
-      value={new Instance(CONFIGURATION.DEFAULT_API_URL)}
+      value={
+        new Instance(
+          CONFIGURATION.DEFAULT_API_URL,
+          CONFIGURATION.DEFAULT_WS_URL,
+        )
+      }
     >
       {props.children}
     </instanceContext.Provider>
