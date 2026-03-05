@@ -8,6 +8,8 @@ import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 
 import { Modals } from "../types";
 
+const URL_TRIM = /\/+$/;
+
 /**
  * Modal to warn the user about a potentially unsafe link
  */
@@ -16,25 +18,20 @@ export function LinkWarningModal(
 ) {
   const state = useState();
   const [value, setValue] = createSignal(false);
+  const urlStr = (u: URL) => u.href.replace(URL_TRIM, ""),
+    displayStr = () => props.display.replace(URL_TRIM, "");
 
   const scrutiny = createMemo(() => {
-    const destUrlString = props.url.toString();
-    if (destUrlString !== props.display) {
-      try {
-        const displayUrl = new URL(props.display);
-        if (destUrlString !== displayUrl.toString()) {
-          return 2;
-        } else {
-          return 1;
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (_) {
-        // URL parsing failed; the link is likely not intentionally misleading.
-        return 1;
-      }
-    }
+    const dispStr = displayStr();
+    if (dispStr === urlStr(props.url)) return 0;
 
-    return 0;
+    try {
+      return dispStr === urlStr(new URL(dispStr)) ? 1 : 2;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      // URL parsing failed; the link is likely not intentionally misleading.
+      return 1;
+    }
   });
 
   return (
@@ -47,7 +44,7 @@ export function LinkWarningModal(
         {
           text: <Trans>Continue</Trans>,
           onClick: () => {
-            window.open(props.url, "_blank", "noopener");
+            open(props.url, "_blank"); //, "noopener");
 
             if (value() && scrutiny() === 0) {
               state.linkSafety.trust(props.url);
@@ -60,7 +57,7 @@ export function LinkWarningModal(
       <Column>
         <span>
           <Trans>Are you sure you want to go to </Trans>
-          <Link>{props.url.toString()}</Link>?
+          <Link>{urlStr(props.url)}</Link>?
         </span>
         <Switch
           fallback={
@@ -73,7 +70,7 @@ export function LinkWarningModal(
           }
         >
           <Match when={scrutiny() === 1}>
-            <Trans>You clicked on "{props.display}"</Trans>
+            <Trans>You clicked on "{displayStr()}"</Trans>
           </Match>
           <Match when={scrutiny() === 2}>
             <Scrutinise>
@@ -84,7 +81,7 @@ export function LinkWarningModal(
                   This is not the same as the link that was displayed:
                 </Trans>
               </Text>
-              <Link>{props.display}</Link>
+              <Link>{displayStr()}</Link>
               <Checkbox checked={value()} onChange={() => setValue((v) => !v)}>
                 <Trans>I understand the consequences</Trans>
               </Checkbox>

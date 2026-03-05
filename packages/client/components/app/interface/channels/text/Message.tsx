@@ -1,7 +1,7 @@
 import { For, Match, Show, Switch, createSignal, onMount } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
-import { Message as MessageInterface, WebsiteEmbed } from "stoat.js";
+import { Message as MessageInterface } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 import { decodeTime } from "ulid";
@@ -14,7 +14,6 @@ import {
   Attachment,
   Avatar,
   CompositionMediaPicker,
-  Embed,
   MessageContainer,
   MessageReply,
   Reactions,
@@ -80,22 +79,6 @@ export function Message(props: Props) {
   const [isHovering, setIsHovering] = createSignal(false);
   const [reactPicker, setReactPicker] = createSignal<MediaPickerProps>();
   let msgRef;
-
-  /**
-   * Determine if this message only contains an image
-   */
-  const isOnlyImg = () =>
-    props.message.embeds &&
-    props.message.embeds.length === 1 &&
-    (props.message.embeds[0].type === "Image" ||
-      (props.message.embeds[0].type === "Website" &&
-        ((props.message.embeds[0] as WebsiteEmbed).specialContent?.type ===
-          "GIF" ||
-          (props.message.embeds[0] as WebsiteEmbed).originalUrl?.startsWith(
-            "https://tenor.com",
-          )))) &&
-    props.message.content &&
-    !props.message.content.replace(RE_URL, "").length;
 
   /**
    * React with an emoji
@@ -315,9 +298,9 @@ export function Message(props: Props) {
         <Match when={props.editing}>
           <EditMessage message={props.message} />
         </Match>
-        <Match when={props.message.content && !isOnlyImg()}>
+        <Match when={props.message.content}>
           <BreakText>
-            <Markdown content={props.message.content!} />
+            <Markdown message={props.message} content={props.message.content} />
           </BreakText>
         </Match>
       </Switch>
@@ -329,9 +312,6 @@ export function Message(props: Props) {
             reactPicker={reactPicker}
           />
         )}
-      </For>
-      <For each={props.message.embeds}>
-        {(embed) => <Embed embed={embed} />}
       </For>
       <Reactions
         reactions={props.message.reactions as never as Map<string, Set<string>>}
