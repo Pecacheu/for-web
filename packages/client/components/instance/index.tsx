@@ -15,6 +15,7 @@ export function InstanceContext(props: { children: JSXElement }) {
           CONFIGURATION.DEFAULT_PROXY_URL,
           CONFIGURATION.DEFAULT_GIFBOX_URL,
           CONFIGURATION.HCAPTCHA_SITEKEY,
+          CONFIGURATION.MAX_EMOJI,
         )
       }
     >
