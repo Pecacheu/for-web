@@ -3114,7 +3114,7 @@ msgstr ""
 msgid "You cannot undo this action."
 msgstr "||𝙹⚍ ᓵᔑリリ𝙹ℸ ⚍リ↸𝙹 ℸ⍑╎ᓭ ᔑᓵℸ╎𝙹リ."
 
-#. placeholder {0}: props.display
+#. placeholder {0}: displayStr()
 #: components/modal/modals/LinkWarning.tsx
 msgid "You clicked on \"{0}\""
 msgstr ""

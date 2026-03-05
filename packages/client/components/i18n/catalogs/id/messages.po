@@ -3114,7 +3114,7 @@ msgstr ""
 msgid "You cannot undo this action."
 msgstr "Kamu tidak bisa membatalkan tindakan ini."
 
-#. placeholder {0}: props.display
+#. placeholder {0}: displayStr()
 #: components/modal/modals/LinkWarning.tsx
 msgid "You clicked on \"{0}\""
 msgstr ""
