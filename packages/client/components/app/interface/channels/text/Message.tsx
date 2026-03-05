@@ -14,6 +14,7 @@ import {
   Attachment,
   Avatar,
   CompositionMediaPicker,
+  Embed,
   MessageContainer,
   MessageReply,
   Reactions,
@@ -33,12 +34,6 @@ import {
 import { startsWithPackPUA } from "@revolt/markdown/emoji/UnicodeEmoji";
 import { MediaPickerProps } from "@revolt/ui/components/features/messaging/composition/picker/CompositionMediaPicker";
 import { EditMessage } from "./EditMessage";
-
-/**
- * Regex for matching URLs
- */
-const RE_URL =
-  /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
 
 interface Props {
   /**
@@ -294,14 +289,20 @@ export function Message(props: Props) {
           isServer={!!props.message.server}
         />
       </Show>
-      <Switch>
+      <Switch
+        fallback={
+          <For each={props.message.embeds}>{(em) => <Embed embed={em} />}</For>
+        }
+      >
         <Match when={props.editing}>
           <EditMessage message={props.message} />
         </Match>
         <Match when={props.message.content}>
-          <BreakText>
-            <Markdown message={props.message} content={props.message.content} />
-          </BreakText>
+          <Markdown
+            message={props.message}
+            content={props.message.content}
+            container={(md) => <BreakText>{md}</BreakText>}
+          />
         </Match>
       </Switch>
       <For each={props.message.attachments}>

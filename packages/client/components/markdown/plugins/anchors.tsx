@@ -14,7 +14,7 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
 import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
-import { Message } from "stoat.js";
+import { MessageEmbed } from "stoat.js";
 // import { determineLink } from "../../../lib/links";
 // import { modalController } from "../../../controllers/modals/ModalController";
 
@@ -48,7 +48,7 @@ const internalLink = cva({
 export function RenderAnchor(
   props: {
     disabled?: boolean;
-    message?: Message;
+    embeds?: MessageEmbed[];
     node?: Element;
   } & JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
 ) {
@@ -191,12 +191,16 @@ export function RenderAnchor(
     }
 
     //Inline link embed
-    if (plainLink && props.message?.embeds) {
+    if (plainLink && props.embeds) {
       const href = url.origin + url.pathname + url.search;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const em of props.message.embeds as any[])
-        if (em.originalUrl === href || em.url === href)
+      for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        em = props.embeds[i] as any;
+        if (em.originalUrl === href || em.url === href) {
+          props.embeds.splice(i, 1);
           return <Embed embed={em} />;
+        }
+      }
     }
 
     return (

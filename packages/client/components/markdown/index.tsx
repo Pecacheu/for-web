@@ -47,7 +47,7 @@ import {
   unicodeEmojiHandler,
 } from "./plugins/unicodeEmoji";
 import { remarkInsertBreaks, sanitise } from "./sanitise";
-import { childrenToSolid } from "./solid-markdown/ast-to-solid";
+import { Container, childrenToSolid } from "./solid-markdown/ast-to-solid";
 import { defaults } from "./solid-markdown/defaults";
 
 /**
@@ -259,6 +259,11 @@ export interface MarkdownProps {
   message?: Message;
 
   /**
+   * Container to wrap render in
+   */
+  container?: Container;
+
+  /**
    * Whether to prevent big emoji from rendering
    */
   disallowBigEmoji?: boolean;
@@ -299,7 +304,7 @@ export function Markdown(props: MarkdownProps) {
    * Render some given Markdown content
    * @param content content
    */
-  function render(content = "", message?: Message) {
+  function render(content = "", message?: Message, container?: Container) {
     const file = new VFile();
     file.value = sanitise(content);
 
@@ -317,6 +322,7 @@ export function Markdown(props: MarkdownProps) {
           ...defaults,
           // @ts-expect-error it doesn't like the td component
           components: components(),
+          container,
           message,
         },
         schema: html,
@@ -329,14 +335,14 @@ export function Markdown(props: MarkdownProps) {
   // Render once immediately
   const [children, setChildren] = createSignal(
     // eslint-disable-next-line solid/reactivity
-    render(props.content, props.message),
+    render(props.content, props.message, props.container),
   );
 
   // If it ever updates, re-render the whole tree:
   createEffect(
     on(
       [() => props.content, () => props.message?.embeds],
-      (data) => setChildren(render(data[0], props.message)),
+      (data) => setChildren(render(data[0], props.message, props.container)),
       { defer: true },
     ),
   );
