@@ -12,6 +12,7 @@ export function InstanceContext(props: { children: JSXElement }) {
           CONFIGURATION.DEFAULT_API_URL,
           CONFIGURATION.DEFAULT_WS_URL,
           CONFIGURATION.DEFAULT_MEDIA_URL,
+          CONFIGURATION.DEFAULT_PROXY_URL,
         )
       }
     >
