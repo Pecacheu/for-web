@@ -4,7 +4,6 @@ import { detect } from "detect-browser";
 import { API, Client, ConnectionState } from "stoat.js";
 import { ProtocolV1 } from "stoat.js/lib/events/v1";
 
-import { CONFIGURATION } from "@revolt/common";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
@@ -148,7 +147,7 @@ class Lifecycle {
         },
         january: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_PROXY_URL,
+          url: this.#controller.instance.proxyUrl,
         },
         captcha: {} as never,
         email: true,
