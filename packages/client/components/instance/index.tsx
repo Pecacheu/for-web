@@ -13,6 +13,7 @@ export function InstanceContext(props: { children: JSXElement }) {
           CONFIGURATION.DEFAULT_WS_URL,
           CONFIGURATION.DEFAULT_MEDIA_URL,
           CONFIGURATION.DEFAULT_PROXY_URL,
+          CONFIGURATION.DEFAULT_GIFBOX_URL,
         )
       }
     >
