@@ -2,7 +2,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { Show } from "solid-js";
 
 import { useApi, useClient } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
+import { useInstance } from "@revolt/instance";
 import { useNavigate, useParams } from "@revolt/routing";
 import { Button, Row, iconSize } from "@revolt/ui";
 
@@ -21,6 +21,7 @@ export default function FlowCreate() {
   const getClient = useClient();
   const navigate = useNavigate();
   const { code } = useParams();
+  const instance = useInstance();
 
   /**
    * Create an account
@@ -61,7 +62,7 @@ export default function FlowCreate() {
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
+      <Form onSubmit={create} captcha={instance.hcaptcha_sitekey}>
         <Fields fields={["email", "password"]} />
         <Show when={isInviteOnly()}>
           <Fields
