@@ -8,6 +8,7 @@ import { CONFIGURATION } from "@revolt/common";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
+import Instance from "../instance/Instance";
 
 export enum State {
   Ready = "Ready",
@@ -126,7 +127,7 @@ class Lifecycle {
     }
 
     this.client = new Client({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: this.#controller.instance.apiUrl,
       autoReconnect: false,
       syncUnreads: true,
       debug: import.meta.env.DEV,
@@ -446,12 +447,18 @@ export default class ClientController {
   readonly state: ApplicationState;
 
   /**
+   * Reference to the instance the client connects to
+   */
+  readonly instance: Instance;
+
+  /**
    * Construct new client controller
    */
-  constructor(state: ApplicationState) {
+  constructor(state: ApplicationState, instance: Instance) {
     this.state = state;
+    this.instance = instance;
     this.api = new API.API({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: instance.apiUrl,
     });
 
     this.lifecycle = new Lifecycle(this);
