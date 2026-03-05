@@ -144,7 +144,7 @@ class Lifecycle {
       features: {
         autumn: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_MEDIA_URL,
+          url: this.#controller.instance.mediaUrl,
         },
         january: {
           enabled: true,
