@@ -5,6 +5,7 @@ export default class Instance {
   readonly mediaUrl: string;
   readonly proxyUrl: string;
   readonly gifboxUrl: string;
+  readonly hcaptcha_sitekey: string;
 
   constructor(
     apiUrl: string,
@@ -12,6 +13,7 @@ export default class Instance {
     mediaUrl: string,
     proxyUrl: string,
     gifboxUrl: string,
+    hcaptcha_sitekey: string,
   ) {
     this.isStoat = [
       // historically...
@@ -26,5 +28,6 @@ export default class Instance {
     this.mediaUrl = mediaUrl;
     this.proxyUrl = proxyUrl;
     this.gifboxUrl = gifboxUrl;
+    this.hcaptcha_sitekey = hcaptcha_sitekey;
   }
 }
