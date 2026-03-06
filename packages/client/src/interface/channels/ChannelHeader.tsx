@@ -8,8 +8,8 @@ import { styled } from "styled-system/jsx";
 import { useClient } from "@revolt/client";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
-import { useState } from "@revolt/state";
 import { useVoice } from "@revolt/rtc";
+import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import {
   Button,
@@ -146,7 +146,7 @@ export function ChannelHeader(props: Props) {
             },
           }}
         >
-          <Symbol>voice_chat</Symbol>
+          <Symbol>call</Symbol>
         </IconButton>
       </Show>
 
