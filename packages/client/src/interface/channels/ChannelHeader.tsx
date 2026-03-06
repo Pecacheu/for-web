@@ -143,7 +143,7 @@ export function ChannelHeader(props: Props) {
             },
           }}
         >
-          <Symbol>voice_chat</Symbol>
+          <Symbol>call</Symbol>
         </IconButton>
       </Show>
 

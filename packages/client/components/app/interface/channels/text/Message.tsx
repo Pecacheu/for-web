@@ -301,7 +301,7 @@ export function Message(props: Props) {
           <Markdown
             message={props.message}
             content={props.message.content}
-            container={(md) => <BreakText>{md}</BreakText>}
+            container={(md) => <BreakText class="message_body">{md}</BreakText>}
           />
         </Match>
       </Switch>

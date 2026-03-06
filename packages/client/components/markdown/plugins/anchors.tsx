@@ -59,7 +59,14 @@ export function RenderAnchor(
     plainLink = text === props.href && !props.disabled;
 
   // Handle empty link
-  if (!props.href || (props.node && !text)) return <>{props.children}</>;
+  if (
+    !props.href ||
+    (props.node &&
+      !text &&
+      // Nested anchor, continue down the stack
+      [...props.node.children].find((el) => el.tagName === "a"))
+  )
+    return props.children;
 
   // Handle links that navigate internally
   try {
@@ -171,7 +178,20 @@ export function RenderAnchor(
       }
     }
 
-    // ... all other links:
+    //Inline link embed
+    if (plainLink && props.embeds) {
+      const href = url.origin + url.pathname + url.search;
+      for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        em = props.embeds[i] as any;
+        if (em.originalUrl === href || em.url === href) {
+          props.embeds.splice(i, 1);
+          return <Embed embed={em} />;
+        }
+      }
+    }
+
+    // All other links
     const state = useState();
     const { openModal } = useModals();
 
@@ -187,19 +207,6 @@ export function RenderAnchor(
           url,
           display: text || url.href,
         });
-      }
-    }
-
-    //Inline link embed
-    if (plainLink && props.embeds) {
-      const href = url.origin + url.pathname + url.search;
-      for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        em = props.embeds[i] as any;
-        if (em.originalUrl === href || em.url === href) {
-          props.embeds.splice(i, 1);
-          return <Embed embed={em} />;
-        }
       }
     }
 
@@ -230,7 +237,7 @@ export function RenderAnchor(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_) {
     // invalid URL
-    return <>{props.children}</>;
+    return props.children;
   }
 }
 
