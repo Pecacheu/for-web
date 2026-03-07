@@ -4,10 +4,10 @@ import { useApi } from "@revolt/client";
 import { useNavigate } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 
+import { useInstance } from "@revolt/instance";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
-import { useInstance } from "@revolt/instance";
 
 /**
  * Flow for sending password reset
@@ -39,7 +39,7 @@ export default function FlowReset() {
       <FlowTitle>
         <Trans>Reset password</Trans>
       </FlowTitle>
-      <Form onSubmit={reset} captcha={instance.hcaptcha_sitekey}>
+      <Form onSubmit={reset} captcha={instance.captchaKey}>
         <Fields fields={["email"]} />
         <Button type="submit">
           <Trans>Reset</Trans>
