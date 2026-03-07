@@ -229,6 +229,10 @@ msgstr "<0/> updated the group name to <1>{0}</1>"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 
+#: components/auth/src/AdvancedOptions.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+
 #: components/ui/components/features/messaging/elements/Reactions.tsx
 msgid "1 person reacted"
 msgstr "1 person reacted"
@@ -358,6 +362,10 @@ msgstr "An error occurred."
 #: components/i18n/errors.ts
 msgid "An internal error occurred. ({0})"
 msgstr "An internal error occurred. ({0})"
+
+#: components/auth/src/flows/Form.tsx
+msgid "API Endpoint"
+msgstr "API Endpoint"
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/Sync.tsx
@@ -1332,6 +1340,10 @@ msgstr "Get a new set of recovery codes"
 msgid "Get active recovery codes"
 msgstr "Get active recovery codes"
 
+#: components/auth/src/flows/Form.tsx
+msgid "Gifbox Endpoint"
+msgstr "Gifbox Endpoint"
+
 #: src/interface/Home.tsx
 msgid "Give feedback on Stoat"
 msgstr "Give feedback on Stoat"
@@ -1435,12 +1447,16 @@ msgid "Illegal hacking or cracking"
 msgstr "Illegal hacking or cracking"
 
 #: components/auth/src/AuthPage.tsx
-msgid "Image by @fakurian"
-msgstr "Image by @fakurian"
+#~ msgid "Image by @fakurian"
+#~ msgstr "Image by @fakurian"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
 msgstr "Impersonation"
+
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Instance Settings"
+msgstr "Instance Settings"
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, Stoat will hide in your tray."
@@ -1699,6 +1715,10 @@ msgstr "Mark this channel as mature?"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Masquerade"
 msgstr "Masquerade"
+
+#: components/auth/src/flows/Form.tsx
+msgid "Media Endpoint"
+msgstr "Media Endpoint"
 
 #: components/app/interface/settings/ServerSettings.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -2094,6 +2114,14 @@ msgstr "Promotes harm"
 #: components/i18n/errors.ts
 msgid "Provided email or password is wrong."
 msgstr "Provided email or password is wrong."
+
+#: components/auth/src/flows/Form.tsx
+msgid "Proxy Endpoint"
+msgstr "Proxy Endpoint"
+
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Proxy Settings"
+msgstr "Proxy Settings"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2577,6 +2605,10 @@ msgstr "Stoat Founder"
 msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
 msgstr "Stoat will start in the system tray."
@@ -2834,6 +2866,26 @@ msgstr "Until I turn it back on"
 msgid "Upload Files"
 msgstr "Upload Files"
 
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the API server."
+msgstr "URL of the API server."
+
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the Gifbox server."
+msgstr "URL of the Gifbox server."
+
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the Media server."
+msgstr "URL of the Media server."
+
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the Proxy server."
+msgstr "URL of the Proxy server."
+
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the WebSocket server."
+msgstr "URL of the WebSocket server."
+
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
 msgstr "Use a code or invite link"
@@ -2841,6 +2893,10 @@ msgstr "Use a code or invite link"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
 msgstr "Use the graphics card to improve performance."
+
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
+msgstr "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
@@ -3032,6 +3088,10 @@ msgstr "Would you like to create a new group or server?"
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
 msgstr "Would you like to create a new server or join an existing one?"
+
+#: components/auth/src/flows/Form.tsx
+msgid "WS Endpoint"
+msgstr "WS Endpoint"
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "You agree that your bot is subject to the Acceptable Usage Policy."
