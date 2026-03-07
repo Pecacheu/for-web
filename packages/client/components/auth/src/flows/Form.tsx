@@ -10,7 +10,7 @@ import { Checkbox2, Column, Text, TextField } from "@revolt/ui";
 /**
  * Available field types
  */
-type Field =
+export type Field =
   | "email"
   | "password"
   | "new-password"
@@ -26,7 +26,7 @@ type Field =
 /**
  * Properties to apply to fields
  */
-const useFieldConfiguration = () => {
+export const useFieldConfig = () => {
   const { t } = useLingui();
 
   return {
@@ -127,7 +127,7 @@ interface FieldPreset {
  * Render a bunch of fields with preset values
  */
 export function Fields(props: FieldProps) {
-  const fieldConfiguration = useFieldConfiguration();
+  const fieldConfig = useFieldConfig();
 
   return (
     <For each={props.fields}>
@@ -140,15 +140,15 @@ export function Fields(props: FieldProps) {
           <label>
             {field.field === "log-out" ? (
               <Checkbox2 name={field.field}>
-                {fieldConfiguration[field.field].name()}
+                {fieldConfig[field.field].name()}
               </Checkbox2>
             ) : (
               <TextField
                 required
-                {...fieldConfiguration[field.field]}
+                {...fieldConfig[field.field]}
                 name={field.field}
-                label={fieldConfiguration[field.field].name()}
-                placeholder={fieldConfiguration[field.field].placeholder()}
+                label={fieldConfig[field.field].name()}
+                placeholder={fieldConfig[field.field].placeholder()}
                 disabled={field.disabled}
                 value={field.value}
               />
