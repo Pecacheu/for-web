@@ -25,6 +25,7 @@ import { Settings } from "./stores/Settings";
 import { Sync } from "./stores/Sync";
 import { Theme } from "./stores/Theme";
 import { Voice } from "./stores/Voice";
+import { useInstance } from "@revolt/instance";
 
 export { SyncWorker } from "./SyncWorker";
 
@@ -46,6 +47,7 @@ export class State {
   private store: Store;
   private setStore: SetStoreFunction<Store>;
   private writeQueue: Record<string, number>;
+  private readonly db: LocalForage;
 
   // define all stores
   auth = new Auth(this);
@@ -93,12 +95,13 @@ export class State {
   /**
    * Construct the global application state
    */
-  constructor() {
+  constructor(dbName = "localforage") {
     const [store, setStore] = createStore(this.defaults() as Store);
 
     this.store = store as never;
     this.setStore = setStore;
     this.writeQueue = {};
+    this.db = localforage.createInstance({ name: dbName });
   }
 
   /**
@@ -126,7 +129,7 @@ export class State {
         delete this.writeQueue[key];
 
         // write the entire key to storage
-        localforage.setItem(
+        this.db.setItem(
           key,
           JSON.parse(
             JSON.stringify((this.store as Record<string, unknown>)[key]),
@@ -169,7 +172,7 @@ export class State {
   async hydrate() {
     // load all data first
     for (const store of this.iterStores()) {
-      const data = await localforage.getItem(store.getKey());
+      const data = await this.db.getItem(store.getKey());
 
       if (data) {
         // validate the incoming data
@@ -199,8 +202,9 @@ const stateContext = createContext<State>(null! as State);
 /**
  * Mount state context
  */
-export function StateContext(props: { children: JSX.Element }) {
-  const stateLocal = new State();
+export function StateContext(props: { children?: JSX.Element }) {
+  const instance = useInstance();
+  const stateLocal = new State(instance.hostname);
   const [ready, setReady] = createSignal(false);
 
   onMount(() => stateLocal.hydrate().then(() => setReady(true)));

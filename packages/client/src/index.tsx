@@ -117,7 +117,7 @@ function MountContext(props: { children?: JSX.Element }) {
   const client = new QueryClient();
 
   return (
-    <InstanceContext>
+    <>
       <KeybindContext>
         <ModalContext>
           <ClientContext state={state}>
@@ -134,14 +134,15 @@ function MountContext(props: { children?: JSX.Element }) {
           </ClientContext>
         </ModalContext>
       </KeybindContext>
-    </InstanceContext>
+      <LoadTheme />
+    </>
   );
 }
 
-render(
-  () => (
-    <StateContext>
-      <Router root={MountContext}>
+const routes = (
+  <>
+    <Route component={StateContext}>
+      <Route component={MountContext}>
         <Route path="/login" component={AuthPage as never}>
           <Route path="/delete/:token" component={FlowDeleteAccount} />
           <Route path="/check" component={FlowCheck} />
@@ -169,11 +170,26 @@ render(
           <Route path="/channel/:channel/*" component={ChannelPage} />
           <Route path="/*" component={HomePage} />
         </Route>
+      </Route>
+    </Route>
+  </>
+);
+
+// TODO: update urls to instance-specific ones as needed
+render(
+  () => (
+    <>
+      <Router>
+        <Route path="/" component={InstanceContext}>
+          {routes}
+        </Route>
+        <Route path="/instance/:hostname" component={InstanceContext}>
+          {routes}
+        </Route>
       </Router>
 
-      <LoadTheme />
       {/* <ReportBug /> */}
-    </StateContext>
+    </>
   ),
   document.getElementById("root") as HTMLElement,
 );
