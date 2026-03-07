@@ -8,6 +8,7 @@ import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?compon
 
 import { useApi } from "../../../client";
 
+import { AdvancedOptions } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
@@ -50,6 +51,7 @@ export default function FlowCreate() {
       </FlowTitle>
       <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
         <Fields fields={["email", "password"]} />
+        <AdvancedOptions />
         <Row justify>
           <a href="..">
             <Button variant="text">

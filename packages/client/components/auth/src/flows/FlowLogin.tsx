@@ -18,6 +18,7 @@ import {
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { useState } from "@revolt/state";
+import { AdvancedOptions } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
@@ -65,7 +66,8 @@ export default function FlowLogin() {
             </FlowTitle>
             <Form onSubmit={performLogin}>
               <Fields fields={["email", "password"]} />
-              <Column gap="xl" align>
+              <AdvancedOptions />
+              <Column align>
                 <a href="/login/reset">
                   <Button variant="text">
                     <Trans>Reset password</Trans>
