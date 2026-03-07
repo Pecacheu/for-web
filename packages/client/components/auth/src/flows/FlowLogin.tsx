@@ -10,15 +10,15 @@ import {
   Button,
   CircularProgress,
   Column,
+  iconSize,
   Row,
   Text,
-  iconSize,
 } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { useState } from "@revolt/state";
-import { AdvancedOptions } from "../AdvancedOptions";
+import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
@@ -26,25 +26,32 @@ import { Fields, Form } from "./Form";
  * Flow for logging into an account
  */
 export default function FlowLogin() {
-  const state = useState();
-  const modals = useModals();
+  const state = useState(),
+    modals = useModals();
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
+  let advOpt: AdvOpts;
 
   /**
    * Log into account
    * @param data Form Data
    */
   async function performLogin(data: FormData) {
-    const email = data.get("email") as string;
-    const password = data.get("password") as string;
+    try {
+      const email = data.get("email") as string,
+        password = data.get("password") as string;
 
-    await login(
-      {
-        email,
-        password,
-      },
-      modals,
-    );
+      advOpt!.setOpts(data);
+
+      await login(
+        {
+          email,
+          password,
+        },
+        modals,
+      );
+    } catch (e) {
+      modals.openModal({ type: "error2", error: e });
+    }
   }
 
   /**
@@ -66,7 +73,7 @@ export default function FlowLogin() {
             </FlowTitle>
             <Form onSubmit={performLogin}>
               <Fields fields={["email", "password"]} />
-              <AdvancedOptions />
+              <AdvancedOptions ref={advOpt!} />
               <Column align>
                 <a href="/login/reset">
                   <Button variant="text">
