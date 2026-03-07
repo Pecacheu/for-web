@@ -1,10 +1,12 @@
 import { Trans } from "@lingui-solid/solid/macro";
 import { Column, iconSize, typography } from "@revolt/ui";
-import { createSignal, Show } from "solid-js";
+import { createSignal, onMount, Ref, Show } from "solid-js";
 import { styled } from "styled-system/jsx";
-import { Fields } from "./flows/Form";
+import { Field, Fields, useFieldConfig } from "./flows/Form";
 
 import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
+import { useInstance } from "@revolt/instance";
+import { DefaultInstance } from "@revolt/instance/Instance";
 
 const Base = styled("div", {
   base: {
@@ -51,8 +53,44 @@ const Spoiler = styled("div", {
   },
 });
 
-export function AdvancedOptions() {
+const URL_FIELDS: Field[] = ["api", "ws", "media", "proxy", "gifbox"];
+
+export type AdvOpts = { setOpts: (data: FormData) => void };
+
+export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
   const [isOpen, setOpen] = createSignal(false);
+  const instance = useInstance(),
+    fieldConfig = useFieldConfig();
+
+  function applyUrl(type: Field, data: FormData) {
+    try {
+      //Check URL
+      const val = (data.get(type) as string).replace(/\/+$/, "");
+      new URL(val);
+      //Check HTTPS
+      if (!val.startsWith(type === "ws" ? "wss://" : "https://")) {
+        //Check HTTP
+        if (val.startsWith(type === "ws" ? "ws://" : "http://")) {
+          if (location.protocol === "https:") throw 2;
+        } else throw 1;
+      }
+      return val;
+    } catch (e) {
+      if (e === 2) throw "Unencrypted endpoint not allowed on HTTPS client.";
+      throw `Invalid URL for ${fieldConfig[type].name()}.`;
+    }
+  }
+
+  function setOpts(data: FormData) {
+    const vals = { ...DefaultInstance };
+    if (isOpen()) {
+      // @ts-expect-error naughty code >:3
+      for (const f of URL_FIELDS) vals[f + "Url"] = applyUrl(f, data);
+    }
+    instance.set(vals);
+  }
+
+  onMount(() => (props.ref as (ref: AdvOpts) => void)({ setOpts }));
 
   return (
     <Base class="login_adv">
@@ -81,7 +119,7 @@ export function AdvancedOptions() {
               </Trans>
             </i>
           </p>
-          <Fields fields={["api", "ws", "media", "proxy", "gifbox"]} />
+          <Fields fields={URL_FIELDS} />
         </Column>
         <h1>
           <Trans>Proxy Settings</Trans>
