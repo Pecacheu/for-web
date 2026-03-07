@@ -4,10 +4,10 @@ import { detect } from "detect-browser";
 import { API, Client, ConnectionState } from "stoat.js";
 import { ProtocolV1 } from "stoat.js/lib/events/v1";
 
-import { CONFIGURATION } from "@revolt/common";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
+import Instance from "../instance/Instance";
 
 export enum State {
   Ready = "Ready",
@@ -126,7 +126,7 @@ class Lifecycle {
     }
 
     this.client = new Client({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: this.#controller.instance.apiUrl,
       autoReconnect: false,
       syncUnreads: true,
       debug: import.meta.env.DEV,
@@ -143,11 +143,11 @@ class Lifecycle {
       features: {
         autumn: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_MEDIA_URL,
+          url: this.#controller.instance.mediaUrl,
         },
         january: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_PROXY_URL,
+          url: this.#controller.instance.proxyUrl,
         },
         captcha: {} as never,
         email: true,
@@ -158,7 +158,7 @@ class Lifecycle {
         },
       },
       vapid: String(),
-      ws: CONFIGURATION.DEFAULT_WS_URL,
+      ws: this.#controller.instance.wsUrl,
     };
 
     this.client.events.on("state", this.onState);
@@ -449,12 +449,18 @@ export default class ClientController {
   readonly state: ApplicationState;
 
   /**
+   * Reference to the instance the client connects to
+   */
+  readonly instance: Instance;
+
+  /**
    * Construct new client controller
    */
-  constructor(state: ApplicationState) {
+  constructor(state: ApplicationState, instance: Instance) {
     this.state = state;
+    this.instance = instance;
     this.api = new API.API({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: instance.apiUrl,
     });
 
     this.lifecycle = new Lifecycle(this);

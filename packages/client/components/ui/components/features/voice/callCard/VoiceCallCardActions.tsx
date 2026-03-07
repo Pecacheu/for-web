@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import { useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
-import { CONFIGURATION } from "@revolt/common";
+import { useInstance } from "@revolt/instance";
 import { useVoice } from "@revolt/rtc";
 import { Button, IconButton } from "@revolt/ui/components/design";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
@@ -11,9 +11,10 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
   const voice = useVoice();
   const { t } = useLingui();
+  const instance = useInstance();
 
   function isVideoEnabled() {
-    return CONFIGURATION.ENABLE_VIDEO;
+    return instance.enableVideo;
   }
 
   return (
