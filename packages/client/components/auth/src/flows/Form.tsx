@@ -3,6 +3,7 @@ import { For, JSX, Show, createSignal } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 
+import { CONFIGURATION } from "@revolt/common";
 import { useError } from "@revolt/i18n";
 import { Checkbox2, Column, Text, TextField } from "@revolt/ui";
 
@@ -15,7 +16,12 @@ type Field =
   | "new-password"
   | "log-out"
   | "username"
-  | "invite";
+  | "invite"
+  | "api"
+  | "ws"
+  | "media"
+  | "proxy"
+  | "gifbox";
 
 /**
  * Properties to apply to fields
@@ -59,6 +65,46 @@ const useFieldConfiguration = () => {
       autocomplete: "none",
       name: () => t`Invite Code`,
       placeholder: () => t`Enter your invite code.`,
+    },
+    api: {
+      minLength: 10,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`API Endpoint`,
+      placeholder: () => t`URL of the API server.`,
+      value: CONFIGURATION.DEFAULT_API_URL,
+    },
+    ws: {
+      minLength: 8,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`WS Endpoint`,
+      placeholder: () => t`URL of the WebSocket server.`,
+      value: CONFIGURATION.DEFAULT_WS_URL,
+    },
+    media: {
+      minLength: 10,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`Media Endpoint`,
+      placeholder: () => t`URL of the Media server.`,
+      value: CONFIGURATION.DEFAULT_MEDIA_URL,
+    },
+    proxy: {
+      minLength: 10,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`Proxy Endpoint`,
+      placeholder: () => t`URL of the Proxy server.`,
+      value: CONFIGURATION.DEFAULT_PROXY_URL,
+    },
+    gifbox: {
+      minLength: 10,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`Gifbox Endpoint`,
+      placeholder: () => t`URL of the Gifbox server.`,
+      value: CONFIGURATION.DEFAULT_GIFBOX_URL,
     },
   };
 };
