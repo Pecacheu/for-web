@@ -37,9 +37,8 @@ const Base = styled("div", {
     flexDirection: "column",
     justifyContent: "space-between",
 
-    mdDown: {
-      padding: "30px 20px",
-    },
+    mdDown: { padding: "30px 20px" },
+    smDown: { padding: "10px 5px" },
   },
 });
 
@@ -173,13 +172,6 @@ export function AuthPage(props: { children: JSX.Element }) {
                 <Trans>Privacy Policy</Trans>
               </a>
             </NavItems>
-          </NavItems>
-          <NavItems variant="hide">
-            <Trans>Image by {"@fakurian"}</Trans>
-            <Bullet />
-            <a href="https://unsplash.com/" target="_blank" rel="noreferrer">
-              unsplash.com
-            </a>
           </NavItems>
         </Nav>
       </Base>
