@@ -8,6 +8,7 @@ export default class Instance {
   readonly hcaptcha_sitekey: string;
   readonly maxEmoji: number;
   readonly enableVideo: boolean;
+  readonly hostname: string | undefined;
 
   // Not implemented, but should be fine for now
   // readonly maxReplies: number;
@@ -26,6 +27,7 @@ export default class Instance {
     hcaptcha_sitekey: string,
     maxEmoji: number,
     enableVideo: boolean,
+    hostname?: string,
   ) {
     this.isStoat = [
       // historically...
@@ -43,5 +45,18 @@ export default class Instance {
     this.hcaptcha_sitekey = hcaptcha_sitekey;
     this.maxEmoji = maxEmoji;
     this.enableVideo = enableVideo;
+    this.hostname = hostname;
+  }
+
+  /**
+   * Prepends the given url with this instances' base path.
+   * @param url - The url to link to.
+   */
+  href(url: string) {
+    if (!this.hostname) {
+      return url;
+    }
+
+    return `/instance/${this.hostname}${url}`;
   }
 }
