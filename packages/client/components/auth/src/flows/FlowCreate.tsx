@@ -5,11 +5,11 @@ import { useApi, useClient, useClientLifecycle } from "@revolt/client";
 import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Row, iconSize } from "@revolt/ui";
+import { Button, iconSize, Row } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { AdvancedOptions } from "../AdvancedOptions";
+import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
@@ -25,6 +25,7 @@ export default function FlowCreate() {
   const modals = useModals();
   const { login } = useClientLifecycle();
   const instance = useInstance();
+  let advOpt: AdvOpts;
 
   /**
    * Create an account
@@ -35,6 +36,8 @@ export default function FlowCreate() {
     const password = data.get("password") as string;
     const captcha = data.get("captcha") as string;
     const invite = data.get("invite") as string;
+
+    advOpt!.setOpts(data);
 
     await api.post("/auth/account/create", {
       email,
@@ -72,12 +75,12 @@ export default function FlowCreate() {
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Form onSubmit={create} captcha={instance.hcaptcha_sitekey}>
+      <Form onSubmit={create} captcha={instance.captchaKey}>
         <Fields fields={["email", "password"]} />
         <Show when={isInviteOnly()}>
           <Fields fields={[{ field: "invite", value: code }]} />
         </Show>
-        <AdvancedOptions />
+        <AdvancedOptions ref={advOpt!} />
         <Row justify>
           <a href="..">
             <Button variant="text">
