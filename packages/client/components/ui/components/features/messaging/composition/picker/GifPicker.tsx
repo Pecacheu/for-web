@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
-import env from "@revolt/common/lib/env";
+import { useInstance } from "@revolt/instance";
 import {
   CircularProgress,
   TextField,
@@ -96,13 +96,14 @@ function Categories() {
   let targetElement!: HTMLDivElement;
 
   const client = useClient();
+  const instance = useInstance();
 
   const trendingCategories = useQuery<GifCategory[]>(() => ({
     queryKey: ["trendingGifCategories"],
     queryFn: () => {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
-      return fetch(`${env.DEFAULT_GIFBOX_URL}/categories?locale=en_US`, {
+      return fetch(`${instance.gifboxUrl}/categories?locale=en_US`, {
         headers: {
           [authHeader]: authHeaderValue,
         },
@@ -117,7 +118,7 @@ function Categories() {
     queryFn: () => {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
-      return fetch(`${env.DEFAULT_GIFBOX_URL}/trending?locale=en_US&limit=1`, {
+      return fetch(`${instance.gifboxUrl}/trending?locale=en_US&limit=1`, {
         headers: {
           [authHeader]: authHeaderValue,
         },
@@ -214,6 +215,7 @@ function GifSearch(props: { query: string }) {
   let targetElement!: HTMLDivElement;
 
   const client = useClient();
+  const instance = useInstance();
 
   const search = useQuery<GifResult[]>(() => ({
     queryKey: ["gifs", props.query],
@@ -221,7 +223,7 @@ function GifSearch(props: { query: string }) {
       const [authHeader, authHeaderValue] = client()!.authenticationHeader;
 
       return fetch(
-        `${env.DEFAULT_GIFBOX_URL}/` +
+        `${instance.gifboxUrl}/` +
           (props.query === "trending"
             ? `trending?locale=en_US`
             : `search?locale=en_US&query=${encodeURIComponent(props.query)}`),

@@ -68,7 +68,7 @@ msgstr ""
 msgid "{0} changed the channel icon"
 msgstr ""
 
-#. placeholder {0}: CONFIGURATION.MAX_EMOJI - props.server.emojis.length
+#. placeholder {0}: instance.maxEmoji - props.server.emojis.length
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "{0} emoji slots remaining"
 msgstr ""

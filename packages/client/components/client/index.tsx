@@ -15,6 +15,7 @@ import { State } from "@revolt/state";
 
 import { State as LifecycleState } from "./Controller";
 
+import { useInstance } from "@revolt/instance";
 import { CHANGELOG_MODAL_CONST } from "@revolt/modal/modals/Changelog";
 import ClientController from "./Controller";
 
@@ -27,9 +28,10 @@ const clientContext = createContext(null! as ClientController);
  */
 export function ClientContext(props: { state: State; children: JSXElement }) {
   const { openModal } = useModals();
+  const instance = useInstance();
 
   // eslint-disable-next-line solid/reactivity
-  const controller = new ClientController(props.state);
+  const controller = new ClientController(props.state, instance);
   onCleanup(() => controller.dispose());
 
   createEffect(() => {
