@@ -290,6 +290,10 @@ msgstr "Add a new friend"
 msgid "Add an account"
 msgstr "Add an account"
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an additional account login for fast-switching"
+msgstr "Add an additional account login for fast-switching"
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Add friend"
