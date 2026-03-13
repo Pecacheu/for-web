@@ -16,7 +16,8 @@ export type Field =
   | "new-password"
   | "log-out"
   | "username"
-  | "api";
+  | "api"
+  | "invite";
 
 /**
  * Properties to apply to fields
@@ -62,6 +63,13 @@ export const useFieldConfig = () => {
       placeholder: () => t`URL of the API server.`,
       value: CONFIGURATION.DEFAULT_API_URL,
     },
+    invite: {
+      minLength: 1,
+      type: "text" as const,
+      autocomplete: "none",
+      name: () => t`Invite Code`,
+      placeholder: () => t`Enter your invite code.`,
+    },
   };
 };
 
@@ -69,7 +77,14 @@ interface FieldProps {
   /**
    * Fields to gather
    */
-  fields: Field[];
+  fields: (Field | FieldPreset)[];
+}
+
+interface FieldPreset {
+  field: Field;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+  disabled?: boolean;
 }
 
 /**
@@ -80,23 +95,29 @@ export function Fields(props: FieldProps) {
 
   return (
     <For each={props.fields}>
-      {(field) => (
-        <label>
-          {field === "log-out" ? (
-            <Checkbox2 name="log-out">
-              {fieldConfig["log-out"].name()}
-            </Checkbox2>
-          ) : (
-            <TextField
-              required
-              {...fieldConfig[field]}
-              name={field}
-              label={fieldConfig[field].name()}
-              placeholder={fieldConfig[field].placeholder()}
-            />
-          )}
-        </label>
-      )}
+      {(field) => {
+        // If field is just a Field value, convert it to a FieldPreset
+        if (typeof field === "string") field = { field };
+        return (
+          <label>
+            {field.field === "log-out" ? (
+              <Checkbox2 name={field.field}>
+                {fieldConfig[field.field].name()}
+              </Checkbox2>
+            ) : (
+              <TextField
+                required
+                {...fieldConfig[field.field]}
+                name={field.field}
+                label={fieldConfig[field.field].name()}
+                placeholder={fieldConfig[field.field].placeholder()}
+                disabled={field.disabled}
+                value={field.value}
+              />
+            )}
+          </label>
+        );
+      }}
     </For>
   );
 }

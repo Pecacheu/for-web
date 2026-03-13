@@ -1,14 +1,14 @@
 import { Trans } from "@lingui-solid/solid/macro";
 
+import { useApi, useClient } from "@revolt/client";
 import { useInstance } from "@revolt/instance";
-import { useNavigate } from "@revolt/routing";
-import { Button, iconSize, Row } from "@revolt/ui";
+import { useModals } from "@revolt/modal";
+import { useNavigate, useParams } from "@revolt/routing";
+import { Button, Row, iconSize } from "@revolt/ui";
+import { Show } from "solid-js";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { useApi } from "../../../client";
-
-import { useModals } from "@revolt/modal";
 import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
@@ -21,7 +21,9 @@ export default function FlowCreate() {
   const api = useApi(),
     navigate = useNavigate(),
     modals = useModals(),
-    instance = useInstance();
+    instance = useInstance(),
+    getClient = useClient();
+  const { code } = useParams();
   let advOpt: AdvOpts;
 
   /**
@@ -32,7 +34,8 @@ export default function FlowCreate() {
     try {
       const email = data.get("email") as string,
         password = data.get("password") as string,
-        captcha = data.get("captcha") as string;
+        captcha = data.get("captcha") as string,
+        invite = data.get("invite") as string;
 
       advOpt!.setOpts(data);
 
@@ -40,6 +43,7 @@ export default function FlowCreate() {
         email,
         password,
         captcha,
+        ...(invite ? { invite } : {}),
       });
 
       // FIXME: should tell client if email was sent
@@ -54,6 +58,14 @@ export default function FlowCreate() {
     }
   }
 
+  const isInviteOnly = () => {
+    const client = getClient();
+    if (client.configured()) {
+      return client.configuration?.features.invite_only;
+    }
+    return false;
+  };
+
   return (
     <>
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
@@ -61,6 +73,13 @@ export default function FlowCreate() {
       </FlowTitle>
       <Form onSubmit={create} captcha={instance.captchaKey}>
         <Fields fields={["email", "password"]} />
+        <Show when={isInviteOnly()}>
+          <Fields
+            fields={[
+              { field: "invite", value: code, disabled: code?.length > 0 },
+            ]}
+          />
+        </Show>
         <AdvancedOptions ref={advOpt!} />
         <Row justify>
           <a href="..">

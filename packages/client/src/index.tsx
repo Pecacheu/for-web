@@ -147,6 +147,7 @@ const routes = (
           <Route path="/delete/:token" component={FlowDeleteAccount} />
           <Route path="/check" component={FlowCheck} />
           <Route path="/create" component={FlowCreate} />
+          <Route path="/create/:code" component={FlowCreate} />
           <Route path="/auth" component={FlowLogin} />
           <Route path="/resend" component={FlowResend} />
           <Route path="/reset" component={FlowReset} />
