@@ -1495,6 +1495,7 @@ msgstr "Join a server"
 msgid "Join the Stoat Lounge"
 msgstr "Join the Stoat Lounge"
 
+#: src/interface/channels/ChannelHeader.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
 msgstr "Join the voice channel"
