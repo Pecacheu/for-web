@@ -4,7 +4,7 @@ import { useApi, useClient } from "@revolt/client";
 import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Row, iconSize } from "@revolt/ui";
+import { Button, iconSize, Row } from "@revolt/ui";
 import { Show } from "solid-js";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
