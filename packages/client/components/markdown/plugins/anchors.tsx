@@ -14,6 +14,7 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
 import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
+import { trimURL } from "@revolt/modal/modals/LinkWarning";
 import { MessageEmbed } from "stoat.js";
 // import { determineLink } from "../../../lib/links";
 // import { modalController } from "../../../controllers/modals/ModalController";
@@ -70,7 +71,8 @@ export function RenderAnchor(
 
   // Handle links that navigate internally
   try {
-    let url = new URL(props.href);
+    let url = new URL(props.href),
+      internal = false;
 
     // Remap discover links to native links
     if (url.origin === "https://rvlt.gg" || url.origin === "https://stt.gg") {
@@ -92,8 +94,8 @@ export function RenderAnchor(
         "https://stoat.chat",
       ].includes(url.origin)
     ) {
-      const client = useClient();
-      const params = paramsFromPathname(url.pathname);
+      const client = useClient(),
+        params = paramsFromPathname(url.pathname);
 
       if (params.exactChannel) {
         const channel = () => client().channels.get(params.channelId!);
@@ -163,24 +165,13 @@ export function RenderAnchor(
         );
       } else if (params.inviteId && plainLink) {
         return <Invite code={params.inviteId} />;
-      } else {
-        const internalUrl = () =>
-          new URL(url.pathname, location.origin).toString();
-
-        return (
-          <LinkComponent
-            children={props.node ? text : props.children}
-            class={link()}
-            disabled={props.disabled}
-            href={internalUrl()}
-          />
-        );
       }
+      internal = true;
     }
 
     //Inline link embed
     if (plainLink && props.embeds) {
-      const href = url.origin + url.pathname + url.search;
+      const href = trimURL(url.origin + url.pathname) + url.search;
       for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         em = props.embeds[i] as any;
@@ -210,9 +201,13 @@ export function RenderAnchor(
       }
     }
 
+    if (internal) {
+      props.href = new URL(url.pathname, location.origin).toString();
+    }
+
     return (
       <Show
-        when={state.linkSafety.isTrusted(url)}
+        when={internal || state.linkSafety.isTrusted(url)}
         fallback={
           <LinkComponent
             children={props.node ? text : props.children}

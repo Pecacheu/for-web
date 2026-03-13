@@ -9,6 +9,7 @@ import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 import { Modals } from "../types";
 
 const URL_TRIM = /\/+$/;
+export const trimURL = (u: string) => u.replace(URL_TRIM, "");
 
 /**
  * Modal to warn the user about a potentially unsafe link
@@ -18,8 +19,8 @@ export function LinkWarningModal(
 ) {
   const state = useState();
   const [value, setValue] = createSignal(false);
-  const urlStr = (u: URL) => u.href.replace(URL_TRIM, ""),
-    displayStr = () => props.display.replace(URL_TRIM, "");
+  const urlStr = (u: URL) => trimURL(u.href),
+    displayStr = () => trimURL(props.display);
 
   const scrutiny = createMemo(() => {
     const dispStr = displayStr();
