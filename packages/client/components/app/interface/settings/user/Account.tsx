@@ -20,8 +20,6 @@ import MdPassword from "@material-design-icons/svg/outlined/password.svg?compone
 import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
 
 import { useSettingsNavigation } from "../Settings";
-
-import { t } from "@lingui/core/macro";
 import { UserSummary } from "./account/index";
 
 /**
@@ -65,7 +63,9 @@ function EditAccount(props: { onClose?: () => void }) {
           logout(false);
         }}
         icon={<MdAddUser {...iconSize(22)} />}
-        description={t`Add an additional account login for fast-switching`}
+        description={
+          <Trans>Add an additional account login for fast-switching</Trans>
+        }
       >
         <Trans>Add an account</Trans>
       </CategoryButton>
