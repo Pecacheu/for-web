@@ -27,9 +27,9 @@ export const FlowBase = styled("div", {
     marginBottom: "20px",
     justifySelf: "center",
     marginInline: "auto",
-  },
 
-  smDown: { padding: "20px" },
+    smDown: { padding: "20px" },
+  },
 });
 
 /**
