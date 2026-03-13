@@ -183,7 +183,7 @@ render(
         <Route path="/" component={InstanceContext}>
           {routes}
         </Route>
-        <Route path="/instance/:hostname" component={InstanceContext}>
+        <Route path="/i/:host" component={InstanceContext}>
           {routes}
         </Route>
       </Router>

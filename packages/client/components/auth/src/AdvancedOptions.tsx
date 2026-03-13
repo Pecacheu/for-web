@@ -6,7 +6,6 @@ import { Field, Fields, useFieldConfig } from "./flows/Form";
 
 import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
 import { useInstance } from "@revolt/instance";
-import { DefaultInstance } from "@revolt/instance/Instance";
 
 const Base = styled("div", {
   base: {
@@ -53,8 +52,6 @@ const Spoiler = styled("div", {
   },
 });
 
-const URL_FIELDS: Field[] = ["api", "ws", "media", "proxy", "gifbox"];
-
 export type AdvOpts = { setOpts: (data: FormData) => void };
 
 export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
@@ -68,9 +65,9 @@ export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
       const val = (data.get(type) as string).replace(/\/+$/, "");
       new URL(val);
       //Check HTTPS
-      if (!val.startsWith(type === "ws" ? "wss://" : "https://")) {
+      if (!val.startsWith("https://")) {
         //Check HTTP
-        if (val.startsWith(type === "ws" ? "ws://" : "http://")) {
+        if (val.startsWith("http://")) {
           if (location.protocol === "https:") throw 2;
         } else throw 1;
       }
@@ -82,12 +79,7 @@ export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
   }
 
   function setOpts(data: FormData) {
-    const vals = { ...DefaultInstance };
-    if (isOpen()) {
-      // @ts-expect-error naughty code >:3
-      for (const f of URL_FIELDS) vals[f + "Url"] = applyUrl(f, data);
-    }
-    instance.set(vals);
+    instance.setNext(applyUrl("api", data));
   }
 
   onMount(() => (props.ref as (ref: AdvOpts) => void)({ setOpts }));
@@ -119,7 +111,7 @@ export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
               </Trans>
             </i>
           </p>
-          <Fields fields={URL_FIELDS} />
+          <Fields fields={["api"]} />
         </Column>
         <h1>
           <Trans>Proxy Settings</Trans>
