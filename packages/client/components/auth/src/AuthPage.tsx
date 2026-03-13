@@ -1,15 +1,18 @@
 import { BiLogosGithub } from "solid-icons/bi";
-import { JSX } from "solid-js";
+import { JSX, Show } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
+import { useClientLifecycle } from "@revolt/client";
 import { useState } from "@revolt/state";
 import { IconButton, iconSize } from "@revolt/ui";
 
 import MdDarkMode from "@material-design-icons/svg/filled/dark_mode.svg?component-solid";
+import MdArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg?component-solid";
 
+import { State } from "@revolt/client/Controller";
 import background from "./background.jpg";
 import { FlowBase } from "./flows/Flow";
 import bluesky from "./flows/bluesky.svg";
@@ -115,7 +118,8 @@ const Bullet = styled("div", {
  * Authentication page
  */
 export function AuthPage(props: { children: JSX.Element }) {
-  const state = useState();
+  const state = useState(),
+    ctrl = useClientLifecycle();
 
   return (
     <div
@@ -131,7 +135,17 @@ export function AuthPage(props: { children: JSX.Element }) {
         css={{ scrollbar: "hidden" }}
       >
         <Nav>
-          <div />
+          <Show
+            when={
+              ctrl.lifecycle.state() === State.Ready &&
+              state.auth.hasMultiSession()
+            }
+            fallback={<div />}
+          >
+            <IconButton variant="tonal" onPress={() => ctrl.loginCached(true)}>
+              <MdArrowBack {...iconSize("24px")} />
+            </IconButton>
+          </Show>
           <IconButton
             variant="tonal"
             onPress={() =>
