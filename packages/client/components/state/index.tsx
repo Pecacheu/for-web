@@ -11,6 +11,7 @@ import { SetStoreFunction, createStore } from "solid-js/store";
 import equal from "fast-deep-equal";
 import localforage from "localforage";
 
+import { useInstance } from "@revolt/instance";
 import { AbstractStore, Store } from "./stores";
 import { Auth } from "./stores/Auth";
 import { Draft } from "./stores/Draft";
@@ -25,7 +26,6 @@ import { Settings } from "./stores/Settings";
 import { Sync } from "./stores/Sync";
 import { Theme } from "./stores/Theme";
 import { Voice } from "./stores/Voice";
-import { useInstance } from "@revolt/instance";
 
 export { SyncWorker } from "./SyncWorker";
 
@@ -204,7 +204,7 @@ const stateContext = createContext<State>(null! as State);
  */
 export function StateContext(props: { children?: JSX.Element }) {
   const instance = useInstance();
-  const stateLocal = new State(instance.hostname);
+  const stateLocal = new State(instance.host);
   const [ready, setReady] = createSignal(false);
 
   onMount(() => stateLocal.hydrate().then(() => setReady(true)));
