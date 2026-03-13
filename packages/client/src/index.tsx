@@ -6,6 +6,7 @@ import "./sentry";
 import { JSX, onMount } from "solid-js";
 import { render } from "solid-js/web";
 
+import { attachDevtoolsOverlay } from "@solid-devtools/overlay";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import "material-symbols";
@@ -23,6 +24,7 @@ import FlowReset from "@revolt/auth/src/flows/FlowReset";
 import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
 import { ClientContext, useClient } from "@revolt/client";
 import { I18nProvider } from "@revolt/i18n";
+import { InstanceContext } from "@revolt/instance";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
@@ -32,7 +34,6 @@ import { FloatingManager, LoadTheme } from "@revolt/ui";
 /* @refresh reload */
 import "@revolt/ui/styles";
 
-import { InstanceContext } from "@revolt/instance";
 import AuthPage from "./Auth";
 import Interface from "./Interface";
 import "./index.css";
@@ -44,7 +45,7 @@ import { ServerHome } from "./interface/ServerHome";
 import { ChannelPage } from "./interface/channels/ChannelPage";
 import "./serviceWorkerInterface";
 
-//TODO TEMP
+attachDevtoolsOverlay();
 
 /**
  * Redirect PWA start to the last active path
