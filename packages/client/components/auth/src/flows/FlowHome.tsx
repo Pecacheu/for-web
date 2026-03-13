@@ -4,9 +4,9 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { css } from "styled-system/css";
 
 import { useClientLifecycle } from "@revolt/client";
-import { TransitionType } from "@revolt/client/Controller";
+import { State, TransitionType } from "@revolt/client/Controller";
 import { Navigate } from "@revolt/routing";
-import { Button, Column } from "@revolt/ui";
+import { Button, CircularProgress, Column } from "@revolt/ui";
 
 import { useState } from "@revolt/state";
 import Wordmark from "../../../../public/assets/web/wordmark.svg?component-solid";
@@ -84,14 +84,18 @@ export default function FlowHome() {
         </>
       }
     >
+      <Match when={lifecycle.state() === State.LoggingIn}>
+        <CircularProgress />
+      </Match>
       <Match when={isError()}>
-        <Switch fallback={"an unknown error occurred"}>
-          <Match when={lifecycle.permanentError === "InvalidSession"}>
-            <h1>
-              <Trans>You were logged out!</Trans>
-            </h1>
-          </Match>
-        </Switch>
+        <Show
+          when={lifecycle.permanentError === "InvalidSession"}
+          fallback={"an unknown error occurred"}
+        >
+          <h1>
+            <Trans>You were logged out!</Trans>
+          </h1>
+        </Show>
 
         <Button
           variant="filled"
