@@ -16,11 +16,7 @@ export type Field =
   | "new-password"
   | "log-out"
   | "username"
-  | "api"
-  | "ws"
-  | "media"
-  | "proxy"
-  | "gifbox";
+  | "api";
 
 /**
  * Properties to apply to fields
@@ -65,38 +61,6 @@ export const useFieldConfig = () => {
       name: () => t`API Endpoint`,
       placeholder: () => t`URL of the API server.`,
       value: CONFIGURATION.DEFAULT_API_URL,
-    },
-    ws: {
-      minLength: 8,
-      type: "text" as const,
-      autocomplete: "none",
-      name: () => t`WS Endpoint`,
-      placeholder: () => t`URL of the WebSocket server.`,
-      value: CONFIGURATION.DEFAULT_WS_URL,
-    },
-    media: {
-      minLength: 10,
-      type: "text" as const,
-      autocomplete: "none",
-      name: () => t`Media Endpoint`,
-      placeholder: () => t`URL of the Media server.`,
-      value: CONFIGURATION.DEFAULT_MEDIA_URL,
-    },
-    proxy: {
-      minLength: 10,
-      type: "text" as const,
-      autocomplete: "none",
-      name: () => t`Proxy Endpoint`,
-      placeholder: () => t`URL of the Proxy server.`,
-      value: CONFIGURATION.DEFAULT_PROXY_URL,
-    },
-    gifbox: {
-      minLength: 10,
-      type: "text" as const,
-      autocomplete: "none",
-      name: () => t`Gifbox Endpoint`,
-      placeholder: () => t`URL of the Gifbox server.`,
-      value: CONFIGURATION.DEFAULT_GIFBOX_URL,
     },
   };
 };

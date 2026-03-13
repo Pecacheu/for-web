@@ -14,9 +14,9 @@ export function InstanceContext(props: { children?: JSXElement }) {
   let mediaUrl = CONFIGURATION.DEFAULT_MEDIA_URL as string;
   let proxyUrl = CONFIGURATION.DEFAULT_PROXY_URL as string;
 
-  if (params.hostname) {
+  if (params.host) {
     // TODO: Find a way to get this other than guessing
-    apiUrl = `https://${params.hostname}/api`;
+    apiUrl = `https://${params.host}/api`;
 
     const api = new API.API({
       baseURL: apiUrl,
@@ -41,7 +41,7 @@ export function InstanceContext(props: { children?: JSXElement }) {
           CONFIGURATION.HCAPTCHA_SITEKEY,
           CONFIGURATION.MAX_EMOJI,
           CONFIGURATION.ENABLE_VIDEO,
-          params.hostname,
+          params.host,
         )
       }
     >

@@ -1,3 +1,7 @@
+import { NavigateOptions, Navigator, useNavigate } from "@solidjs/router";
+
+let Nav: Navigator, NextHost: string;
+
 export default class Instance {
   readonly isStoat: boolean;
   readonly apiUrl: string;
@@ -8,7 +12,7 @@ export default class Instance {
   readonly captchaKey: string;
   readonly maxEmoji: number;
   readonly enableVideo: boolean;
-  readonly hostname: string | undefined;
+  readonly host: string | undefined;
 
   // Not implemented, but should be fine for now
   // readonly maxReplies: number;
@@ -27,16 +31,8 @@ export default class Instance {
     captchaKey: string,
     maxEmoji: number,
     enableVideo: boolean,
-    hostname?: string,
+    host?: string,
   ) {
-    this.isStoat = [
-      // historically...
-      "https://api.revolt.chat",
-      "https://beta.revolt.chat/api",
-      "https://revolt.chat/api",
-      // ... and now:
-      "https://stoat.chat/api",
-    ].includes(apiUrl);
     this.apiUrl = apiUrl;
     this.wsUrl = wsUrl;
     this.mediaUrl = mediaUrl;
@@ -45,18 +41,34 @@ export default class Instance {
     this.captchaKey = captchaKey;
     this.maxEmoji = maxEmoji;
     this.enableVideo = enableVideo;
-    this.hostname = hostname;
+    this.host = host;
+
+    this.isStoat = [
+      // historically...
+      "https://api.revolt.chat",
+      "https://beta.revolt.chat/api",
+      "https://revolt.chat/api",
+      // ... and now:
+      "https://stoat.chat/api",
+    ].includes(apiUrl);
+
+    Nav = useNavigate();
   }
 
-  /**
-   * Prepends the given url with this instances' base path.
-   * @param url - The url to link to.
-   */
-  href(url: string) {
-    if (!this.hostname) {
-      return url;
-    }
+  /** Prepend a relative path with instance base URL */
+  href(path: string) {
+    return this.host ? `/i/${this.host}${path}` : path;
+  }
 
-    return `/instance/${this.hostname}${url}`;
+  /** Navigate to a path while taking into account the current instance */
+  navigate(to: string, opts?: Partial<NavigateOptions>) {
+    Nav(this.host ? `/i/${this.host}${to}` : to, opts);
+  }
+
+  /** Set the new host that will be switched to on next navigate() call */
+  setNext(host: string) {
+    if (host.endsWith("/api")) host = host.slice(0, -4);
+    //host = trimURL(host); //TODO Requires https://github.com/stoatchat/for-web/pull/835
+    NextHost = host;
   }
 }
