@@ -229,6 +229,10 @@ msgstr ""
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr ""
 
+#: components/auth/src/AdvancedOptions.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/Reactions.tsx
 msgid "1 person reacted"
 msgstr "1 osoba reagovala"
@@ -280,6 +284,10 @@ msgstr ""
 #: src/interface/Friends.tsx
 #: components/modal/modals/AddFriend.tsx
 msgid "Add a new friend"
+msgstr ""
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
 msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
@@ -353,6 +361,10 @@ msgstr ""
 #. placeholder {0}: err.location
 #: components/i18n/errors.ts
 msgid "An internal error occurred. ({0})"
+msgstr ""
+
+#: components/auth/src/flows/Form.tsx
+msgid "API Endpoint"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -615,6 +627,10 @@ msgstr "Skontrolujte si email!"
 msgid "Choose a username"
 msgstr ""
 
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
 msgstr ""
@@ -642,6 +658,7 @@ msgstr "Nastavenie Klienta"
 #: components/modal/modals/UserProfileRoles.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/ServerInfo.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
@@ -1426,11 +1443,15 @@ msgid "Illegal hacking or cracking"
 msgstr ""
 
 #: components/auth/src/AuthPage.tsx
-msgid "Image by @fakurian"
-msgstr ""
+#~ msgid "Image by @fakurian"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
+msgstr ""
+
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Instance Settings"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
@@ -2086,6 +2107,10 @@ msgstr ""
 msgid "Provided email or password is wrong."
 msgstr ""
 
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Proxy Settings"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
 msgstr ""
@@ -2568,6 +2593,10 @@ msgstr ""
 msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr ""
 
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
 msgstr ""
@@ -2595,6 +2624,10 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
 msgstr "Podporte projekt príspevkom - ďakujeme!"
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -2821,12 +2854,20 @@ msgstr ""
 msgid "Upload Files"
 msgstr "Nahrať súbory"
 
+#: components/auth/src/flows/Form.tsx
+msgid "URL of the API server."
+msgstr ""
+
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
+msgstr ""
+
+#: components/auth/src/AdvancedOptions.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
 msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
