@@ -111,7 +111,9 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
         </Show>
 
         <Show when={props.embed.title}>
-          <RenderAnchor href={props.embed.url}>
+          <RenderAnchor
+            href={(props.embed as WebsiteEmbed).originalUrl ?? props.embed.url}
+          >
             <Title>
               <OverflowingText>{props.embed.title}</OverflowingText>
             </Title>
