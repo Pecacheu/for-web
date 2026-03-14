@@ -290,7 +290,6 @@ export function renderSimpleMarkdown(content: string) {
         components: replyComponents(),
       },
       schema: html,
-      listDepth: 0,
     },
     hastNode,
   );
@@ -326,7 +325,6 @@ export function Markdown(props: MarkdownProps) {
           message,
         },
         schema: html,
-        listDepth: 0,
       },
       hastNode,
     );
