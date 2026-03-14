@@ -23,6 +23,7 @@ import { stringify as spaces } from "space-separated-tokens";
 import style from "style-to-object";
 
 import type { NormalComponents, SolidMarkdownProps } from "./complex-types";
+import { Message } from "stoat.js";
 
 export type Position = {
   start: { line: number | null; column: number | null; offset: number | null };
@@ -117,6 +118,7 @@ export type Options = {
   transformImageUri?: TransformImage;
   linkTarget: TransformLinkTargetType | TransformLinkTarget;
   components: Components;
+  message?: Message;
 };
 
 const own = {}.hasOwnProperty;
@@ -324,6 +326,7 @@ function toSolid(
 
   if (!basic) {
     properties.node = node;
+    properties.message = context.options.message;
   }
 
   return (
