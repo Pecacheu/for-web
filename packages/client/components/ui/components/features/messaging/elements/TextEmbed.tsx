@@ -84,8 +84,20 @@ const Description = styled("div", {
 export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
   const { openModal } = useModals();
 
+  function nameFromURL() {
+    let name;
+    try {
+      name = new URL(props.embed.url!).hostname;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+    } catch (_) {}
+    return name || "Website";
+  }
+
   return (
-    <Base style={{ "border-color": props.embed.colour }}>
+    <Base
+      class="text_embed embed"
+      style={{ "border-color": props.embed.colour }}
+    >
       <Content gap="md" grow>
         <Show
           when={
@@ -110,12 +122,14 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
           </SiteInformation>
         </Show>
 
-        <Show when={props.embed.title}>
+        <Show when={props.embed.url}>
           <RenderAnchor
             href={(props.embed as WebsiteEmbed).originalUrl ?? props.embed.url}
           >
             <Title>
-              <OverflowingText>{props.embed.title}</OverflowingText>
+              <OverflowingText>
+                {props.embed.title ?? nameFromURL()}
+              </OverflowingText>
             </Title>
           </RenderAnchor>
         </Show>

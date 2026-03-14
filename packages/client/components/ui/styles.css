@@ -24,6 +24,10 @@ body {
   bottom: env(safe-area-inset-bottom);
 }
 
+/* Consistent gap between embeds */
+.message_body .embed:not(:last-child) { margin-bottom: var(--gap-md) }
+.message_body .embed + br { display: none }
+
 /* HighlightJs */
 /*!
   Theme: GitHub Dark
