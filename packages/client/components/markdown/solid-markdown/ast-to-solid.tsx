@@ -1,5 +1,4 @@
-/* eslint-disable */
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * This file is provided under the MIT License
  * Copyright (c) 2015 Espen Hovlandsdal
@@ -11,7 +10,7 @@ import { Dynamic } from "solid-js/web";
 import { stringify as commas } from "comma-separated-tokens";
 import type {
   Comment,
-  DocType,
+  Doctype,
   Element,
   ElementContent,
   Root,
@@ -22,8 +21,9 @@ import { find, hastToReact, svg } from "property-information";
 import { stringify as spaces } from "space-separated-tokens";
 import style from "style-to-object";
 
+import { Embed } from "@revolt/ui";
+import { Message, MessageEmbed } from "stoat.js";
 import type { NormalComponents, SolidMarkdownProps } from "./complex-types";
-import { Message } from "stoat.js";
 
 export type Position = {
   start: { line: number | null; column: number | null; offset: number | null };
@@ -38,6 +38,7 @@ type Context = {
   options: Options;
   schema: Schema;
   listDepth: number;
+  embeds?: MessageEmbed[];
 };
 type TransformLink = (
   href: string,
@@ -109,6 +110,8 @@ type SpecialComponents = {
 type Components = Partial<Omit<NormalComponents, keyof SpecialComponents>> &
   Partial<SpecialComponents>;
 
+export type Container = (md: JSX.Element[]) => JSX.Element;
+
 export type Options = {
   sourcePos: boolean;
   rawSourcePos: boolean;
@@ -118,6 +121,7 @@ export type Options = {
   transformImageUri?: TransformImage;
   linkTarget: TransformLinkTargetType | TransformLinkTarget;
   components: Components;
+  container?: Container;
   message?: Message;
 };
 
@@ -131,15 +135,18 @@ export function childrenToSolid(
   context: Context,
   node: Element | Root,
 ): JSX.Element[] {
-  const children: JSX.Element[] = [];
-  let childIndex = -1;
+  const isRoot = node.type === "root";
+  let children: JSX.Element[] = [],
+    childIndex = -1;
 
-  // let child: Comment | DocType | Element | Raw | Text;
+  //Copy embeds to track use
+  const msgRoot = isRoot ? context.options.message : undefined;
+  if (msgRoot?.embeds) context.embeds = [...msgRoot.embeds];
 
   while (++childIndex < node.children.length) {
     const child = node.children[childIndex] as
       | Comment
-      | DocType
+      | Doctype
       | Element
       | Raw
       | Text;
@@ -161,6 +168,14 @@ export function childrenToSolid(
       children.push(child.value);
     }
   }
+
+  //Apply container
+  if (isRoot && context.options.container)
+    children = [context.options.container(children)];
+
+  //Append unused embeds
+  if (msgRoot?.embeds)
+    for (const em of context.embeds!) children.push(<Embed embed={em} />);
 
   return children;
 }
@@ -207,7 +222,7 @@ function toSolid(
 
   // Nodes created by plugins do not have positional info, in which case we use
   // an object that matches the position interface.
-  const position = node.position || {
+  const position = (node.position as Position) || {
     start: { line: null, column: null, offset: null },
     end: { line: null, column: null, offset: null },
   };
@@ -326,7 +341,7 @@ function toSolid(
 
   if (!basic) {
     properties.node = node;
-    properties.message = context.options.message;
+    properties.embeds = context.embeds;
   }
 
   return (
