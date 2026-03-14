@@ -7,13 +7,14 @@ import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { paramsFromPathname } from "@revolt/routing";
 import { useState } from "@revolt/state";
-import { Avatar, iconSize } from "@revolt/ui";
+import { Avatar, Embed, iconSize } from "@revolt/ui";
 import { Invite } from "@revolt/ui/components/features/messaging/elements/Invite";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
 import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
+import { Message } from "stoat.js";
 // import { determineLink } from "../../../lib/links";
 // import { modalController } from "../../../controllers/modals/ModalController";
 
@@ -45,23 +46,24 @@ const internalLink = cva({
 });
 
 export function RenderAnchor(
-  props: { disabled?: boolean } & JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
+  props: {
+    disabled?: boolean;
+    message?: Message;
+    node?: Element;
+  } & JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
 ) {
   /* eslint-disable solid/reactivity */
   /* eslint-disable solid/components-return-once */
 
-  const [localProps, remoteProps] = splitProps(props, [
-    "href",
-    "target",
-    "disabled",
-  ]);
+  const text = Array.isArray(props.children) && props.children[0]?.toString(),
+    plainLink = text === props.href && !props.disabled;
 
-  // Handle case where there is no link
-  if (!localProps.href) return <span>{remoteProps.children}</span>;
+  // Handle empty link
+  if (!props.href || (props.node && !text)) return <>{props.children}</>;
 
   // Handle links that navigate internally
   try {
-    let url = new URL(localProps.href);
+    let url = new URL(props.href);
 
     // Remap discover links to native links
     if (url.origin === "https://rvlt.gg" || url.origin === "https://stt.gg") {
@@ -112,7 +114,7 @@ export function RenderAnchor(
             <Match when={channel()}>
               <LinkComponent
                 class={internalLink()}
-                disabled={localProps.disabled}
+                disabled={props.disabled}
                 href={internalUrl()}
               >
                 <Symbol>tag</Symbol>
@@ -144,7 +146,7 @@ export function RenderAnchor(
             <Match when={server()}>
               <LinkComponent
                 class={internalLink()}
-                disabled={localProps.disabled}
+                disabled={props.disabled}
                 href={internalUrl()}
               >
                 <Avatar size={16} src={server()?.iconURL} /> {server()?.name}
@@ -152,13 +154,7 @@ export function RenderAnchor(
             </Match>
           </Switch>
         );
-      } else if (
-        params.inviteId &&
-        // only display invites if it is just the plain link:
-        Array.isArray(remoteProps.children) &&
-        remoteProps.children[0] === localProps.href &&
-        !localProps.disabled
-      ) {
+      } else if (params.inviteId && plainLink) {
         return <Invite code={params.inviteId} />;
       } else {
         const internalUrl = () =>
@@ -166,9 +162,9 @@ export function RenderAnchor(
 
         return (
           <LinkComponent
-            {...remoteProps}
+            children={props.node ? text : props.children}
             class={link()}
-            disabled={localProps.disabled}
+            disabled={props.disabled}
             href={internalUrl()}
           />
         );
@@ -189,9 +185,18 @@ export function RenderAnchor(
         openModal({
           type: "link_warning",
           url,
-          display: event.currentTarget!.innerText,
+          display: text || url.href,
         });
       }
+    }
+
+    //Inline link embed
+    if (plainLink && props.message?.embeds) {
+      const href = url.origin + url.pathname + url.search;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const em of props.message.embeds as any[])
+        if (em.originalUrl === href || em.url === href)
+          return <Embed embed={em} />;
     }
 
     return (
@@ -199,19 +204,19 @@ export function RenderAnchor(
         when={state.linkSafety.isTrusted(url)}
         fallback={
           <LinkComponent
-            {...remoteProps}
+            children={props.node ? text : props.children}
             class={link()}
-            disabled={localProps.disabled}
+            disabled={props.disabled}
             onClick={onHandleWarning}
             onAuxClick={onHandleWarning}
           />
         }
       >
         <LinkComponent
-          {...remoteProps}
+          children={props.node ? text : props.children}
           class={link()}
-          disabled={localProps.disabled}
-          href={localProps.href}
+          disabled={props.disabled}
+          href={props.href}
           target={"_blank"}
           rel="noreferrer"
         />
@@ -221,7 +226,7 @@ export function RenderAnchor(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_) {
     // invalid URL
-    return <span>{props.children}</span>;
+    return <>{props.children}</>;
   }
 }
 
