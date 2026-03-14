@@ -44,7 +44,7 @@ export function LinkWarningModal(
         {
           text: <Trans>Continue</Trans>,
           onClick: () => {
-            open(props.url, "_blank"); //, "noopener");
+            open(props.url, "_blank", "noopener");
 
             if (value() && scrutiny() === 0) {
               state.linkSafety.trust(props.url);
