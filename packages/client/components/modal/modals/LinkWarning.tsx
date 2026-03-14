@@ -9,25 +9,48 @@ import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 import { Modals } from "../types";
 
 const URL_TRIM = /\/+$/;
-export const trimURL = (u: string) => u.replace(URL_TRIM, "");
 
-/**
- * Modal to warn the user about a potentially unsafe link
- */
+/** Trim trailing slash from URL
+@param noHash Remove #hash before trimming
+*/
+export function trimURL(url: string | URL, noHash?: boolean) {
+  if (!(url instanceof URL)) {
+    try {
+      url = new URL(url);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      return url as string;
+    }
+  }
+
+  let base = url.protocol + "//";
+  if (url.username || url.password)
+    base += `${url.username}${url.password ? ":" + url.password : ""}@`;
+
+  return (
+    base +
+    url.host +
+    url.pathname.replace(URL_TRIM, "") +
+    url.search +
+    (noHash ? "" : url.hash)
+  );
+}
+
+/** Modal to warn the user about a potentially unsafe link */
 export function LinkWarningModal(
   props: DialogProps & Modals & { type: "link_warning" },
 ) {
   const state = useState();
   const [value, setValue] = createSignal(false);
-  const urlStr = (u: URL) => trimURL(u.href),
-    displayStr = () => trimURL(props.display);
+
+  // eslint-disable-next-line solid/reactivity, prettier/prettier
+  const urlStr = trimURL(props.url), dispStr = trimURL(props.display);
 
   const scrutiny = createMemo(() => {
-    const dispStr = displayStr();
-    if (dispStr === urlStr(props.url)) return 0;
+    if (dispStr === urlStr) return 0;
 
     try {
-      return dispStr === urlStr(new URL(dispStr)) ? 1 : 2;
+      return dispStr === trimURL(new URL(dispStr)) ? 1 : 2;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
       // URL parsing failed; the link is likely not intentionally misleading.
@@ -45,11 +68,8 @@ export function LinkWarningModal(
         {
           text: <Trans>Continue</Trans>,
           onClick: () => {
-            open(props.url, "_blank", "noopener");
-
-            if (value() && scrutiny() === 0) {
-              state.linkSafety.trust(props.url);
-            }
+            open(urlStr, "_blank", "noopener");
+            if (value() && scrutiny() === 0) state.linkSafety.trust(props.url);
           },
           isDisabled: scrutiny() === 2 && !value(),
         },
@@ -58,7 +78,7 @@ export function LinkWarningModal(
       <Column>
         <span>
           <Trans>Are you sure you want to go to </Trans>
-          <Link>{urlStr(props.url)}</Link>?
+          <Link>{urlStr}</Link>?
         </span>
         <Switch
           fallback={
@@ -71,7 +91,7 @@ export function LinkWarningModal(
           }
         >
           <Match when={scrutiny() === 1}>
-            <Trans>You clicked on "{displayStr()}"</Trans>
+            <Trans>You clicked on "{dispStr}"</Trans>
           </Match>
           <Match when={scrutiny() === 2}>
             <Scrutinise>
@@ -82,7 +102,7 @@ export function LinkWarningModal(
                   This is not the same as the link that was displayed:
                 </Trans>
               </Text>
-              <Link>{displayStr()}</Link>
+              <Link>{dispStr}</Link>
               <Checkbox checked={value()} onChange={() => setValue((v) => !v)}>
                 <Trans>I understand the consequences</Trans>
               </Checkbox>
