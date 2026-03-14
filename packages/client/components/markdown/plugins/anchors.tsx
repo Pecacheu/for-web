@@ -99,7 +99,6 @@ export function RenderAnchor(
 
       if (params.exactChannel) {
         const channel = () => client().channels.get(params.channelId!);
-
         const internalUrl = () =>
           new URL(
             (channel()!.serverId
@@ -171,11 +170,11 @@ export function RenderAnchor(
 
     //Inline link embed
     if (plainLink && props.embeds) {
-      const href = trimURL(url.origin + url.pathname) + url.search;
+      const href = trimURL(url, true);
       for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         em = props.embeds[i] as any;
-        if (em.originalUrl === href || em.url === href) {
+        if (trimURL(em.originalUrl || em.url, true) === href) {
           props.embeds.splice(i, 1);
           return <Embed embed={em} />;
         }
@@ -201,9 +200,9 @@ export function RenderAnchor(
       }
     }
 
-    if (internal) {
-      props.href = new URL(url.pathname, location.origin).toString();
-    }
+    //Override internal URL
+    if (internal)
+      url = new URL(url.pathname + url.search + url.hash, location.origin);
 
     return (
       <Show
@@ -222,7 +221,7 @@ export function RenderAnchor(
           children={props.node ? text : props.children}
           class={link()}
           disabled={props.disabled}
-          href={props.href}
+          href={trimURL(url)}
           target={"_blank"}
           rel="noreferrer"
         />
