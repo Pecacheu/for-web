@@ -49,7 +49,11 @@ export function Embed(props: { embed: MessageEmbed }) {
   return (
     <Switch fallback={`Could not render ${props.embed.type}!`}>
       <Match when={image()}>
-        <SizedContent width={image()!.width} height={image()!.height}>
+        <SizedContent
+          class={"img_embed embed"}
+          width={image()!.width}
+          height={image()!.height}
+        >
           <img
             // bypass proxy for known GIF providers
             src={isGIF() ? image()!.url : image()!.proxiedURL}
@@ -65,7 +69,11 @@ export function Embed(props: { embed: MessageEmbed }) {
         </SizedContent>
       </Match>
       <Match when={video()}>
-        <SizedContent width={video()!.width} height={video()!.height}>
+        <SizedContent
+          class={"video_embed embed"}
+          width={video()!.width}
+          height={video()!.height}
+        >
           <video
             loop={isGIF()}
             muted={isGIF()}

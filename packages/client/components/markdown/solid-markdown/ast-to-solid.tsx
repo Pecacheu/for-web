@@ -37,8 +37,8 @@ type Raw = {
 type Context = {
   options: Options;
   schema: Schema;
-  listDepth: number;
-  embeds?: MessageEmbed[];
+  _listDepth?: number;
+  _embeds?: MessageEmbed[];
 };
 type TransformLink = (
   href: string,
@@ -139,9 +139,11 @@ export function childrenToSolid(
   let children: JSX.Element[] = [],
     childIndex = -1;
 
+  if (isRoot) context._listDepth = 0;
+
   //Copy embeds to track use
   const msgRoot = isRoot ? context.options.message : undefined;
-  if (msgRoot?.embeds) context.embeds = [...msgRoot.embeds];
+  if (msgRoot?.embeds) context._embeds = [...msgRoot.embeds];
 
   while (++childIndex < node.children.length) {
     const child = node.children[childIndex] as
@@ -175,7 +177,7 @@ export function childrenToSolid(
 
   //Append unused embeds
   if (msgRoot?.embeds)
-    for (const em of context.embeds!) children.push(<Embed embed={em} />);
+    for (const em of context._embeds!) children.push(<Embed embed={em} />);
 
   return children;
 }
@@ -207,15 +209,11 @@ function toSolid(
     }
   }
 
-  if (name === "ol" || name === "ul") {
-    context.listDepth++;
-  }
+  if (name === "ol" || name === "ul") context._listDepth!++;
 
   const children = childrenToSolid(context, node);
 
-  if (name === "ol" || name === "ul") {
-    context.listDepth--;
-  }
+  if (name === "ol" || name === "ul") context._listDepth!--;
 
   // Restore parent schema.
   context.schema = parentSchema;
@@ -304,7 +302,7 @@ function toSolid(
 
   if (!basic && (name === "ol" || name === "ul")) {
     properties.ordered = name === "ol";
-    properties.depth = context.listDepth;
+    properties.depth = context._listDepth;
   }
 
   if (name === "td" || name === "th") {
@@ -341,7 +339,7 @@ function toSolid(
 
   if (!basic) {
     properties.node = node;
-    properties.embeds = context.embeds;
+    properties.embeds = context._embeds;
   }
 
   return (
