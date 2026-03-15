@@ -368,8 +368,8 @@ msgid "An internal error occurred. ({0})"
 msgstr "An internal error occurred. ({0})"
 
 #: components/auth/src/flows/Form.tsx
-msgid "API Endpoint"
-msgstr "API Endpoint"
+#~ msgid "API Endpoint"
+#~ msgstr "API Endpoint"
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/Sync.tsx
@@ -978,6 +978,10 @@ msgstr "Default"
 msgid "Default Permissions"
 msgstr "Default Permissions"
 
+#: components/auth/src/flows/Form.tsx
+msgid "Defaults to stoat.chat"
+msgstr "Defaults to stoat.chat"
+
 #: components/modal/modals/EmojiPreview.tsx
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
@@ -1472,6 +1476,10 @@ msgstr "Illegal hacking or cracking"
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
 msgstr "Impersonation"
+
+#: components/auth/src/flows/Form.tsx
+msgid "Instance"
+msgstr "Instance"
 
 #: components/auth/src/AdvancedOptions.tsx
 msgid "Instance Settings"
@@ -2887,8 +2895,8 @@ msgid "Upload Files"
 msgstr "Upload Files"
 
 #: components/auth/src/flows/Form.tsx
-msgid "URL of the API server."
-msgstr "URL of the API server."
+#~ msgid "URL of the API server."
+#~ msgstr "URL of the API server."
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
