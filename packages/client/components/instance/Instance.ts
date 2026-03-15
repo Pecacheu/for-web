@@ -1,18 +1,21 @@
-import { NavigateOptions, Navigator, useNavigate } from "@solidjs/router";
+import { Navigator } from "@solidjs/router";
 
-let Nav: Navigator, NextHost: string;
+const R_RelPath = /^\/i\/[^/]+/;
 
 export default class Instance {
+  readonly host?: string;
+  readonly basePath: string;
   readonly isStoat: boolean;
+
   readonly apiUrl: string;
   readonly wsUrl: string;
   readonly mediaUrl: string;
   readonly proxyUrl: string;
   readonly gifboxUrl: string;
+
   readonly captchaKey: string;
   readonly maxEmoji: number;
   readonly enableVideo: boolean;
-  readonly host: string | undefined;
 
   // Not implemented, but should be fine for now
   // readonly maxReplies: number;
@@ -41,8 +44,9 @@ export default class Instance {
     this.captchaKey = captchaKey;
     this.maxEmoji = maxEmoji;
     this.enableVideo = enableVideo;
-    this.host = host;
 
+    this.host = host;
+    this.basePath = host ? `/i/${host}` : "";
     this.isStoat = [
       // historically...
       "https://api.revolt.chat",
@@ -51,24 +55,19 @@ export default class Instance {
       // ... and now:
       "https://stoat.chat/api",
     ].includes(apiUrl);
-
-    Nav = useNavigate();
   }
 
-  /** Prepend a relative path with instance base URL */
-  href(path: string) {
-    return this.host ? `/i/${this.host}${path}` : path;
-  }
+  /** Prepend a relative path with instance base URL
+   * @param base Defaults to the base path of this instance
+   */
+  href = (path: string, base?: string) =>
+    (base ? `/i/${base}` : this.basePath) + path;
 
-  /** Navigate to a path while taking into account the current instance */
-  navigate(to: string, opts?: Partial<NavigateOptions>) {
-    Nav(this.host ? `/i/${this.host}${to}` : to, opts);
-  }
+  /** Convert an instance-specific path back to relative form */
+  static relPath = (path: string) => path.replace(R_RelPath, "");
 
-  /** Set the new host that will be switched to on next navigate() call */
-  setNext(host: string) {
-    if (host.endsWith("/api")) host = host.slice(0, -4);
-    //host = trimURL(host); //TODO Requires https://github.com/stoatchat/for-web/pull/835
-    NextHost = host;
+  /** Switch to a new instance and redirect the client */
+  switchTo(url: URL, nav: Navigator) {
+    nav(this.href(Instance.relPath(location.pathname), url.host));
   }
 }
