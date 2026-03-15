@@ -3,7 +3,6 @@ import { For, JSX, Show, createSignal } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 
-import { CONFIGURATION } from "@revolt/common";
 import { useError } from "@revolt/i18n";
 import { Checkbox2, Column, Text, TextField } from "@revolt/ui";
 
@@ -17,6 +16,7 @@ export type Field =
   | "log-out"
   | "username"
   | "invite"
+  | "host"
   | "api";
 
 /**
@@ -62,13 +62,15 @@ export const useFieldConfig = () => {
       name: () => t`Invite Code`,
       placeholder: () => t`Enter your invite code.`,
     },
-    api: {
-      minLength: 10,
+    host: {
+      required: false,
       type: "text" as const,
       autocomplete: "none",
-      name: () => t`API Endpoint`,
-      placeholder: () => t`URL of the API server.`,
-      value: CONFIGURATION.DEFAULT_API_URL,
+      name: () => t`Instance`,
+      placeholder: () => t`Defaults to stoat.chat`,
+    },
+    api: {
+      minLength: 10,
     },
   };
 };
@@ -97,22 +99,22 @@ export function Fields(props: FieldProps) {
     <For each={props.fields}>
       {(field) => {
         // If field is just a Field value, convert it to a FieldPreset
-        if (typeof field === "string") {
-          field = { field: field };
-        }
+        if (typeof field === "string") field = { field };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const conf = fieldConfig[field.field] as any;
+        if (!("required" in conf)) conf.required = true;
+
         return (
           <label>
             {field.field === "log-out" ? (
-              <Checkbox2 name={field.field}>
-                {fieldConfig[field.field].name()}
-              </Checkbox2>
+              <Checkbox2 name={field.field}>{conf.name()}</Checkbox2>
             ) : (
               <TextField
-                required
-                {...fieldConfig[field.field]}
+                {...conf}
                 name={field.field}
-                label={fieldConfig[field.field].name()}
-                placeholder={fieldConfig[field.field].placeholder()}
+                label={conf.name()}
+                placeholder={conf.placeholder()}
                 disabled={field.disabled}
                 value={field.value}
               />
