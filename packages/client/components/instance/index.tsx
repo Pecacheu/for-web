@@ -1,6 +1,19 @@
 import { CONFIGURATION } from "@revolt/common";
-import { useParams } from "@solidjs/router";
-import { createContext, JSXElement, useContext } from "solid-js";
+import { CircularProgress } from "@revolt/ui";
+import {
+  createAsync,
+  useBeforeLeave,
+  useNavigate,
+  useParams,
+} from "@solidjs/router";
+import {
+  createContext,
+  createSignal,
+  JSXElement,
+  Show,
+  useContext,
+} from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { API } from "stoat.js";
 import Instance from "./Instance";
 
@@ -8,30 +21,35 @@ const instanceContext = createContext<Instance>();
 
 export function InstanceContext(props: { children?: JSXElement }) {
   const params = useParams();
+  const [inst, setInst] = createSignal<Instance>();
 
-  let apiUrl = CONFIGURATION.DEFAULT_API_URL as string;
-  let wsUrl = CONFIGURATION.DEFAULT_WS_URL as string;
-  let mediaUrl = CONFIGURATION.DEFAULT_MEDIA_URL as string;
-  let proxyUrl = CONFIGURATION.DEFAULT_PROXY_URL as string;
+  createAsync(async () => {
+    setInst(undefined);
+    let apiUrl = CONFIGURATION.DEFAULT_API_URL as string,
+      wsUrl = CONFIGURATION.DEFAULT_WS_URL as string,
+      mediaUrl = CONFIGURATION.DEFAULT_MEDIA_URL as string,
+      proxyUrl = CONFIGURATION.DEFAULT_PROXY_URL as string;
 
-  if (params.host) {
-    // TODO: Find a way to get this other than guessing
-    apiUrl = `https://${params.host}/api`;
+    try {
+      if (params.host) {
+        // TODO: Find a way to get this other than guessing
+        apiUrl = `https://${params.host}/api`;
 
-    const api = new API.API({
-      baseURL: apiUrl,
-    });
+        //TODO Link safety warning modal (might need a new
+        // variant of it) if it's an instance they've
+        // never connected to before?
 
-    api.get("/").then((config) => {
-      wsUrl = config.ws;
-      mediaUrl = config.features.autumn.url;
-      proxyUrl = config.features.january.url;
-    });
-  }
+        const api = new API.API({
+          baseURL: apiUrl,
+        });
 
-  return (
-    <instanceContext.Provider
-      value={
+        const cfg = await api.get("/");
+        wsUrl = cfg.ws;
+        mediaUrl = cfg.features.autumn.url;
+        proxyUrl = cfg.features.january.url;
+      }
+
+      setInst(
         new Instance(
           apiUrl,
           wsUrl,
@@ -42,20 +60,47 @@ export function InstanceContext(props: { children?: JSXElement }) {
           CONFIGURATION.MAX_EMOJI,
           CONFIGURATION.ENABLE_VIDEO,
           params.host,
-        )
-      }
-    >
-      {props.children}
-    </instanceContext.Provider>
+        ),
+      );
+    } catch (e) {
+      console.error(e);
+      alert("Something went wrong while connecting to the backend:\n" + e);
+      history.back();
+    }
+  });
+
+  return (
+    <Show when={inst()} fallback={<CircularProgress />}>
+      <Dynamic component={instanceContext.Provider} value={inst()}>
+        <Redirect />
+        {props.children}
+      </Dynamic>
+    </Show>
   );
+}
+
+function Redirect() {
+  const inst = useInstance(),
+    nav = useNavigate();
+
+  useBeforeLeave((e) => {
+    console.log("LEAVE", e.from.pathname, "->", e.to);
+
+    //Redirect relative path to instance path
+    if (inst.host && typeof e.to === "string" && !e.to.startsWith("/i/")) {
+      e.preventDefault();
+      nav(inst.href(e.to));
+    }
+  });
+
+  return <></>;
 }
 
 export function useInstance() {
   const instance = useContext(instanceContext);
 
-  if (!instance) {
+  if (!instance)
     throw new Error("useInstance must be called inside InstanceProvider");
-  }
 
   return instance;
 }

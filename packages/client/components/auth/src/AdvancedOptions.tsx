@@ -2,10 +2,11 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { Column, iconSize, typography } from "@revolt/ui";
 import { createSignal, onMount, Ref, Show } from "solid-js";
 import { styled } from "styled-system/jsx";
-import { Field, Fields, useFieldConfig } from "./flows/Form";
+import { Fields } from "./flows/Form";
 
 import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
 import { useInstance } from "@revolt/instance";
+import { useNavigate } from "@revolt/routing";
 
 const Base = styled("div", {
   base: {
@@ -57,29 +58,25 @@ export type AdvOpts = { setOpts: (data: FormData) => void };
 export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
   const [isOpen, setOpen] = createSignal(false);
   const instance = useInstance(),
-    fieldConfig = useFieldConfig();
-
-  function applyUrl(type: Field, data: FormData) {
-    try {
-      //Check URL
-      const val = (data.get(type) as string).replace(/\/+$/, "");
-      new URL(val);
-      //Check HTTPS
-      if (!val.startsWith("https://")) {
-        //Check HTTP
-        if (val.startsWith("http://")) {
-          if (location.protocol === "https:") throw 2;
-        } else throw 1;
-      }
-      return val;
-    } catch (e) {
-      if (e === 2) throw "Unencrypted endpoint not allowed on HTTPS client.";
-      throw `Invalid URL for ${fieldConfig[type].name()}.`;
-    }
-  }
+    navigate = useNavigate();
 
   function setOpts(data: FormData) {
-    instance.setNext(applyUrl("api", data));
+    const host = data.get("host") as string,
+      oldApi = new URL(instance.apiUrl);
+    let api = oldApi;
+
+    if (host) {
+      if (host.length > 32) throw "Invalid Instance URL";
+      try {
+        api = new URL(host);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_) {
+        api = new URL(`https://${host}`);
+      }
+    }
+
+    //Switch instance
+    if (api.host !== oldApi.host) instance.switchTo(api, navigate);
   }
 
   onMount(() => (props.ref as (ref: AdvOpts) => void)({ setOpts }));
@@ -111,7 +108,7 @@ export function AdvancedOptions(props: { ref: Ref<AdvOpts> }) {
               </Trans>
             </i>
           </p>
-          <Fields fields={["api"]} />
+          <Fields fields={[{ field: "host", value: instance.host }]} />
         </Column>
         <h1>
           <Trans>Proxy Settings</Trans>
