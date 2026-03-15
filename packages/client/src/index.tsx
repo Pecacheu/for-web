@@ -24,7 +24,6 @@ import FlowReset from "@revolt/auth/src/flows/FlowReset";
 import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
 import { ClientContext, useClient } from "@revolt/client";
 import { I18nProvider } from "@revolt/i18n";
-import { InstanceContext } from "@revolt/instance";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
@@ -34,6 +33,7 @@ import { FloatingManager, LoadTheme } from "@revolt/ui";
 /* @refresh reload */
 import "@revolt/ui/styles";
 
+import { InstanceContext } from "@revolt/instance";
 import AuthPage from "./Auth";
 import Interface from "./Interface";
 import "./index.css";
@@ -176,19 +176,17 @@ const routes = (
   </>
 );
 
-// TODO: update urls to instance-specific ones as needed
 render(
   () => (
     <>
       <Router>
-        <Route path="/" component={InstanceContext}>
-          {routes}
-        </Route>
         <Route path="/i/:host" component={InstanceContext}>
           {routes}
         </Route>
+        <Route path="/" component={InstanceContext}>
+          {routes}
+        </Route>
       </Router>
-
       {/* <ReportBug /> */}
     </>
   ),
