@@ -16,8 +16,7 @@ export type Field =
   | "log-out"
   | "username"
   | "invite"
-  | "host"
-  | "api";
+  | "host";
 
 /**
  * Properties to apply to fields
@@ -68,9 +67,6 @@ export const useFieldConfig = () => {
       autocomplete: "none",
       name: () => t`Instance`,
       placeholder: () => t`Defaults to stoat.chat`,
-    },
-    api: {
-      minLength: 10,
     },
   };
 };
