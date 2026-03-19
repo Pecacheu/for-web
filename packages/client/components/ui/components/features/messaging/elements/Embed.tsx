@@ -17,7 +17,7 @@ import { TextEmbed } from "./TextEmbed";
 /**
  * Render a given embed
  */
-export function Embed(props: { embed: MessageEmbed }) {
+export function Embed(props: { embed: MessageEmbed; link?: URL }) {
   const { openModal } = useModals();
 
   /**
@@ -96,7 +96,10 @@ export function Embed(props: { embed: MessageEmbed }) {
       <Match
         when={props.embed.type === "Website" || props.embed.type === "Text"}
       >
-        <TextEmbed embed={props.embed as WebsiteEmbed | TextEmbedClass} />
+        <TextEmbed
+          embed={props.embed as WebsiteEmbed | TextEmbedClass}
+          link={props.link}
+        />
       </Match>
       <Match when={props.embed.type === "None"}> </Match>
     </Switch>

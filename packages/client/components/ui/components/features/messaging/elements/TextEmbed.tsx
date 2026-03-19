@@ -81,7 +81,10 @@ const Description = styled("div", {
 /**
  * Text Embed
  */
-export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
+export function TextEmbed(props: {
+  embed: TextEmbedClass | WebsiteEmbed;
+  link?: URL;
+}) {
   const { openModal } = useModals();
 
   function nameFromURL() {
@@ -124,7 +127,11 @@ export function TextEmbed(props: { embed: TextEmbedClass | WebsiteEmbed }) {
 
         <Show when={props.embed.url}>
           <RenderAnchor
-            href={(props.embed as WebsiteEmbed).originalUrl ?? props.embed.url}
+            href={
+              props.link?.toString() ||
+              (props.embed as WebsiteEmbed).originalUrl ||
+              props.embed.url
+            }
           >
             <Title>
               <OverflowingText>

@@ -176,7 +176,7 @@ export function RenderAnchor(
         em = props.embeds[i] as any;
         if (trimURL(em.originalUrl || em.url, true) === href) {
           props.embeds.splice(i, 1);
-          return <Embed embed={em} />;
+          return <Embed embed={em} link={url} />;
         }
       }
     }
