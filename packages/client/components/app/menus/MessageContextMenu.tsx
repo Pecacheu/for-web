@@ -4,6 +4,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { File, Message } from "stoat.js";
 
 import { useClient, useUser } from "@revolt/client";
+import { useInstance } from "@revolt/instance";
 import { CustomEmoji, UnicodeEmoji } from "@revolt/markdown/emoji";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
@@ -38,6 +39,7 @@ import {
 export function MessageContextMenu(props: { message?: Message; file?: File }) {
   const user = useUser();
   const state = useState();
+  const instance = useInstance();
   const client = useClient();
   const { openModal, showError } = useModals();
 
@@ -102,9 +104,11 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function copyLink() {
     navigator.clipboard.writeText(
-      `${location.origin}${
-        props.message!.server ? `/server/${props.message!.server?.id}` : ""
-      }/channel/${props.message!.channelId}/${props.message!.id}`,
+      instance.href(
+        `${
+          props.message!.server ? `/server/${props.message!.server?.id}` : ""
+        }/channel/${props.message!.channelId}/${props.message!.id}`,
+      ),
     );
   }
 
