@@ -89,7 +89,7 @@ function Redirect() {
     //Redirect relative path to instance path
     if (inst.host && typeof e.to === "string" && !e.to.startsWith("/i/")) {
       e.preventDefault();
-      nav(inst.href(e.to));
+      nav(inst.href(e.to, true));
     }
   });
 
