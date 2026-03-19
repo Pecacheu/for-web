@@ -1,6 +1,8 @@
+import { CONFIGURATION } from "@revolt/common";
 import { Navigator } from "@solidjs/router";
 
-const R_RelPath = /^\/i\/[^/]+/;
+const BaseURL = new URL(CONFIGURATION.DEFAULT_API_URL).origin,
+  R_RelPath = /^\/i\/[^/]+/;
 
 export default class Instance {
   readonly host?: string;
@@ -58,16 +60,17 @@ export default class Instance {
   }
 
   /** Prepend a relative path with instance base URL
+   * @param pathOnly Get only the path component and not URL
    * @param base Defaults to the base path of this instance
    */
-  href = (path: string, base?: string) =>
-    (base ? `/i/${base}` : this.basePath) + path;
+  href = (path: string, pathOnly?: boolean, base?: string) =>
+    (pathOnly ? "" : BaseURL) + (base ? `/i/${base}` : this.basePath) + path;
 
   /** Convert an instance-specific path back to relative form */
   static relPath = (path: string) => path.replace(R_RelPath, "");
 
   /** Switch to a new instance and redirect the client */
   switchTo(url: URL, nav: Navigator) {
-    nav(this.href(Instance.relPath(location.pathname), url.host));
+    nav(this.href(Instance.relPath(location.pathname), true, url.host));
   }
 }
