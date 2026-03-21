@@ -43,8 +43,10 @@ export function LinkWarningModal(
   const state = useState();
   const [value, setValue] = createSignal(false);
 
-  // eslint-disable-next-line solid/reactivity, prettier/prettier
-  const urlStr = trimURL(props.url), dispStr = trimURL(props.display);
+  // eslint-disable-next-line solid/reactivity
+  const urlStr = trimURL(props.url),
+    // eslint-disable-next-line solid/reactivity
+    dispStr = trimURL(props.display);
 
   const scrutiny = createMemo(() => {
     if (dispStr === urlStr) return 0;
