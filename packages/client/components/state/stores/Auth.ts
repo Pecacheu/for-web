@@ -1,10 +1,10 @@
-import { CONFIGURATION } from "@revolt/common";
-
-import { State } from "..";
-
 import { t } from "@lingui/core/macro";
+
+import { CONFIGURATION } from "@revolt/common";
 import { User } from "stoat.js";
+
 import { AbstractStore } from ".";
+import { State } from "..";
 
 export type Session = {
   _id: string;
