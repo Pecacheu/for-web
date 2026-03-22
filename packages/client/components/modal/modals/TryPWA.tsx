@@ -37,12 +37,8 @@ export function TryPWAModal(props: DialogProps & Modals & { type: "try_pwa" }) {
     >
       <Trans>
         You can <b>install</b> this Web App on your devive for conveient access
-        from the Home Screen, just like a real app. It even hides the huge menu
-        bar!
-        <br />
-        <br />
-        To install, tap the button below or open your browser's menu and choose
-        <b> Add to Home Screen</b>.
+        from the Home Screen. Tap the button below or open your browser's menu
+        and choose <b>Add to Home Screen</b>.
       </Trans>
     </Dialog>
   );
