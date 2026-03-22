@@ -1,12 +1,15 @@
-import { Trans } from "@lingui-solid/solid/macro";
-import { Column, iconSize, typography } from "@revolt/ui";
 import { createSignal, onMount, Ref, Show } from "solid-js";
-import { styled } from "styled-system/jsx";
-import { Fields } from "./flows/Form";
 
-import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
+import { Trans } from "@lingui-solid/solid/macro";
+import { styled } from "styled-system/jsx";
+
 import { useInstance } from "@revolt/instance";
 import { useNavigate } from "@revolt/routing";
+import { Column, iconSize, typography } from "@revolt/ui";
+
+import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
+
+import { Fields } from "./flows/Form";
 
 const Base = styled("div", {
   base: {

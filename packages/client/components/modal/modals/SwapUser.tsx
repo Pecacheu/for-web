@@ -1,10 +1,11 @@
-import { Trans } from "@lingui-solid/solid/macro";
+import { For, Show } from "solid-js";
 
-import { Avatar, Dialog, DialogProps, MenuButton } from "@revolt/ui";
+import { Trans } from "@lingui-solid/solid/macro";
 
 import { useClientLifecycle } from "@revolt/client";
 import { useState } from "@revolt/state";
-import { For, Show } from "solid-js";
+import { Avatar, Dialog, DialogProps, MenuButton } from "@revolt/ui";
+
 import { Modals } from "../types";
 
 export function SwapUserModal(
