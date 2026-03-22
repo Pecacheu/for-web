@@ -6,6 +6,7 @@ import { useClientLifecycle } from "@revolt/client";
 import { State, TransitionType } from "@revolt/client/Controller";
 import { useModals } from "@revolt/modal";
 import { Navigate } from "@revolt/routing";
+import { useState } from "@revolt/state";
 import {
   Button,
   CircularProgress,
@@ -17,7 +18,6 @@ import {
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { useState } from "@revolt/state";
 import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";

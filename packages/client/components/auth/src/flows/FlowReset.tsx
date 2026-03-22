@@ -1,10 +1,10 @@
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useApi } from "@revolt/client";
+import { useInstance } from "@revolt/instance";
 import { useNavigate } from "@revolt/routing";
 import { Button } from "@revolt/ui";
 
-import { useInstance } from "@revolt/instance";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";

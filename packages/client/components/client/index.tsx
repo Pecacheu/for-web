@@ -8,17 +8,13 @@ import {
   useContext,
 } from "solid-js";
 
+import { useInstance } from "@revolt/instance";
+import { useModals } from "@revolt/modal";
+import { CHANGELOG_MODAL_CONST } from "@revolt/modal/modals/Changelog";
+import { State } from "@revolt/state";
 import type { Client, User } from "stoat.js";
 
-import { useModals } from "@revolt/modal";
-import { State } from "@revolt/state";
-
-import { State as LifecycleState } from "./Controller";
-
-import { useInstance } from "@revolt/instance";
-import { CHANGELOG_MODAL_CONST } from "@revolt/modal/modals/Changelog";
-import ClientController from "./Controller";
-
+import ClientController, { State as LifecycleState } from "./Controller";
 export type { default as ClientController } from "./Controller";
 
 const clientContext = createContext(null! as ClientController);

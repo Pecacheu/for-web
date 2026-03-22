@@ -6,13 +6,13 @@ import { styled } from "styled-system/jsx";
 
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClientLifecycle } from "@revolt/client";
+import { State } from "@revolt/client/Controller";
 import { useState } from "@revolt/state";
 import { IconButton, iconSize } from "@revolt/ui";
 
 import MdDarkMode from "@material-design-icons/svg/filled/dark_mode.svg?component-solid";
 import MdArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg?component-solid";
 
-import { State } from "@revolt/client/Controller";
 import background from "./background.jpg";
 import { FlowBase } from "./flows/Flow";
 import bluesky from "./flows/bluesky.svg";
