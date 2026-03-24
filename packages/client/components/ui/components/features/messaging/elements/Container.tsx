@@ -199,7 +199,7 @@ const Info = styled("div", {
     display: "flex",
     flexShrink: 0,
     justifyContent: "end",
-    padding: "2px var(--gap-sm)",
+    padding: "2px 5px",
   },
   variants: {
     tail: {
