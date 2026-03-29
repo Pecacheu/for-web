@@ -1,11 +1,7 @@
-import { CONFIGURATION } from "@revolt/common";
 import { Navigator } from "@solidjs/router";
+import { DefaultHost, DefaultOrigin } from ".";
 
-export const DefaultURL = new URL(CONFIGURATION.DEFAULT_API_URL);
-export const DefaultHost = DefaultURL.host;
-
-const DefOrigin = DefaultURL.origin,
-  R_RelPath = /^\/i\/[^/]+/;
+const R_RelPath = /^\/i\/[^/]+/;
 
 export default class Instance {
   readonly host?: string;
@@ -70,7 +66,9 @@ export default class Instance {
    * @param base Defaults to the base path of this instance
    */
   href = (path: string, pathOnly?: boolean, base?: string) =>
-    (pathOnly ? "" : DefOrigin) + (base ? `/i/${base}` : this.basePath) + path;
+    (pathOnly ? "" : DefaultOrigin) +
+    (base ? `/i/${base}` : this.basePath) +
+    path;
 
   /** Convert an instance-specific path back to relative form */
   static relPath = (path: string) => path.replace(R_RelPath, "");

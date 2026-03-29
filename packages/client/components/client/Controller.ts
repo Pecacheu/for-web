@@ -4,10 +4,11 @@ import { detect } from "detect-browser";
 import { API, Client, ConnectionState } from "stoat.js";
 import { ProtocolV1 } from "stoat.js/lib/events/v1";
 
+import { DefaultHost, DefaultURL } from "@revolt/instance";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
-import Instance, { DefaultURL } from "../instance/Instance";
+import Instance from "../instance/Instance";
 
 export enum State {
   Ready = "Ready",
@@ -612,10 +613,32 @@ export default class ClientController {
   }
 
   /** Check if instance matches auth, and switch if it doesn't */
-  #checkSwapInstance() {
-    const ses = this.state.auth.getSession();
-    if (ses) console.log("SES CHECK", ses?.host, this.instance.host);
-    if (ses && (ses.host || null) !== (this.instance.host || null)) {
+  #checkSwapInstance(swapUser = true) {
+    const host = this.instance.host || DefaultHost,
+      ses = this.state.auth.getSession();
+    if (ses)
+      console.log(
+        "SES CHECK",
+        (ses.host || DefaultHost) !== host,
+        ses.host || DefaultHost,
+        host,
+      );
+    if (ses && (ses.host || DefaultHost) !== host) {
+      //First try to find an account that fits this instance
+      if (swapUser) {
+        const sl = this.state.auth.getSaved();
+        //Itterate backwards to prefer last-used
+        for (let i = sl.length - 1; i >= 0; --i)
+          if ((sl[i].host || DefaultHost) === host) {
+            console.log("SES SWAP TO BETTER FIT", sl[i]);
+            this.state.auth.swapSession(sl[i].userId);
+            this.lifecycle.transition({
+              type: TransitionType.LoginCached,
+              session: this.state.auth.getSession()!,
+            });
+            return true;
+          }
+      }
       //Delay to ensure auth is written to disk
       setTimeout(
         () =>
@@ -632,7 +655,7 @@ export default class ClientController {
     console.log("AUTH swapAccount", userId);
     this.#cacheUserInfo();
     this.state.auth.swapSession(userId);
-    if (this.#checkSwapInstance()) return;
+    if (this.#checkSwapInstance(false)) return;
     this.lifecycle.transition({
       type: TransitionType.Logout,
     });

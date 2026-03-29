@@ -3,8 +3,7 @@ import { createFormControl, createFormGroup } from "solid-forms";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
-import { useInstance } from "@revolt/instance";
-import { DefaultURL } from "@revolt/instance/Instance";
+import { DefaultURL, useInstance } from "@revolt/instance";
 import { Column, Dialog, DialogProps, Form2 } from "@revolt/ui";
 
 import { Modals } from "../types";
