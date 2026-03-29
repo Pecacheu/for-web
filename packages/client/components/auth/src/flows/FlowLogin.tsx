@@ -18,7 +18,6 @@ import {
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
@@ -26,32 +25,25 @@ import { Fields, Form } from "./Form";
  * Flow for logging into an account
  */
 export default function FlowLogin() {
-  const state = useState(),
-    modals = useModals();
+  const state = useState();
+  const modals = useModals();
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
-  let advOpt: AdvOpts;
 
   /**
    * Log into account
    * @param data Form Data
    */
   async function performLogin(data: FormData) {
-    try {
-      const email = data.get("email") as string,
-        password = data.get("password") as string;
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
 
-      advOpt!.setOpts(data);
-
-      await login(
-        {
-          email,
-          password,
-        },
-        modals,
-      );
-    } catch (e) {
-      modals.openModal({ type: "error2", error: e });
-    }
+    await login(
+      {
+        email,
+        password,
+      },
+      modals,
+    );
   }
 
   /**
@@ -73,8 +65,13 @@ export default function FlowLogin() {
             </FlowTitle>
             <Form onSubmit={performLogin}>
               <Fields fields={["email", "password"]} />
-              <AdvancedOptions ref={advOpt!} />
               <Column align>
+                <Button
+                  variant="text"
+                  onPress={() => modals.openModal({ type: "login_advanced" })}
+                >
+                  <Trans>Advanced</Trans>
+                </Button>
                 <a href="/login/reset">
                   <Button variant="text">
                     <Trans>Reset password</Trans>
