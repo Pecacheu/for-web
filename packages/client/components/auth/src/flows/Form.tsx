@@ -1,10 +1,10 @@
 import HCaptcha, { HCaptchaFunctions } from "solid-hcaptcha";
-import { For, JSX, Show, createSignal } from "solid-js";
+import { For, JSX, Show } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 
-import { useError } from "@revolt/i18n";
-import { Checkbox2, Column, Text, TextField } from "@revolt/ui";
+import { useModals } from "@revolt/modal";
+import { Checkbox2, Column, TextField } from "@revolt/ui";
 
 /**
  * Available field types
@@ -15,8 +15,7 @@ export type Field =
   | "new-password"
   | "log-out"
   | "username"
-  | "invite"
-  | "host";
+  | "invite";
 
 /**
  * Properties to apply to fields
@@ -60,13 +59,6 @@ export const useFieldConfig = () => {
       autocomplete: "none",
       name: () => t`Invite Code`,
       placeholder: () => t`Enter your invite code.`,
-    },
-    host: {
-      required: false,
-      type: "text" as const,
-      autocomplete: "none",
-      name: () => t`Instance`,
-      placeholder: () => t`Defaults to stoat.chat`,
     },
   };
 };
@@ -143,8 +135,7 @@ interface Props {
  * Small wrapper for HTML form
  */
 export function Form(props: Props) {
-  const [error, setError] = createSignal();
-  const err = useError();
+  const { openModal } = useModals();
   let hcaptcha: HCaptchaFunctions | undefined;
 
   /**
@@ -164,21 +155,14 @@ export function Form(props: Props) {
 
     try {
       await props.onSubmit(formData);
-    } catch (err) {
-      setError(err);
+    } catch (e) {
+      openModal({ type: "error2", error: e });
     }
   }
 
   return (
     <form onSubmit={onSubmit}>
-      <Column gap="lg">
-        {props.children}
-        <Show when={error()}>
-          <Text class="label" size="small">
-            {err(error())}
-          </Text>
-        </Show>
-      </Column>
+      <Column gap="lg">{props.children}</Column>
       <Show when={props.captcha}>
         <HCaptcha
           sitekey={props.captcha!}

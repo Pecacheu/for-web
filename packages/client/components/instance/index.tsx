@@ -21,6 +21,7 @@ const instanceContext = createContext<Instance>();
 
 export function InstanceContext(props: { children?: JSXElement }) {
   const params = useParams();
+  const nav = useNavigate();
   const [inst, setInst] = createSignal<Instance>();
 
   createAsync(async () => {
@@ -60,9 +61,11 @@ export function InstanceContext(props: { children?: JSXElement }) {
           CONFIGURATION.MAX_EMOJI,
           CONFIGURATION.ENABLE_VIDEO,
           params.host,
+          nav,
         ),
       );
     } catch (e) {
+      //TODO Find a better way to do this, can't use modals here
       console.error(e);
       alert("Something went wrong while connecting to the backend:\n" + e);
       history.back();
@@ -84,8 +87,6 @@ function Redirect() {
     nav = useNavigate();
 
   useBeforeLeave((e) => {
-    console.log("LEAVE", e.from.pathname, "->", e.to);
-
     //Redirect relative path to instance path
     if (inst.host && typeof e.to === "string" && !e.to.startsWith("/i/")) {
       e.preventDefault();

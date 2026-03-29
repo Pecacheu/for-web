@@ -5,11 +5,10 @@ import { useApi, useClient } from "@revolt/client";
 import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, iconSize, Row } from "@revolt/ui";
+import { Button, Column, iconSize, Row } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { AdvancedOptions, AdvOpts } from "../AdvancedOptions";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
@@ -24,38 +23,31 @@ export default function FlowCreate() {
   const { code } = useParams();
   const instance = useInstance();
   const modals = useModals();
-  let advOpt: AdvOpts;
 
   /**
    * Create an account
    * @param data Form Data
    */
   async function create(data: FormData) {
-    try {
-      const email = data.get("email") as string,
-        password = data.get("password") as string,
-        captcha = data.get("captcha") as string,
-        invite = data.get("invite") as string;
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
+    const captcha = data.get("captcha") as string;
+    const invite = data.get("invite") as string;
 
-      advOpt!.setOpts(data);
+    await api.post("/auth/account/create", {
+      email,
+      password,
+      captcha,
+      ...(invite ? { invite } : {}),
+    });
 
-      await api.post("/auth/account/create", {
-        email,
-        password,
-        captcha,
-        ...(invite ? { invite } : {}),
-      });
+    // FIXME: should tell client if email was sent
+    //        or if email even needs to be confirmed
 
-      // FIXME: should tell client if email was sent
-      //        or if email even needs to be confirmed
+    // TODO: log straight in if no email confirmation?
 
-      // TODO: log straight in if no email confirmation?
-
-      setFlowCheckEmail(email);
-      navigate("/login/check", { replace: true });
-    } catch (e) {
-      modals.openModal({ type: "error2", error: e });
-    }
+    setFlowCheckEmail(email);
+    navigate("/login/check", { replace: true });
   }
 
   const isInviteOnly = () => {
@@ -80,7 +72,14 @@ export default function FlowCreate() {
             ]}
           />
         </Show>
-        <AdvancedOptions ref={advOpt!} />
+        <Column align>
+          <Button
+            variant="text"
+            onPress={() => modals.openModal({ type: "login_advanced" })}
+          >
+            <Trans>Advanced</Trans>
+          </Button>
+        </Column>
         <Row justify>
           <a href="..">
             <Button variant="text">
