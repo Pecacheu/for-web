@@ -10,6 +10,7 @@ export type Session = {
   _id: string;
   token: string;
   userId: string;
+  host?: string;
   cachedName?: string;
   cachedAvatar?: string;
   valid: boolean;
@@ -40,6 +41,7 @@ function cleanSes(inSes?: Session): Session | undefined {
       _id: inSes._id,
       token: inSes.token,
       userId: inSes.userId,
+      host: strOrNone(inSes.host),
       cachedName: strOrNone(inSes.cachedName),
       cachedAvatar: strOrNone(inSes.cachedAvatar),
       valid: true,
@@ -56,7 +58,7 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
    * @param state State
    */
   constructor(state: State) {
-    super(state, "auth");
+    super(state, "auth", true);
   }
 
   /**

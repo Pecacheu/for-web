@@ -39,6 +39,8 @@ const DISK_WRITE_WAIT_MS = 1200;
  */
 const IGNORE_WRITE_DELAY = ["auth"];
 
+const GLOBAL_DB_NAME = "localforage";
+
 /**
  * Global application state
  */
@@ -48,6 +50,7 @@ export class State {
   private setStore: SetStoreFunction<Store>;
   private writeQueue: Record<string, number>;
   private readonly db: LocalForage;
+  private readonly dbGlobal: LocalForage;
 
   // define all stores
   auth = new Auth(this);
@@ -95,24 +98,25 @@ export class State {
   /**
    * Construct the global application state
    */
-  constructor(dbName = "localforage") {
+  constructor(dbName = GLOBAL_DB_NAME) {
     const [store, setStore] = createStore(this.defaults() as Store);
 
     this.store = store as never;
     this.setStore = setStore;
     this.writeQueue = {};
     this.db = localforage.createInstance({ name: dbName });
+    this.dbGlobal =
+      dbName === GLOBAL_DB_NAME
+        ? this.db
+        : localforage.createInstance({ name: GLOBAL_DB_NAME });
   }
 
   /**
    * Write some data to the store and disk
    */
-  private write: SetStoreFunction<Store> = (...args: unknown[]) => {
+  private write = (key: string, global: boolean, ...args: unknown[]) => {
     // pass the data to the store
-    (this.setStore as (...args: unknown[]) => void)(...args);
-
-    // resolve key
-    const key = args[0] as string;
+    (this.setStore as (...args: unknown[]) => void)(key, ...args);
 
     // touch the key if syncable
     this.sync.touchIfSyncable(key);
@@ -129,7 +133,7 @@ export class State {
         delete this.writeQueue[key];
 
         // write the entire key to storage
-        this.db.setItem(
+        (global ? this.dbGlobal : this.db).setItem(
           key,
           JSON.parse(
             JSON.stringify((this.store as Record<string, unknown>)[key]),
@@ -147,14 +151,12 @@ export class State {
   /**
    * Write data to store / disk and then synchronise it
    */
-  set: SetStoreFunction<Store> = (...args: unknown[]) => {
+  set = (key: string, global: boolean, ...args: unknown[]) => {
     // write to store and storage
-    (this.write as (...args: unknown[]) => void)(...args);
+    this.write(key, global, ...args);
 
     // run side-effects
-    if (import.meta.env.DEV) {
-      console.debug("[store] updated data", args[0]);
-    }
+    if (import.meta.env.DEV) console.debug("[store] updated data", args[0]);
   };
 
   /**
@@ -170,9 +172,16 @@ export class State {
    * Hydrate the state from disk and run side-effects
    */
   async hydrate() {
+    await this.hydrateDB(false);
+    if (this.dbGlobal !== this.db) await this.hydrateDB(true);
+  }
+
+  private async hydrateDB(global: boolean) {
     // load all data first
     for (const store of this.iterStores()) {
-      const data = await this.db.getItem(store.getKey());
+      const data = await (global ? this.dbGlobal : this.db).getItem(
+        store.getKey(),
+      );
 
       if (data) {
         // validate the incoming data
@@ -180,7 +189,7 @@ export class State {
 
         if (!equal(data, cleanData)) {
           // write back to disk if it has changed
-          this.write(store.getKey(), cleanData);
+          this.write(store.getKey(), global, cleanData);
         } else {
           this.setStore(store.getKey(), data);
         }

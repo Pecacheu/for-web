@@ -7,7 +7,7 @@ import { ProtocolV1 } from "stoat.js/lib/events/v1";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
-import Instance from "../instance/Instance";
+import Instance, { DefaultURL } from "../instance/Instance";
 
 export enum State {
   Ready = "Ready",
@@ -203,7 +203,7 @@ class Lifecycle {
       case State.Dispose:
         this.dispose();
         if (this.#controller.state.auth.getSession()) {
-          this.#controller.loginCached(false);
+          this.#controller.loginCached();
         } else {
           this.transition({ type: TransitionType.Ready });
           this.#setLoadedOnce(false);
@@ -296,6 +296,8 @@ class Lifecycle {
         break;
       case State.Error:
         if (transition.type === TransitionType.Dismiss) {
+          if (this.permanentError === "InvalidSession")
+            this.#controller.state.auth.removeSession();
           this.#enter(State.Dispose);
         }
         break;
@@ -472,7 +474,7 @@ export default class ClientController {
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.isError = this.isError.bind(this);
 
-    this.loginCached(true);
+    this.loginCached(false, true);
   }
 
   getCurrentClient() {
@@ -493,15 +495,14 @@ export default class ClientController {
     return this.lifecycle.state() === State.Error;
   }
 
-  loginCached(unhold: boolean) {
+  loginCached(unhold = false, cached = unhold) {
+    console.log("AUTH loginCached", unhold, cached);
     const session = this.state.auth.getSession(unhold);
-    if (session)
-      this.lifecycle.transition({
-        type: unhold
-          ? TransitionType.LoginCached
-          : TransitionType.LoginUncached,
-        session,
-      });
+    if (!session || this.#checkSwapInstance()) return;
+    this.lifecycle.transition({
+      type: cached ? TransitionType.LoginCached : TransitionType.LoginUncached,
+      session,
+    });
   }
 
   /**
@@ -509,6 +510,7 @@ export default class ClientController {
    * @param credentials Credentials
    */
   async login(credentials: API.DataLogin, modals: ModalControllerExtended) {
+    console.log("AUTH login", credentials);
     const browser = detect();
 
     // Generate a friendly name for this browser
@@ -578,6 +580,7 @@ export default class ClientController {
       _id: session._id,
       token: session.token,
       userId: session.user_id,
+      host: this.instance.host,
       valid: false,
     };
 
@@ -608,15 +611,35 @@ export default class ClientController {
     if (user) this.state.auth.cacheUserInfo(user);
   }
 
+  /** Check if instance matches auth, and switch if it doesn't */
+  #checkSwapInstance() {
+    const ses = this.state.auth.getSession();
+    if (ses) console.log("SES CHECK", ses?.host, this.instance.host);
+    if (ses && (ses.host || null) !== (this.instance.host || null)) {
+      //Delay to ensure auth is written to disk
+      setTimeout(
+        () =>
+          this.instance.switchTo(
+            ses.host ? new URL(`https://${ses.host}`) : DefaultURL,
+          ),
+        1,
+      );
+      return true;
+    }
+  }
+
   swapAccount(userId: string) {
+    console.log("AUTH swapAccount", userId);
     this.#cacheUserInfo();
     this.state.auth.swapSession(userId);
+    if (this.#checkSwapInstance()) return;
     this.lifecycle.transition({
       type: TransitionType.Logout,
     });
   }
 
   logout(delSes = true) {
+    console.log("AUTH LOGOUT", delSes);
     if (delSes) this.state.auth.removeSession();
     else {
       this.#cacheUserInfo();
@@ -628,6 +651,7 @@ export default class ClientController {
   }
 
   dispose() {
+    console.log("AUTH DISPOSE");
     this.lifecycle.transition({
       type: TransitionType.DisposeOnly,
     });
