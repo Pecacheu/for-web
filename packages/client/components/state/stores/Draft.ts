@@ -252,16 +252,8 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
     channelId: string,
     data?: DraftData | ((data: DraftData) => DraftData),
   ) {
-    if (typeof data === "function") {
-      data = data(this.getDraft(channelId));
-    }
-
-    if (typeof data === "undefined") {
-      console.info("[draft] cleared!");
-      return this.clearDraft(channelId);
-    }
-
-    console.info("[draft] updated to ", data);
+    if (typeof data === "function") data = data(this.getDraft(channelId));
+    if (!data) return this.clearDraft(channelId);
     this.set("drafts", channelId, data);
   }
 
