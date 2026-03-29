@@ -17,6 +17,11 @@ import { Dynamic } from "solid-js/web";
 import { API } from "stoat.js";
 import Instance from "./Instance";
 
+export const DefaultURL = new URL(CONFIGURATION.DEFAULT_API_URL);
+export const DefaultOrigin = DefaultURL.origin;
+export const DefaultHost = DefaultURL.host;
+const DefRoute = `/i/${DefaultHost}/`;
+
 const instanceContext = createContext<Instance>();
 
 export function InstanceContext(props: { children?: JSXElement }) {
@@ -26,6 +31,13 @@ export function InstanceContext(props: { children?: JSXElement }) {
 
   createAsync(async () => {
     setInst(undefined);
+
+    //Redirect default instance
+    if (params.host === DefaultHost) {
+      nav(Instance.relPath(location.pathname));
+      delete params.host;
+    }
+
     let apiUrl = CONFIGURATION.DEFAULT_API_URL as string,
       wsUrl = CONFIGURATION.DEFAULT_WS_URL as string,
       mediaUrl = CONFIGURATION.DEFAULT_MEDIA_URL as string,
@@ -33,16 +45,13 @@ export function InstanceContext(props: { children?: JSXElement }) {
 
     try {
       if (params.host) {
-        // TODO: Find a way to get this other than guessing
         apiUrl = `https://${params.host}/api`;
 
         //TODO Link safety warning modal (might need a new
         // variant of it) if it's an instance they've
         // never connected to before?
 
-        const api = new API.API({
-          baseURL: apiUrl,
-        });
+        const api = new API.API({ baseURL: apiUrl });
 
         const cfg = await api.get("/");
         wsUrl = cfg.ws;
@@ -56,6 +65,7 @@ export function InstanceContext(props: { children?: JSXElement }) {
           wsUrl,
           mediaUrl,
           proxyUrl,
+          //TODO Detect the below options from API
           CONFIGURATION.DEFAULT_GIFBOX_URL,
           CONFIGURATION.HCAPTCHA_SITEKEY,
           CONFIGURATION.MAX_EMOJI,
@@ -82,13 +92,25 @@ export function InstanceContext(props: { children?: JSXElement }) {
   );
 }
 
+const DEF_MARK = "_defInst";
+
 function Redirect() {
   const inst = useInstance(),
     nav = useNavigate();
 
   useBeforeLeave((e) => {
-    //Redirect relative path to instance path
-    if (inst.host && typeof e.to === "string" && !e.to.startsWith("/i/")) {
+    if (typeof e.to !== "string") return;
+
+    if ((e.to + "/").startsWith(DefRoute)) {
+      //Redirect default instance
+      e.preventDefault();
+      nav(Instance.relPath(e.to), { state: DEF_MARK });
+    } else if (
+      inst.host &&
+      !e.to.startsWith("/i/") &&
+      e.options?.state !== DEF_MARK
+    ) {
+      //Redirect relative path to instance path
       e.preventDefault();
       nav(inst.href(e.to, true));
     }
