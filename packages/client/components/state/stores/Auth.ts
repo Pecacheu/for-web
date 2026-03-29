@@ -200,7 +200,7 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
     this.set(
       "session",
       "cachedName",
-      `${user.displayName} (@${user.username})`,
+      `${user.displayName} (@${user.username}#${user.discriminator})`,
     );
     this.set("session", "cachedAvatar", user.avatarURL);
   }
