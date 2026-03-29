@@ -138,15 +138,21 @@ export function ChannelHeader(props: Props) {
 
       <Show when={props.channel.isVoice}>
         <IconButton
-          onPress={() => voice.connect(props.channel)}
+          onPress={() => {
+            if (voice.state() === "READY") voice.connect(props.channel);
+            else voice.disconnect();
+          }}
           use:floating={{
             tooltip: {
               placement: "bottom",
-              content: t`Join the voice channel`,
+              content:
+                voice.state() === "READY"
+                  ? t`Join the voice channel`
+                  : t`End call`,
             },
           }}
         >
-          <Symbol>call</Symbol>
+          <Symbol>{voice.state() === "READY" ? "call" : "call_end"}</Symbol>
         </IconButton>
       </Show>
 
