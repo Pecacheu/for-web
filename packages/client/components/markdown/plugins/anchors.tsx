@@ -16,9 +16,6 @@ import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid
 import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
 
-// import { determineLink } from "../../../lib/links";
-// import { modalController } from "../../../controllers/modals/ModalController";
-
 const link = cva({
   base: {
     cursor: "pointer",
@@ -71,12 +68,12 @@ export function RenderAnchor(
     "disabled",
   ]);
 
+  // Handle empty link
+  if (!localProps.href) return <span>{remoteProps.children}</span>;
+
   const instance = useInstance(),
     host = instance.host || undefined,
     root = new URL(instance.apiUrl).origin;
-
-  // Handle case where there is no link
-  if (!localProps.href) return <span>{remoteProps.children}</span>;
 
   // Handle links that navigate internally
   try {
@@ -99,7 +96,6 @@ export function RenderAnchor(
 
       if (params.exactChannel) {
         const channel = () => client().channels.get(params.channelId!);
-
         const internalUrl = () =>
           new URL(
             `/i/${params.host || DefaultHost}` +
@@ -197,7 +193,7 @@ export function RenderAnchor(
       }
     }
 
-    // ... all other links:
+    // All other links
     const state = useState();
     const { openModal } = useModals();
 
