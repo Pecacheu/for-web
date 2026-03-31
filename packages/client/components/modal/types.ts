@@ -70,6 +70,7 @@ export type Modals =
   | {
       type: "create_channel";
       server: Server;
+      categoryId?: string;
       cb?: (channel: Channel) => void;
     }
   | {
