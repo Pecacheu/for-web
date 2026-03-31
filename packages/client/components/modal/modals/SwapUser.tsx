@@ -24,7 +24,7 @@ export function SwapUserModal(
       <For each={auth.getSaved()}>
         {(ses) => (
           <MenuButton
-            //noDrawer //TODO Needed with https://github.com/stoatchat/for-web/pull/835
+            //noDrawer //TODO Needed for PR #835
             icon={
               <Show when={ses.cachedAvatar}>
                 <Avatar src={ses.cachedAvatar} size={32} />
