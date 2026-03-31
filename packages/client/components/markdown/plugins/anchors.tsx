@@ -1,10 +1,12 @@
 import { JSX, Match, Show, Switch, splitProps } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
+import { MessageEmbed } from "stoat.js";
 import { cva } from "styled-system/css";
 
 import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
+import { trimURL } from "@revolt/modal/modals/LinkWarning";
 import { paramsFromPathname } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { Avatar, Embed, iconSize } from "@revolt/ui";
@@ -14,10 +16,6 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
 import MdChevronRight from "@material-design-icons/svg/outlined/chevron_right.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
-import { trimURL } from "@revolt/modal/modals/LinkWarning";
-import { MessageEmbed } from "stoat.js";
-// import { determineLink } from "../../../lib/links";
-// import { modalController } from "../../../controllers/modals/ModalController";
 
 const link = cva({
   base: {
