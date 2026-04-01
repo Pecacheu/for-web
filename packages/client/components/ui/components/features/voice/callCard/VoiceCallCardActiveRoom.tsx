@@ -52,6 +52,7 @@ const View = styled("div", {
     width: "100%",
 
     display: "flex",
+    flexDirection: "column",
     gap: "var(--gap-md)",
     padding: "var(--gap-md)",
   },
@@ -88,6 +89,7 @@ const Grid = styled("div", {
   base: {
     display: "flex",
     flexWrap: "wrap",
+    justifyContent: "center",
     gap: "var(--gap-md)",
     "--vc-max-width": "40vh",
     //TODO Too small in fullscreen, calc this in a memo/similar instead
@@ -235,7 +237,7 @@ const Tile = styled("div", {
     aspectRatio: "16/9",
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
-    maxWidth: "--vc-max-width",
+    maxWidth: "var(--vc-max-width)",
 
     color: "var(--md-sys-color-on-surface)",
     background: "#0002",
