@@ -181,7 +181,12 @@ export function VoiceCallCardContext(props: { children: JSX.Element }) {
               : "cubic-bezier(1, 0, 0, 1)",
             ...position(),
             "pointer-events": "none",
-            cursor: moving() ? "grabbing" : "grab",
+            cursor:
+              state().type === "floating"
+                ? moving()
+                  ? "grabbing"
+                  : "grab"
+                : "auto",
             "--offset-x": `${moving() ? offset().x : 0}px`,
             "--offset-y": `${moving() ? offset().y : 0}px`,
           }}
