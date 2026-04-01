@@ -209,6 +209,7 @@ const AvatarOnly = styled("div", {
     placeItems: "center",
     overflow: "hidden",
 
+    // TODO: Refactor the avatar component to be reactive later.
     "& > *": {
       width: "auto !important",
       height: "30% !important",
