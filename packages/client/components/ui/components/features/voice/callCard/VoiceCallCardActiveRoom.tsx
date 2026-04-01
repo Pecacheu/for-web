@@ -1,4 +1,4 @@
-import { createMemo, createSignal, Match, Show, Switch } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
@@ -53,7 +53,7 @@ const View = styled("div", {
   },
 });
 
-const TILE_MIN_WIDTH = "200px";
+const TILE_MIN_WIDTH = "250px";
 
 /**
  * Show a grid of participants
@@ -67,31 +67,33 @@ function Participants() {
     { onlySubscribed: false },
   );
 
-  const [height, setHeight] = createSignal(0);
-
-  const tileWidth = createMemo(() => {
-    const h = height(),
-      tl = tracks().length,
-      //Max width based on track count
-      wTrk = Math.round(100 / tl),
-      //Min height from container
-      hMin = Math.round(h / 2),
-      //Max height from container
-      hMax = Math.round((h * 16) / 9);
-
-    return `min(${hMax}px, max(${TILE_MIN_WIDTH}, ${hMin}px, ${wTrk}% - var(--gap-md)))`;
-  });
+  let gridRef: HTMLDivElement | undefined;
 
   return (
     <Call>
       <InRoom>
         <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
           {({ height }) => {
-            setHeight(height);
+            gridRef?.style.setProperty("--vc-grid-height", height + "px");
             return null;
           }}
         </AutoSizer>
-        <Grid style={{ "--vc-tile-width": tileWidth() }}>
+        <Grid
+          ref={gridRef}
+          style={{
+            "--vc-tile-count": `${tracks().length}`,
+            "--vc-tile-min-width-by-tile-count": `${TILE_MIN_WIDTH}`,
+            "--vc-tile-max-width-by-grid-height":
+              "calc(var(--vc-grid-height) * 16 / 9)",
+            "--vc-tile-max-width-by-grid-width":
+              "calc((100% / var(--vc-tile-count)) - var(--gap-md))",
+            "--vc-tile-min-width-by-grid-height":
+              "calc(var(--vc-grid-height) / 2)",
+            "--vc-tile-min-width":
+              "max(var(--vc-tile-min-width-by-tile-count), var(--vc-tile-min-width-by-grid-height), var(--vc-tile-max-width-by-grid-width))",
+            "--vc-tile-width": `min(var(--vc-tile-max-width-by-grid-height), var(--vc-tile-min-width))`,
+          }}
+        >
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
         </Grid>
       </InRoom>
@@ -260,6 +262,7 @@ const Tile = styled("div", {
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
     width: "var(--vc-tile-width)",
+    minWidth: "180px",
 
     color: "var(--md-sys-color-on-surface)",
     background: "#0002",
