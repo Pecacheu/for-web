@@ -290,11 +290,17 @@ function VoiceCallCard(props: { channel: Channel }) {
   });
 
   createEffect(() => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
     if (voice.fullscreen() && inCall()) {
-      viewRef?.requestFullscreen();
+      if (!viewRef?.isSameNode(document.fullscreenElement)) {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+        viewRef?.requestFullscreen();
+      }
+    } else {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
     }
   });
 
