@@ -53,6 +53,8 @@ const View = styled("div", {
   },
 });
 
+const TILE_MIN_WIDTH = "200px";
+
 /**
  * Show a grid of participants
  */
@@ -69,13 +71,19 @@ function Participants() {
   const [height, setHeight] = createSignal(0);
 
   createEffect(() => {
-    //Max width based on track count
-    const mw = tracks().length > 2 ? 30 : 50,
+    const h = height(),
+      tl = tracks().length,
+      //Max width based on track count
+      wTrk = Math.round(100 / tl),
+      //Min height from container
+      hMin = Math.round(h / 2),
       //Max height from container
-      h = Math.floor((height() * 16) / 9);
+      hMax = Math.round((h * 16) / 9);
 
-    grid?.style.setProperty("--vc-min-width", `min(${h / 2}px, 100%)`);
-    grid?.style.setProperty("--vc-max-width", `min(${h}px, ${mw}%)`);
+    grid?.style.setProperty(
+      "--vc-tile-width",
+      `min(${hMax}px, max(${TILE_MIN_WIDTH}, ${hMin}px, ${wTrk}% - var(--gap-md)))`,
+    );
   });
 
   return (
@@ -251,13 +259,11 @@ function ScreenshareTile() {
 
 const Tile = styled("div", {
   base: {
-    flex: "1",
     display: "grid",
     aspectRatio: "16/9",
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
-    minWidth: "var(--vc-min-width)",
-    maxWidth: "var(--vc-max-width)",
+    width: "var(--vc-tile-width)",
 
     color: "var(--md-sys-color-on-surface)",
     background: "#0002",
