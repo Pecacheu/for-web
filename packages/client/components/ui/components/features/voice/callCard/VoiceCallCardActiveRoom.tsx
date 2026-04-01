@@ -202,6 +202,13 @@ const AvatarOnly = styled("div", {
     gridArea: "1/1",
     display: "grid",
     placeItems: "center",
+    overflow: "hidden",
+
+    "& > *": {
+      width: "auto !important",
+      height: "30% !important",
+      minHeight: "48px",
+    },
   },
 });
 
