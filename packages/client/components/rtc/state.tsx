@@ -52,6 +52,9 @@ class Voice {
   screenshare: Accessor<boolean>;
   #setScreenshare: Setter<boolean>;
 
+  fullscreen: Accessor<boolean>;
+  #setFullscreen: Setter<boolean>;
+
   constructor(voiceSettings: VoiceSettings) {
     this.#settings = voiceSettings;
 
@@ -82,6 +85,10 @@ class Voice {
     const [screenshare, setScreenshare] = createSignal(false);
     this.screenshare = screenshare;
     this.#setScreenshare = setScreenshare;
+
+    const [fullscreen, setFullscreen] = createSignal(false);
+    this.fullscreen = fullscreen;
+    this.#setFullscreen = setFullscreen;
   }
 
   async connect(channel: Channel, auth?: { url: string; token: string }) {
@@ -147,6 +154,7 @@ class Voice {
       this.#setState("READY");
       this.#setRoom(undefined);
       this.#setChannel(undefined);
+      this.#setFullscreen(false);
     });
   }
 
@@ -182,6 +190,10 @@ class Voice {
     );
 
     this.#setScreenshare(room.localParticipant.isScreenShareEnabled);
+  }
+
+  toggleFullscreen(fullscreen: boolean = !this.fullscreen()) {
+    this.#setFullscreen(fullscreen);
   }
 
   getConnectedUser(userId: string) {

@@ -9,6 +9,7 @@ import {
   createSignal,
   on,
   onCleanup,
+  onMount,
   useContext,
 } from "solid-js";
 import { Portal } from "solid-js/web";
@@ -278,9 +279,28 @@ function VoiceCallCard(props: { channel: Channel }) {
   const voice = useVoice();
   const inCall = () => voice.channel()?.id === props.channel.id;
 
+  let viewRef: HTMLDivElement | undefined;
+
+  onMount(() => {
+    viewRef?.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) {
+        voice.toggleFullscreen(false);
+      }
+    });
+  });
+
+  createEffect(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+    if (voice.fullscreen() && inCall()) {
+      viewRef?.requestFullscreen();
+    }
+  });
+
   return (
     <Base>
-      <Card active={inCall()}>
+      <Card ref={viewRef} active={inCall()}>
         <Show
           when={inCall()}
           fallback={<VoiceCallCardPreview channel={props.channel} />}
