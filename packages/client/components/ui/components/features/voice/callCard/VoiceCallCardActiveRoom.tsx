@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { For, Match, Show, Switch } from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
@@ -23,6 +23,7 @@ import { Avatar } from "@revolt/ui/components/design";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
+import { scrollableStyles } from "@revolt/ui/directives";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
@@ -67,13 +68,16 @@ function Participants() {
     { onlySubscribed: false },
   );
 
+  // Modify this value to get test tracks
+  const testTrackCount = 0;
+
   let gridRef: HTMLDivElement | undefined;
 
   const tileWidth = () =>
-    `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / tracks().length)}% - var(--gap-md)))`;
+    `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / (tracks().length + testTrackCount))}% - var(--gap-md)))`;
 
   return (
-    <Call>
+    <Call class={scrollableStyles()}>
       <InRoom>
         <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
           {({ height }) => {
@@ -83,6 +87,7 @@ function Participants() {
         </AutoSizer>
         <Grid ref={gridRef} style={{ "--vc-tile-width": tileWidth() }}>
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
+          <For each={Array(testTrackCount)}>{() => <Tile />}</For>
         </Grid>
       </InRoom>
     </Call>
