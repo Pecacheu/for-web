@@ -185,9 +185,6 @@ function UserTile() {
             userId={participant.identity}
             muted={isMuted()}
           />
-          <Show when={isTrackReference(track) && !isVideoMuted()}>
-            <Symbol size={18}>fullscreen</Symbol>
-          </Show>
         </OverlayInner>
       </Overlay>
     </div>
@@ -234,7 +231,6 @@ function ScreenshareTile() {
           <Show when={isMuted()}>
             <Symbol size={18}>no_sound</Symbol>
           </Show>
-          <Symbol size={18}>fullscreen</Symbol>
         </OverlayInner>
       </Overlay>
     </div>
