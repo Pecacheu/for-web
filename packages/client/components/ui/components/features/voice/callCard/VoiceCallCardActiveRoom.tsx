@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
@@ -12,6 +12,7 @@ import {
   VideoTrack,
 } from "solid-livekit-components";
 
+import { AutoSizer } from "@dschz/solid-auto-sizer";
 import { Track } from "livekit-client";
 import { styled } from "styled-system/jsx";
 
@@ -23,7 +24,6 @@ import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
-
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
 
@@ -33,12 +33,7 @@ import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
 export function VoiceCallCardActiveRoom() {
   return (
     <View>
-      <Call>
-        <InRoom>
-          <Participants />
-        </InRoom>
-      </Call>
-
+      <Participants />
       <VoiceCallCardStatus />
       <VoiceCallCardActions size="sm" />
     </View>
@@ -58,14 +53,6 @@ const View = styled("div", {
   },
 });
 
-const Call = styled("div", {
-  base: {
-    flexGrow: 1,
-    minHeight: 0,
-    overflowY: "auto",
-  },
-});
-
 /**
  * Show a grid of participants
  */
@@ -78,21 +65,48 @@ function Participants() {
     { onlySubscribed: false },
   );
 
+  let grid: HTMLDivElement | undefined;
+  const [height, setHeight] = createSignal(0);
+
+  createEffect(() => {
+    const h = height();
+    grid?.style.setProperty("--vc-max-width", `${Math.floor((h * 16) / 9)}px`);
+  });
+
   return (
-    <Grid>
-      <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
-    </Grid>
+    <Call>
+      <InRoom>
+        <AutoSizer style={{ position: "absolute" }}>
+          {({ height }) => {
+            setHeight(height);
+            return null;
+          }}
+        </AutoSizer>
+        <Grid ref={grid}>
+          <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
+        </Grid>
+      </InRoom>
+    </Call>
   );
 }
+
+const Call = styled("div", {
+  base: {
+    position: "relative",
+    flexGrow: 1,
+    minHeight: 0,
+    overflowY: "auto",
+  },
+});
 
 const Grid = styled("div", {
   base: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
+    alignContent: "center",
     gap: "var(--gap-md)",
-    "--vc-max-width": "40vh",
-    //TODO Too small in fullscreen, calc this in a memo/similar instead
+    minHeight: "100%",
   },
 });
 
