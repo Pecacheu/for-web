@@ -13,7 +13,6 @@ import {
 } from "solid-livekit-components";
 
 import { Track } from "livekit-client";
-import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { UserContextMenu } from "@revolt/app";
@@ -52,11 +51,9 @@ const View = styled("div", {
     height: "100%",
     width: "100%",
 
+    display: "flex",
     gap: "var(--gap-md)",
     padding: "var(--gap-md)",
-
-    display: "flex",
-    flexDirection: "column",
   },
 });
 
@@ -64,7 +61,7 @@ const Call = styled("div", {
   base: {
     flexGrow: 1,
     minHeight: 0,
-    overflowY: "scroll",
+    overflowY: "auto",
   },
 });
 
@@ -83,21 +80,17 @@ function Participants() {
   return (
     <Grid>
       <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
-      {/* <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} />
-      <div class={tile()} /> */}
     </Grid>
   );
 }
 
 const Grid = styled("div", {
   base: {
-    display: "grid",
+    display: "flex",
+    flexWrap: "wrap",
     gap: "var(--gap-md)",
-    padding: "var(--gap-md)",
-    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+    "--vc-max-width": "40vh",
+    //TODO Too small in fullscreen, calc this in a memo/similar instead
   },
 });
 
@@ -138,10 +131,8 @@ function UserTile() {
   const user = useUser(participant.identity);
 
   return (
-    <div
-      class={tile({
-        speaking: isSpeaking(),
-      })}
+    <Tile
+      speaking={isSpeaking()}
       use:floating={{
         userCard: {
           user: user().user!,
@@ -187,7 +178,7 @@ function UserTile() {
           />
         </OverlayInner>
       </Overlay>
-    </div>
+    </Tile>
   );
 }
 
@@ -213,7 +204,7 @@ function ScreenshareTile() {
   });
 
   return (
-    <div class={tile() + " group"}>
+    <Tile class="group">
       <VideoTrack
         style={{
           "grid-area": "1/1",
@@ -233,16 +224,18 @@ function ScreenshareTile() {
           </Show>
         </OverlayInner>
       </Overlay>
-    </div>
+    </Tile>
   );
 }
 
-const tile = cva({
+const Tile = styled("div", {
   base: {
+    flex: "1 0 40%",
     display: "grid",
     aspectRatio: "16/9",
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
+    maxWidth: "--vc-max-width",
 
     color: "var(--md-sys-color-on-surface)",
     background: "#0002",

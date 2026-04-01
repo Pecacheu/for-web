@@ -297,10 +297,8 @@ function VoiceCallCard(props: { channel: Channel }) {
         }
         viewRef?.requestFullscreen();
       }
-    } else {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
+    } else if (document.fullscreenElement) {
+      document.exitFullscreen();
     }
   });
 
