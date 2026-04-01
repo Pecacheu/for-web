@@ -69,14 +69,19 @@ function Participants() {
   const [height, setHeight] = createSignal(0);
 
   createEffect(() => {
-    const h = height();
-    grid?.style.setProperty("--vc-max-width", `${Math.floor((h * 16) / 9)}px`);
+    //Max width based on track count
+    const mw = tracks().length > 2 ? 30 : 50,
+      //Max height from container
+      h = Math.floor((height() * 16) / 9);
+
+    grid?.style.setProperty("--vc-min-width", `min(${h / 2}px, 100%)`);
+    grid?.style.setProperty("--vc-max-width", `min(${h}px, ${mw}%)`);
   });
 
   return (
     <Call>
       <InRoom>
-        <AutoSizer style={{ position: "absolute" }}>
+        <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
           {({ height }) => {
             setHeight(height);
             return null;
@@ -246,11 +251,12 @@ function ScreenshareTile() {
 
 const Tile = styled("div", {
   base: {
-    flex: "1 0 40%",
+    flex: "1",
     display: "grid",
     aspectRatio: "16/9",
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
+    minWidth: "var(--vc-min-width)",
     maxWidth: "var(--vc-max-width)",
 
     color: "var(--md-sys-color-on-surface)",
