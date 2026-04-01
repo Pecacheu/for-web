@@ -1,4 +1,4 @@
-import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
+import { createMemo, createSignal, Match, Show, Switch } from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
@@ -67,10 +67,9 @@ function Participants() {
     { onlySubscribed: false },
   );
 
-  let grid: HTMLDivElement | undefined;
   const [height, setHeight] = createSignal(0);
 
-  createEffect(() => {
+  const tileWidth = createMemo(() => {
     const h = height(),
       tl = tracks().length,
       //Max width based on track count
@@ -80,10 +79,7 @@ function Participants() {
       //Max height from container
       hMax = Math.round((h * 16) / 9);
 
-    grid?.style.setProperty(
-      "--vc-tile-width",
-      `min(${hMax}px, max(${TILE_MIN_WIDTH}, ${hMin}px, ${wTrk}% - var(--gap-md)))`,
-    );
+    return `min(${hMax}px, max(${TILE_MIN_WIDTH}, ${hMin}px, ${wTrk}% - var(--gap-md)))`;
   });
 
   return (
@@ -95,7 +91,7 @@ function Participants() {
             return null;
           }}
         </AutoSizer>
-        <Grid ref={grid}>
+        <Grid style={{ "--vc-tile-width": tileWidth() }}>
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
         </Grid>
       </InRoom>
