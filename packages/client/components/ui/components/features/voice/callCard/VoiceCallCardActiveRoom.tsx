@@ -69,25 +69,19 @@ function Participants() {
 
   let gridRef: HTMLDivElement | undefined;
 
-  const tileWidth = () => {
-    return `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / tracks().length)}% - var(--gap-md)))`;
-  };
+  const tileWidth = () =>
+    `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / tracks().length)}% - var(--gap-md)))`;
 
   return (
     <Call>
       <InRoom>
         <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
           {({ height }) => {
-            gridRef?.style.setProperty("--vc-h", height + "px");
+            gridRef?.style.setProperty("--vc-h", `${height}px`);
             return null;
           }}
         </AutoSizer>
-        <Grid
-          ref={gridRef}
-          style={{
-            "--vc-tile-width": tileWidth(),
-          }}
-        >
+        <Grid ref={gridRef} style={{ "--vc-tile-width": tileWidth() }}>
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
         </Grid>
       </InRoom>
