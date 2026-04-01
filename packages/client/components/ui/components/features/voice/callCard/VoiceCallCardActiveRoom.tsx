@@ -69,29 +69,23 @@ function Participants() {
 
   let gridRef: HTMLDivElement | undefined;
 
+  const tileWidth = () => {
+    return `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / tracks().length)}% - var(--gap-md)))`;
+  };
+
   return (
     <Call>
       <InRoom>
         <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
           {({ height }) => {
-            gridRef?.style.setProperty("--vc-grid-height", height + "px");
+            gridRef?.style.setProperty("--vc-h", height + "px");
             return null;
           }}
         </AutoSizer>
         <Grid
           ref={gridRef}
           style={{
-            "--vc-tile-count": `${tracks().length}`,
-            "--vc-tile-min-width-by-tile-count": `${TILE_MIN_WIDTH}`,
-            "--vc-tile-max-width-by-grid-height":
-              "calc(var(--vc-grid-height) * 16 / 9)",
-            "--vc-tile-max-width-by-grid-width":
-              "calc((100% / var(--vc-tile-count)) - var(--gap-md))",
-            "--vc-tile-min-width-by-grid-height":
-              "calc(var(--vc-grid-height) / 2)",
-            "--vc-tile-min-width":
-              "max(var(--vc-tile-min-width-by-tile-count), var(--vc-tile-min-width-by-grid-height), var(--vc-tile-max-width-by-grid-width))",
-            "--vc-tile-width": `min(var(--vc-tile-max-width-by-grid-height), var(--vc-tile-min-width))`,
+            "--vc-tile-width": tileWidth(),
           }}
         >
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
