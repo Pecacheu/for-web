@@ -344,6 +344,7 @@ function UserTile(props: TileProps) {
           <VoiceStatefulUserIcons
             userId={participant.identity}
             muted={isMuted()}
+            camera={isTrackReference(track) && !isVideoMuted()}
           />
         </OverlayInner>
       </Overlay>
