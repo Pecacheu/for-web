@@ -19,6 +19,7 @@ import { Track } from "livekit-client";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
+import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
 import { InRoom, useVoice } from "@revolt/rtc";
 import { Avatar, IconButton } from "@revolt/ui/components/design";
@@ -301,16 +302,16 @@ function UserTile(props: TileProps) {
     <div
       class={tile({ speaking: isSpeaking(), ...props }) + " vc_tile"}
       onClick={() => props.setFocus(track)}
-      //TODO Conflicts with above, maybe only show if clicking name itself
-      // use:floating={{
-      //   userCard: {
-      //     user: user().user!,
-      //     member: user().member,
-      //   },
-      //   contextMenu: () => (
-      //     <UserContextMenu user={user().user!} member={user().member} inVoice />
-      //   ),
-      // }}
+      use:floating={{
+        // TODO: Conflicts with focusing, maybe only show if clicking name itself
+        //   userCard: {
+        //     user: user().user!,
+        //     member: user().member,
+        //   },
+        contextMenu: () => (
+          <UserContextMenu user={user().user!} member={user().member} inVoice />
+        ),
+      }}
     >
       <Switch
         fallback={
