@@ -20,8 +20,8 @@ import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useUser } from "@revolt/markdown/users";
-import { InRoom } from "@revolt/rtc";
-import { Avatar } from "@revolt/ui/components/design";
+import { InRoom, useVoice } from "@revolt/rtc";
+import { Avatar, IconButton } from "@revolt/ui/components/design";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { scrollableStyles } from "@revolt/ui/directives";
@@ -38,7 +38,13 @@ export function VoiceCallCardActiveRoom() {
     <View>
       <Participants />
       <VoiceCallCardStatus />
-      <VoiceCallCardActions size="sm" />
+      <VoiceCallControls>
+        <VoiceCallControlHolder empty />
+        <VoiceCallCardActions size="sm" />
+        <VoiceCallControlHolder right>
+          <VoiceCallFullscreen />
+        </VoiceCallControlHolder>
+      </VoiceCallControls>
     </View>
   );
 }
@@ -55,6 +61,51 @@ const View = styled("div", {
     padding: "var(--gap-md)",
   },
 });
+
+const VoiceCallControls = styled("div", {
+  base: {
+    display: "flex",
+    overflow: "hidden",
+  },
+});
+
+const VoiceCallControlHolder = styled("div", {
+  base: {
+    display: "flex",
+    flex: "1",
+    alignSelf: "center",
+    gap: "var(--gap-md)",
+    padding: "var(--gap-md)",
+  },
+  variants: {
+    right: {
+      true: {
+        justifyContent: "end",
+      },
+    },
+    empty: {
+      true: {
+        gap: "0px",
+        padding: "0px",
+      },
+    },
+  },
+});
+
+function VoiceCallFullscreen() {
+  const voice = useVoice();
+  return (
+    <IconButton
+      size="sm"
+      variant={"standard"}
+      onPress={() => voice.toggleFullscreen()}
+    >
+      <Show when={voice.fullscreen()} fallback={<Symbol>fullscreen</Symbol>}>
+        <Symbol>fullscreen_exit</Symbol>
+      </Show>
+    </IconButton>
+  );
+}
 
 const TILE_MIN_WIDTH = "250px",
   TILE_MIN_FOCUS_HEIGHT = "100px";

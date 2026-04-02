@@ -109,20 +109,6 @@ export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
           <Symbol>screen_share</Symbol>
         </Show>
       </IconButton>
-      <Show when={props.size !== "xs"}>
-        <IconButton
-          size={props.size}
-          variant={voice.fullscreen() ? "filled" : "tonal"}
-          onPress={() => voice.toggleFullscreen()}
-        >
-          <Show
-            when={voice.fullscreen()}
-            fallback={<Symbol>fullscreen</Symbol>}
-          >
-            <Symbol>fullscreen_exit</Symbol>
-          </Show>
-        </IconButton>
-      </Show>
       <Button
         size={props.size}
         variant="_error"
