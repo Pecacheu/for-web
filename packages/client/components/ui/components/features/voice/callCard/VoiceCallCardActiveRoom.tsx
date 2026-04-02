@@ -24,6 +24,7 @@ import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import { scrollableStyles } from "@revolt/ui/directives";
+import { cva } from "styled-system/css";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
@@ -87,7 +88,7 @@ function Participants() {
         </AutoSizer>
         <Grid ref={gridRef} style={{ "--vc-tile-width": tileWidth() }}>
           <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
-          <For each={Array(testTrackCount)}>{() => <Tile />}</For>
+          <For each={Array(testTrackCount)}>{() => <div class={tile()} />}</For>
         </Grid>
       </InRoom>
     </Call>
@@ -151,8 +152,8 @@ function UserTile() {
   const user = useUser(participant.identity);
 
   return (
-    <Tile
-      speaking={isSpeaking()}
+    <div
+      class={tile({ speaking: isSpeaking() })}
       use:floating={{
         userCard: {
           user: user().user!,
@@ -198,7 +199,7 @@ function UserTile() {
           />
         </OverlayInner>
       </Overlay>
-    </Tile>
+    </div>
   );
 }
 
@@ -232,7 +233,7 @@ function ScreenshareTile() {
   });
 
   return (
-    <Tile class="group">
+    <div class={tile() + " group"}>
       <VideoTrack
         style={{
           "grid-area": "1/1",
@@ -252,11 +253,11 @@ function ScreenshareTile() {
           </Show>
         </OverlayInner>
       </Overlay>
-    </Tile>
+    </div>
   );
 }
 
-const Tile = styled("div", {
+const tile = cva({
   base: {
     display: "grid",
     aspectRatio: "16/9",
@@ -264,6 +265,7 @@ const Tile = styled("div", {
     borderRadius: "var(--borderRadius-lg)",
     width: "var(--vc-tile-width)",
     minWidth: "180px",
+    cursor: "pointer",
 
     color: "var(--md-sys-color-on-surface)",
     background: "#0002",
