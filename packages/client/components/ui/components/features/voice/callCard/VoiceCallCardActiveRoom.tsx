@@ -1,8 +1,10 @@
-import { For, Match, Show, Switch } from "solid-js";
+import { createMemo, createSignal, For, Match, Show, Switch } from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
+  TrackRefContext,
   TrackReference,
+  TrackReferenceOrPlaceholder,
   useEnsureParticipant,
   useIsMuted,
   useIsSpeaking,
@@ -14,17 +16,16 @@ import {
 
 import { AutoSizer } from "@dschz/solid-auto-sizer";
 import { Track } from "livekit-client";
+import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
-import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
 import { InRoom } from "@revolt/rtc";
 import { Avatar } from "@revolt/ui/components/design";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
-
 import { scrollableStyles } from "@revolt/ui/directives";
-import { cva } from "styled-system/css";
+
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
@@ -55,7 +56,8 @@ const View = styled("div", {
   },
 });
 
-const TILE_MIN_WIDTH = "250px";
+const TILE_MIN_WIDTH = "250px",
+  TILE_MIN_FOCUS_HEIGHT = "100px";
 
 /**
  * Show a grid of participants
@@ -72,23 +74,71 @@ function Participants() {
   // Modify this value to get test tracks
   const testTrackCount = 0;
 
-  let gridRef: HTMLDivElement | undefined;
+  const [focus, setFocus] = createSignal<string>();
+  const [showBar, setShowBar] = createSignal(true);
+  let callRef: HTMLDivElement | undefined;
 
   const tileWidth = () =>
     `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / (tracks().length + testTrackCount))}% - var(--gap-md)))`;
 
+  const tglFocus = (t?: TrackReferenceOrPlaceholder) => {
+    const id = t ? `${t.source}_${t.participant.sid}` : undefined;
+    setFocus(focus() === id || tracks().length < 2 ? undefined : id);
+    setShowBar(true);
+  };
+
+  const focusTrack = createMemo(() => {
+    const id = focus(),
+      track = id
+        ? tracks().find((t) => `${t.source}_${t.participant.sid}` === id)
+        : undefined;
+
+    if (id && track)
+      return (
+        <TrackRefContext.Provider value={track}>
+          <FocusBox>
+            <ParticipantTile setFocus={tglFocus} focus />
+          </FocusBox>
+          <div
+            style={{
+              height: "20px",
+              "text-align": "center",
+              color: "white",
+            }}
+            onClick={() => setShowBar(!showBar())}
+            //TODO Just a test button w/ no styling or translation yet
+          >
+            <Show when={showBar()} fallback={"Maximize"}>
+              Minimize
+            </Show>
+          </div>
+        </TrackRefContext.Provider>
+      );
+  });
+
   return (
-    <Call class={scrollableStyles()}>
+    <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
       <InRoom>
         <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
-          {({ height }) => {
-            gridRef?.style.setProperty("--vc-h", `${height}px`);
+          {({ width, height }) => {
+            callRef?.style.setProperty("--vc-w", `${width}px`);
+            callRef?.style.setProperty("--vc-h", `${height}px`);
             return null;
           }}
         </AutoSizer>
-        <Grid ref={gridRef} style={{ "--vc-tile-width": tileWidth() }}>
-          <TrackLoop tracks={tracks}>{() => <ParticipantTile />}</TrackLoop>
-          <For each={Array(testTrackCount)}>{() => <div class={tile()} />}</For>
+        {focusTrack()}
+        <Grid
+          focus={!!focus()}
+          show={showBar()}
+          class={focus() ? scrollableStyles({ direction: "x" }) : ""}
+          style={{ "--vc-tile-width": tileWidth() }}
+        >
+          <TrackLoop tracks={tracks}>
+            {() => <ParticipantTile setFocus={tglFocus} getFocus={focus} />}
+          </TrackLoop>
+          <For each={Array(testTrackCount)}>
+            {() => <div class={tile() + " vc_tile"} />}
+          </For>
         </Grid>
       </InRoom>
     </Call>
@@ -98,9 +148,11 @@ function Participants() {
 const Call = styled("div", {
   base: {
     position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-md)",
     flexGrow: 1,
     minHeight: 0,
-    overflowY: "auto",
   },
 });
 
@@ -108,32 +160,75 @@ const Grid = styled("div", {
   base: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "center",
-    alignContent: "center",
+    justifyContent: "safe center",
+    alignContent: "safe center",
     gap: "var(--gap-md)",
     minHeight: "100%",
   },
+
+  variants: {
+    focus: {
+      true: {
+        flexDirection: "column",
+        height: `max(20%, ${TILE_MIN_FOCUS_HEIGHT})`,
+        minHeight: 0,
+        transition: "height .3s ease",
+
+        "& .vc_tile": {
+          width: "auto",
+          height: "100%",
+        },
+      },
+    },
+    show: {
+      false: {
+        height: 0,
+      },
+    },
+  },
 });
+
+const FocusBox = styled("div", {
+  base: {
+    height: 0,
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    margin: "0 auto",
+  },
+});
+
+type TileProps = {
+  setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
+  getFocus?: () => string | undefined;
+  focus?: boolean;
+};
 
 /**
  * Individual participant tile
  */
-function ParticipantTile() {
+function ParticipantTile(props: TileProps) {
   const track = useTrackRefContext();
 
   return (
-    <Switch fallback={<UserTile />}>
-      <Match when={track.source === Track.Source.ScreenShare}>
-        <ScreenshareTile />
-      </Match>
-    </Switch>
+    <Show
+      when={props?.getFocus?.() !== `${track.source}_${track.participant.sid}`}
+    >
+      <Show
+        when={track.source === Track.Source.ScreenShare}
+        fallback={<UserTile {...props} />}
+      >
+        <ScreenshareTile {...props} />
+      </Show>
+    </Show>
   );
 }
 
 /**
  * Shown when the track source is a camera or placeholder
  */
-function UserTile() {
+function UserTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
@@ -153,16 +248,18 @@ function UserTile() {
 
   return (
     <div
-      class={tile({ speaking: isSpeaking() })}
-      use:floating={{
-        userCard: {
-          user: user().user!,
-          member: user().member,
-        },
-        contextMenu: () => (
-          <UserContextMenu user={user().user!} member={user().member} inVoice />
-        ),
-      }}
+      class={tile({ speaking: isSpeaking(), ...props }) + " vc_tile"}
+      onClick={() => props.setFocus(track)}
+      //TODO Conflicts with above, maybe only show if clicking name itself
+      // use:floating={{
+      //   userCard: {
+      //     user: user().user!,
+      //     member: user().member,
+      //   },
+      //   contextMenu: () => (
+      //     <UserContextMenu user={user().user!} member={user().member} inVoice />
+      //   ),
+      // }}
     >
       <Switch
         fallback={
@@ -222,7 +319,7 @@ const AvatarOnly = styled("div", {
 /**
  * Shown when the track source is a screenshare
  */
-function ScreenshareTile() {
+function ScreenshareTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
   const user = useUser(participant.identity);
@@ -233,7 +330,10 @@ function ScreenshareTile() {
   });
 
   return (
-    <div class={tile() + " group"}>
+    <div
+      class={tile(props) + " vc_tile group"}
+      onClick={() => props.setFocus(track)}
+    >
       <VideoTrack
         style={{
           "grid-area": "1/1",
@@ -264,7 +364,6 @@ const tile = cva({
     transition: ".3s ease all",
     borderRadius: "var(--borderRadius-lg)",
     width: "var(--vc-tile-width)",
-    minWidth: "180px",
     cursor: "pointer",
 
     color: "var(--md-sys-color-on-surface)",
@@ -280,6 +379,16 @@ const tile = cva({
     speaking: {
       true: {
         outlineColor: "var(--md-sys-color-primary)",
+      },
+    },
+    focus: {
+      true: {
+        height: "100%",
+        maxHeight: "calc(var(--vc-w) * 9/ 16)",
+
+        "&:has(video)": {
+          aspectRatio: "auto",
+        },
       },
     },
   },
