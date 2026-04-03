@@ -38,12 +38,13 @@ export function VoiceCallCardActiveRoom() {
   return (
     <View>
       <Participants />
-      <VoiceCallCardStatus />
       <VoiceCallControls>
-        <VoiceCallControlHolder empty />
-        <VoiceCallCardActions size="sm" />
         <VoiceCallControlHolder right>
           <VoiceCallFullscreen />
+        </VoiceCallControlHolder>
+        <VoiceCallCardActions size="sm" />
+        <VoiceCallControlHolder left>
+          <VoiceCallCardStatus />
         </VoiceCallControlHolder>
       </VoiceCallControls>
     </View>
@@ -67,6 +68,7 @@ const VoiceCallControls = styled("div", {
   base: {
     display: "flex",
     overflow: "hidden",
+    flexDirection: "row-reverse",
   },
 });
 
@@ -81,13 +83,18 @@ const VoiceCallControlHolder = styled("div", {
   variants: {
     right: {
       true: {
-        justifyContent: "end",
+        justifyContent: "flex-end",
       },
     },
     empty: {
       true: {
         gap: "0px",
         padding: "0px",
+      },
+    },
+    left: {
+      true: {
+        justifyContent: "flex-start",
       },
     },
   },

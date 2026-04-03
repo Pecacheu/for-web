@@ -1,5 +1,3 @@
-import { Match, Switch } from "solid-js";
-
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
@@ -9,25 +7,57 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 export function VoiceCallCardStatus() {
   const voice = useVoice();
 
+  const symbol = () => {
+    switch (voice.state()) {
+      case "CONNECTED":
+        return "wifi_tethering";
+      case "CONNECTING":
+        return "wifi_tethering";
+      case "DISCONNECTED":
+        return "wifi_tethering_error";
+      case "RECONNECTING":
+        return "wifi_tethering";
+      default:
+        return "";
+    }
+  };
+
+  const text = () => {
+    switch (voice.state()) {
+      case "CONNECTED":
+        return <Trans>Connected</Trans>;
+      case "CONNECTING":
+        return <Trans>Connecting</Trans>;
+      case "DISCONNECTED":
+        return <Trans>Disconnected</Trans>;
+      case "RECONNECTING":
+        return <Trans>Reconnecting</Trans>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Status status={voice.state()}>
-      <Switch>
-        <Match when={voice.state() === "CONNECTED"}>
-          <Symbol>wifi_tethering</Symbol> <Trans>Connected</Trans>
-        </Match>
-        <Match when={voice.state() === "CONNECTING"}>
-          <Symbol>wifi_tethering</Symbol> <Trans>Connecting</Trans>
-        </Match>
-        <Match when={voice.state() === "DISCONNECTED"}>
-          <Symbol>wifi_tethering_error</Symbol> <Trans>Disconnected</Trans>
-        </Match>
-        <Match when={voice.state() === "RECONNECTING"}>
-          <Symbol>wifi_tethering</Symbol> <Trans>Reconnecting</Trans>
-        </Match>
-      </Switch>
+      <Symbol>{symbol()}</Symbol>{" "}
+      <FadeOut fade={voice.state() === "CONNECTED"}>{text()}</FadeOut>
     </Status>
   );
 }
+
+const FadeOut = styled("div", {
+  base: {},
+  variants: {
+    fade: {
+      true: {
+        fontSize: "0",
+        opacity: "0",
+        transition: "opacity 1s 5s, font-size 0s 6s",
+      },
+    },
+  },
+});
+
 const Status = styled("div", {
   base: {
     flexShrink: 0,
@@ -35,6 +65,14 @@ const Status = styled("div", {
 
     display: "flex",
     justifyContent: "center",
+
+    _hover: {
+      "& div": {
+        fontSize: "inherit",
+        opacity: "1",
+        transition: "opacity 0s 0s, font-size 0s 0s",
+      },
+    },
   },
   variants: {
     status: {
