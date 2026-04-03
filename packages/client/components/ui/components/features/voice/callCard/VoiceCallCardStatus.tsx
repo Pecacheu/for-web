@@ -47,13 +47,15 @@ export function VoiceCallCardStatus() {
 
 const FadeOut = styled("div", {
   base: {
-    width: 0,
+    paddingLeft: "var(--gap-md)",
   },
   variants: {
     fade: {
       true: {
         opacity: 0,
-        transition: "opacity .3s 5s ease",
+        fontSize: 0,
+        paddingLeft: 0,
+        transition: "opacity .3s 5s ease, font-size 0s 6s, padding-left 0s 6s",
       },
     },
   },
@@ -62,16 +64,16 @@ const FadeOut = styled("div", {
 const Status = styled("div", {
   base: {
     flexShrink: 0,
-    gap: "var(--gap-md)",
 
     display: "flex",
     justifyContent: "center",
 
     _hover: {
       "& div": {
+        opacity: 1,
         fontSize: "inherit",
-        opacity: "1",
-        transition: "opacity 0s 0s, font-size 0s 0s",
+        paddingLeft: "var(--gap-md)",
+        transition: "opacity 0s 0s, font-size 0s 0s, padding-left 0s 0s",
       },
     },
   },
