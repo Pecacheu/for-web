@@ -1,5 +1,6 @@
 import {
   Accessor,
+  createEffect,
   createSignal,
   For,
   Match,
@@ -166,6 +167,13 @@ function Participants() {
 
   const isFocus = (t?: TrackReferenceOrPlaceholder) =>
     t && focus() && getFocusID(t) === focus();
+
+  // Clear out any focus when the track that was focused is no longer available.
+  createEffect(() => {
+    if (!tracks().find((t) => isFocus(t))) {
+      toggleFocus();
+    }
+  });
 
   return (
     <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
