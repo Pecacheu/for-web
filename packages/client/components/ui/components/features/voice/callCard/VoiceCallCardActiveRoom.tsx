@@ -1,8 +1,15 @@
-import { createMemo, createSignal, For, Match, Show, Switch } from "solid-js";
+import {
+  Accessor,
+  createSignal,
+  For,
+  Match,
+  Setter,
+  Show,
+  Switch,
+} from "solid-js";
 import {
   isTrackReference,
   TrackLoop,
-  TrackRefContext,
   TrackReference,
   TrackReferenceOrPlaceholder,
   useEnsureParticipant,
@@ -149,18 +156,24 @@ function Participants() {
     setShowBar(true);
   };
 
-  const focusTrack = createMemo(() => {
-    const id = focus(),
-      track = id
-        ? tracks().find((t) => `${t.source}_${t.participant.sid}` === id)
-        : undefined;
-
-    if (id && track)
-      return (
-        <TrackRefContext.Provider value={track}>
-          <FocusBox>
-            <ParticipantTile setFocus={tglFocus} focus />
-          </FocusBox>
+  return (
+    <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
+      <InRoom>
+        <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
+          {({ width, height }) => {
+            callRef?.style.setProperty("--vc-w", `${width}px`);
+            callRef?.style.setProperty("--vc-h", `${height}px`);
+            return null;
+          }}
+        </AutoSizer>
+        <FocusedParticipant
+          id={focus()}
+          tracks={tracks}
+          tglFocus={tglFocus}
+          showBar={showBar}
+          setShowBar={setShowBar}
+        />
+        <Show when={focus()}>
           <div
             style={{
               height: "0px",
@@ -191,21 +204,7 @@ function Participants() {
               </IconButton>
             </div>
           </div>
-        </TrackRefContext.Provider>
-      );
-  });
-
-  return (
-    <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
-      <InRoom>
-        <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
-          {({ width, height }) => {
-            callRef?.style.setProperty("--vc-w", `${width}px`);
-            callRef?.style.setProperty("--vc-h", `${height}px`);
-            return null;
-          }}
-        </AutoSizer>
-        {focusTrack()}
+        </Show>
         <Grid
           focus={!!focus()}
           show={showBar()}
@@ -221,6 +220,33 @@ function Participants() {
         </Grid>
       </InRoom>
     </Call>
+  );
+}
+
+function FocusedParticipant(props: {
+  id?: string;
+  tracks: Accessor<TrackReferenceOrPlaceholder[]>;
+  tglFocus: (t?: TrackReferenceOrPlaceholder) => void;
+  showBar: Accessor<boolean>;
+  setShowBar: Setter<boolean>;
+}) {
+  const track = () =>
+    props.id
+      ? props
+          .tracks()
+          .find((t) => `${t.source}_${t.participant.sid}` === props.id)
+      : undefined;
+
+  return (
+    <Show when={props.id && track()}>
+      <TrackLoop tracks={() => [track()!]}>
+        {() => (
+          <FocusBox>
+            <ParticipantTile setFocus={props.tglFocus} focus />
+          </FocusBox>
+        )}
+      </TrackLoop>
+    </Show>
   );
 }
 
