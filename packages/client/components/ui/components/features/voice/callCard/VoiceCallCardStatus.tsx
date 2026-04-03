@@ -46,13 +46,14 @@ export function VoiceCallCardStatus() {
 }
 
 const FadeOut = styled("div", {
-  base: {},
+  base: {
+    width: 0,
+  },
   variants: {
     fade: {
       true: {
-        fontSize: "0",
-        opacity: "0",
-        transition: "opacity 1s 5s, font-size 0s 6s",
+        opacity: 0,
+        transition: "opacity .3s 5s ease",
       },
     },
   },
