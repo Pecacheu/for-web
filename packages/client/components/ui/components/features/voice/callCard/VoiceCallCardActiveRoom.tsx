@@ -155,11 +155,17 @@ function Participants() {
   const tileWidth = () =>
     `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / (tracks().length + testTrackCount))}% - var(--gap-md)))`;
 
-  const tglFocus = (t?: TrackReferenceOrPlaceholder) => {
-    const id = t ? `${t.source}_${t.participant.sid}` : undefined;
+  const getFocusID = (t: TrackReferenceOrPlaceholder) =>
+    `${t.source}_${t.participant.sid}`;
+
+  const toggleFocus = (t?: TrackReferenceOrPlaceholder) => {
+    const id = t ? getFocusID(t) : undefined;
     setFocus(focus() === id || tracks().length < 2 ? undefined : id);
     setShowBar(true);
   };
+
+  const isFocus = (t?: TrackReferenceOrPlaceholder) =>
+    t && focus() && getFocusID(t) === focus();
 
   return (
     <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
@@ -172,22 +178,13 @@ function Participants() {
           }}
         </AutoSizer>
         <FocusedParticipant
-          id={focus()}
-          tracks={tracks}
-          tglFocus={tglFocus}
+          track={tracks().find((t) => isFocus(t))}
+          toggleFocus={toggleFocus}
           showBar={showBar}
           setShowBar={setShowBar}
         />
         <Show when={focus()}>
-          <div
-            style={{
-              height: "0px",
-              "align-self": "center",
-              overflow: "visible",
-              display: "flex",
-              "flex-direction": "column-reverse",
-            }}
-          >
+          <ShowBarButtonHolder>
             <div style={{ "margin-bottom": "10px" }}>
               <IconButton
                 size="xs"
@@ -208,7 +205,7 @@ function Participants() {
                 </Show>
               </IconButton>
             </div>
-          </div>
+          </ShowBarButtonHolder>
         </Show>
         <Grid
           focus={!!focus()}
@@ -216,8 +213,8 @@ function Participants() {
           class={focus() ? scrollableStyles({ direction: "x" }) : ""}
           style={{ "--vc-tile-width": tileWidth() }}
         >
-          <TrackLoop tracks={tracks}>
-            {() => <ParticipantTile setFocus={tglFocus} getFocus={focus} />}
+          <TrackLoop tracks={() => tracks().filter((track) => !isFocus(track))}>
+            {() => <ParticipantTile setFocus={toggleFocus} />}
           </TrackLoop>
           <For each={Array(testTrackCount)}>
             {() => <div class={tile() + " vc_tile"} />}
@@ -228,26 +225,28 @@ function Participants() {
   );
 }
 
+const ShowBarButtonHolder = styled("div", {
+  base: {
+    height: "0px",
+    alignSelf: "center",
+    overflow: "visible",
+    display: "flex",
+    flexDirection: "column-reverse",
+  },
+});
+
 function FocusedParticipant(props: {
-  id?: string;
-  tracks: Accessor<TrackReferenceOrPlaceholder[]>;
-  tglFocus: (t?: TrackReferenceOrPlaceholder) => void;
+  track?: TrackReferenceOrPlaceholder;
+  toggleFocus: (t?: TrackReferenceOrPlaceholder) => void;
   showBar: Accessor<boolean>;
   setShowBar: Setter<boolean>;
 }) {
-  const track = () =>
-    props.id
-      ? props
-          .tracks()
-          .find((t) => `${t.source}_${t.participant.sid}` === props.id)
-      : undefined;
-
   return (
-    <Show when={props.id && track()}>
-      <TrackLoop tracks={() => [track()!]}>
+    <Show when={props.track}>
+      <TrackLoop tracks={() => [props.track!]}>
         {() => (
           <FocusBox>
-            <ParticipantTile setFocus={props.tglFocus} focus />
+            <ParticipantTile setFocus={props.toggleFocus} focus />
           </FocusBox>
         )}
       </TrackLoop>
@@ -311,7 +310,6 @@ const FocusBox = styled("div", {
 
 type TileProps = {
   setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
-  getFocus?: () => string | undefined;
   focus?: boolean;
 };
 
@@ -323,14 +321,10 @@ function ParticipantTile(props: TileProps) {
 
   return (
     <Show
-      when={props?.getFocus?.() !== `${track.source}_${track.participant.sid}`}
+      when={track.source === Track.Source.ScreenShare}
+      fallback={<UserTile {...props} />}
     >
-      <Show
-        when={track.source === Track.Source.ScreenShare}
-        fallback={<UserTile {...props} />}
-      >
-        <ScreenshareTile {...props} />
-      </Show>
+      <ScreenshareTile {...props} />
     </Show>
   );
 }
