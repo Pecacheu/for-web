@@ -239,6 +239,7 @@ function FocusedParticipant(props: {
 
   return (
     <Show when={props.id && track()}>
+      {/* Bang is here because we know track will be defined if we get this far. */}
       <TrackLoop tracks={() => [track()!]}>
         {() => (
           <FocusBox>
