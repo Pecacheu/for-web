@@ -365,6 +365,29 @@ function UserTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
+  const user = useUser(participant.identity);
+
+  const [videoDims, setVideoDims] = createSignal<{
+    height: number;
+    width: number;
+  }>({ height: 0, width: 0 });
+
+  let videoRef: HTMLVideoElement | undefined;
+
+  const getHeight = () => {
+    if (!props.focus || videoDims().height == 0) {
+      return {};
+    }
+    // Calculate the aspect ratio
+    const ratio = videoDims().width / videoDims().height;
+
+    if (ratio > 1) {
+      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
+    } else {
+      return { height: "100%" };
+    }
+  };
+
   const isMuted = useIsMuted({
     participant,
     source: Track.Source.Microphone,
@@ -376,8 +399,6 @@ function UserTile(props: TileProps) {
   });
 
   const isSpeaking = useIsSpeaking(participant);
-
-  const user = useUser(participant.identity);
 
   const isVideo = () => isTrackReference(track) && !isVideoMuted();
 
@@ -401,6 +422,7 @@ function UserTile(props: TileProps) {
           <UserContextMenu user={user().user!} member={user().member} inVoice />
         ),
       }}
+      style={{ ...getHeight() }}
     >
       <Switch
         fallback={
@@ -425,6 +447,13 @@ function UserTile(props: TileProps) {
             }}
             trackRef={track as TrackReference}
             manageSubscription={true}
+            ref={videoRef}
+            on:resize={() => {
+              setVideoDims({
+                height: videoRef?.videoHeight || 0,
+                width: videoRef?.videoWidth || 0,
+              });
+            }}
           />
         </Match>
       </Switch>
@@ -469,6 +498,27 @@ function ScreenshareTile(props: TileProps) {
   const track = useMaybeTrackRefContext();
   const user = useUser(participant.identity);
 
+  const [videoDims, setVideoDims] = createSignal<{
+    height: number;
+    width: number;
+  }>({ height: 0, width: 0 });
+
+  let videoRef: HTMLVideoElement | undefined;
+
+  const getHeight = () => {
+    if (!props.focus || videoDims().height == 0) {
+      return {};
+    }
+    // Calculate the aspect ratio
+    const ratio = videoDims().width / videoDims().height;
+
+    if (ratio > 1) {
+      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
+    } else {
+      return { height: "100%" };
+    }
+  };
+
   const isMuted = useIsMuted({
     participant,
     source: Track.Source.ScreenShareAudio,
@@ -478,6 +528,7 @@ function ScreenshareTile(props: TileProps) {
     <div
       class={tile({ video: true, ...props }) + " vc_tile group"}
       onClick={() => props.setFocus(track)}
+      style={{ ...getHeight() }}
     >
       <VideoTrack
         style={{
@@ -489,6 +540,13 @@ function ScreenshareTile(props: TileProps) {
         }}
         trackRef={track as TrackReference}
         manageSubscription={true}
+        ref={videoRef}
+        on:resize={() => {
+          setVideoDims({
+            height: videoRef?.videoHeight || 0,
+            width: videoRef?.videoWidth || 0,
+          });
+        }}
       />
 
       <Overlay showOnHover>
@@ -530,7 +588,6 @@ const tile = cva({
     },
     focus: {
       true: {
-        height: "100%",
         width: "auto",
         maxWidth: "none",
       },
@@ -549,6 +606,7 @@ const tile = cva({
       video: [false],
       focus: [true],
       css: {
+        height: "100%",
         maxHeight: "calc(var(--vc-w) * 9 / 16)",
       },
     },
