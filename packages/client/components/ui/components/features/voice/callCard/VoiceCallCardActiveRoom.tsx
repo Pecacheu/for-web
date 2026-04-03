@@ -52,7 +52,7 @@ export function VoiceCallCardActiveRoom() {
           <VoiceCallFullscreen />
         </VoiceCallControlHolder>
         <VoiceCallCardActions size="sm" />
-        <VoiceCallControlHolder left>
+        <VoiceCallControlHolder left overflow>
           <VoiceCallCardStatus />
         </VoiceCallControlHolder>
       </VoiceCallControls>
@@ -105,6 +105,11 @@ const VoiceCallControlHolder = styled("div", {
     left: {
       true: {
         justifyContent: "flex-start",
+      },
+    },
+    overflow: {
+      true: {
+        overflow: "hidden",
       },
     },
   },
