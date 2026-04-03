@@ -3,20 +3,16 @@ import {
   createEffect,
   createSignal,
   For,
-  Match,
   Setter,
   Show,
-  Switch,
 } from "solid-js";
 import {
-  isTrackReference,
   TrackLoop,
   TrackReference,
   TrackReferenceOrPlaceholder,
   useEnsureParticipant,
   useIsMuted,
   useIsSpeaking,
-  useMaybeTrackRefContext,
   useTrackRefContext,
   useTracks,
   VideoTrack,
@@ -60,61 +56,6 @@ export function VoiceCallCardActiveRoom() {
     </View>
   );
 }
-
-const View = styled("div", {
-  base: {
-    minHeight: 0,
-    height: "100%",
-    width: "100%",
-
-    display: "flex",
-    flexDirection: "column",
-    gap: "var(--gap-md)",
-    padding: "var(--gap-md)",
-  },
-});
-
-const VoiceCallControls = styled("div", {
-  base: {
-    display: "flex",
-    flexShrink: "0",
-    overflow: "hidden",
-    flexDirection: "row-reverse",
-  },
-});
-
-const VoiceCallControlHolder = styled("div", {
-  base: {
-    display: "flex",
-    flex: "1",
-    alignSelf: "center",
-    gap: "var(--gap-md)",
-    padding: "var(--gap-md)",
-  },
-  variants: {
-    right: {
-      true: {
-        justifyContent: "flex-end",
-      },
-    },
-    empty: {
-      true: {
-        gap: "0px",
-        padding: "0px",
-      },
-    },
-    left: {
-      true: {
-        justifyContent: "flex-start",
-      },
-    },
-    overflow: {
-      true: {
-        overflow: "hidden",
-      },
-    },
-  },
-});
 
 function VoiceCallFullscreen() {
   const voice = useVoice();
@@ -248,15 +189,11 @@ function Participants() {
   );
 }
 
-const ShowBarButtonHolder = styled("div", {
-  base: {
-    height: "0px",
-    alignSelf: "center",
-    overflow: "visible",
-    display: "flex",
-    flexDirection: "column-reverse",
-  },
-});
+type TileProps = {
+  setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
+  focus?: boolean;
+  fullscreen?: boolean;
+};
 
 function FocusedParticipant(props: {
   track?: TrackReferenceOrPlaceholder;
@@ -281,6 +218,205 @@ function FocusedParticipant(props: {
     </Show>
   );
 }
+
+/**
+ * Individual participant tile
+ */
+function ParticipantTile(props: TileProps) {
+  const participant = useEnsureParticipant();
+  const track = useTrackRefContext();
+  const user = useUser(participant.identity);
+
+  let videoRef: HTMLVideoElement | undefined;
+
+  const [videoDims, setVideoDims] = createSignal<{
+    height: number;
+    width: number;
+  }>({ height: 0, width: 0 });
+
+  const isMuted = useIsMuted({
+    participant,
+    source: Track.Source.Microphone,
+  });
+
+  const isScreenShareMuted = useIsMuted({
+    participant,
+    source: Track.Source.ScreenShareAudio,
+  });
+
+  const isVideoMuted = useIsMuted({
+    participant,
+    source: Track.Source.Camera,
+  });
+
+  const isVideo = () => !isVideoMuted();
+
+  const isScreenShare = () => track.source === Track.Source.ScreenShare;
+
+  const isSpeaking = useIsSpeaking(participant);
+
+  const getHeight = () => {
+    if (!props.focus || videoDims().height == 0) {
+      return {};
+    }
+    // Calculate the aspect ratio
+    const ratio = videoDims().width / videoDims().height;
+
+    if (ratio > 1) {
+      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
+    } else {
+      return { height: "100%" };
+    }
+  };
+
+  return (
+    <div
+      class={
+        tile({
+          speaking: !isScreenShare() && isSpeaking(),
+          video: isVideo() || isScreenShare(),
+          ...props,
+        }) + (isScreenShare() ? " vc_tile group" : " vc_tile")
+      }
+      onClick={() => props.setFocus(track)}
+      use:floating={
+        isScreenShare()
+          ? undefined
+          : {
+              // TODO: Conflicts with focusing, maybe only show if clicking name itself
+              //   userCard: {
+              //     user: user().user!,
+              //     member: user().member,
+              //   },
+              contextMenu: () => (
+                <UserContextMenu
+                  user={user().user!}
+                  member={user().member}
+                  inVoice
+                />
+              ),
+            }
+      }
+      style={{ ...getHeight() }}
+    >
+      <Show
+        when={isVideo() || isScreenShare()}
+        fallback={
+          <AvatarOnly>
+            <Avatar
+              src={user().avatar}
+              fallback={user().username}
+              size={48}
+              interactive={false}
+            />
+          </AvatarOnly>
+        }
+      >
+        <VideoTrack
+          style={{
+            "grid-area": "1/1",
+            "object-fit": "contain",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
+          }}
+          trackRef={track as TrackReference}
+          manageSubscription={true}
+          ref={videoRef}
+          on:resize={() => {
+            setVideoDims({
+              height: videoRef?.videoHeight || 0,
+              width: videoRef?.videoWidth || 0,
+            });
+          }}
+        />
+      </Show>
+      <Overlay showOnHover={isScreenShare()}>
+        <OverlayInner>
+          <OverflowingText>{user().username}</OverflowingText>
+          <Row gap="md">
+            {isScreenShare() ? (
+              <Show when={isScreenShareMuted()}>
+                <Symbol size={18}>no_sound</Symbol>
+              </Show>
+            ) : (
+              <VoiceStatefulUserIcons
+                userId={participant.identity}
+                muted={isMuted()}
+                camera={isVideo()}
+              />
+            )}
+          </Row>
+        </OverlayInner>
+      </Overlay>
+    </div>
+  );
+}
+
+const View = styled("div", {
+  base: {
+    minHeight: 0,
+    height: "100%",
+    width: "100%",
+
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-md)",
+    padding: "var(--gap-md)",
+  },
+});
+
+const VoiceCallControls = styled("div", {
+  base: {
+    display: "flex",
+    flexShrink: "0",
+    overflow: "hidden",
+    flexDirection: "row-reverse",
+  },
+});
+
+const VoiceCallControlHolder = styled("div", {
+  base: {
+    display: "flex",
+    flex: "1",
+    alignSelf: "center",
+    gap: "var(--gap-md)",
+    padding: "var(--gap-md)",
+  },
+  variants: {
+    right: {
+      true: {
+        justifyContent: "flex-end",
+      },
+    },
+    empty: {
+      true: {
+        gap: "0px",
+        padding: "0px",
+      },
+    },
+    left: {
+      true: {
+        justifyContent: "flex-start",
+      },
+    },
+    overflow: {
+      true: {
+        overflow: "hidden",
+      },
+    },
+  },
+});
+
+const ShowBarButtonHolder = styled("div", {
+  base: {
+    height: "0px",
+    alignSelf: "center",
+    overflow: "visible",
+    display: "flex",
+    flexDirection: "column-reverse",
+  },
+});
 
 const Call = styled("div", {
   base: {
@@ -336,144 +472,6 @@ const FocusBox = styled("div", {
   },
 });
 
-type TileProps = {
-  setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
-  focus?: boolean;
-  fullscreen?: boolean;
-};
-
-/**
- * Individual participant tile
- */
-function ParticipantTile(props: TileProps) {
-  const track = useTrackRefContext();
-
-  return (
-    <Show
-      when={track.source === Track.Source.ScreenShare}
-      fallback={<UserTile {...props} />}
-    >
-      <ScreenshareTile {...props} />
-    </Show>
-  );
-}
-
-/**
- * Shown when the track source is a camera or placeholder
- */
-function UserTile(props: TileProps) {
-  const participant = useEnsureParticipant();
-  const track = useMaybeTrackRefContext();
-
-  const user = useUser(participant.identity);
-
-  const [videoDims, setVideoDims] = createSignal<{
-    height: number;
-    width: number;
-  }>({ height: 0, width: 0 });
-
-  let videoRef: HTMLVideoElement | undefined;
-
-  const getHeight = () => {
-    if (!props.focus || videoDims().height == 0) {
-      return {};
-    }
-    // Calculate the aspect ratio
-    const ratio = videoDims().width / videoDims().height;
-
-    if (ratio > 1) {
-      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
-    } else {
-      return { height: "100%" };
-    }
-  };
-
-  const isMuted = useIsMuted({
-    participant,
-    source: Track.Source.Microphone,
-  });
-
-  const isVideoMuted = useIsMuted({
-    participant,
-    source: Track.Source.Camera,
-  });
-
-  const isSpeaking = useIsSpeaking(participant);
-
-  const isVideo = () => isTrackReference(track) && !isVideoMuted();
-
-  return (
-    <div
-      class={
-        tile({
-          speaking: isSpeaking(),
-          video: isVideo(),
-          ...props,
-        }) + " vc_tile"
-      }
-      onClick={() => props.setFocus(track)}
-      use:floating={{
-        // TODO: Conflicts with focusing, maybe only show if clicking name itself
-        //   userCard: {
-        //     user: user().user!,
-        //     member: user().member,
-        //   },
-        contextMenu: () => (
-          <UserContextMenu user={user().user!} member={user().member} inVoice />
-        ),
-      }}
-      style={{ ...getHeight() }}
-    >
-      <Switch
-        fallback={
-          <AvatarOnly>
-            <Avatar
-              src={user().avatar}
-              fallback={user().username}
-              size={48}
-              interactive={false}
-            />
-          </AvatarOnly>
-        }
-      >
-        <Match when={isVideo()}>
-          <VideoTrack
-            style={{
-              "grid-area": "1/1",
-              "object-fit": "contain",
-              width: "100%",
-              height: "100%",
-              overflow: "hidden",
-            }}
-            trackRef={track as TrackReference}
-            manageSubscription={true}
-            ref={videoRef}
-            on:resize={() => {
-              setVideoDims({
-                height: videoRef?.videoHeight || 0,
-                width: videoRef?.videoWidth || 0,
-              });
-            }}
-          />
-        </Match>
-      </Switch>
-
-      <Overlay>
-        <OverlayInner>
-          <OverflowingText>{user().username}</OverflowingText>
-          <Row gap="md">
-            <VoiceStatefulUserIcons
-              userId={participant.identity}
-              muted={isMuted()}
-              camera={isVideo()}
-            />
-          </Row>
-        </OverlayInner>
-      </Overlay>
-    </div>
-  );
-}
-
 const AvatarOnly = styled("div", {
   base: {
     gridArea: "1/1",
@@ -489,77 +487,6 @@ const AvatarOnly = styled("div", {
     },
   },
 });
-
-/**
- * Shown when the track source is a screenshare
- */
-function ScreenshareTile(props: TileProps) {
-  const participant = useEnsureParticipant();
-  const track = useMaybeTrackRefContext();
-  const user = useUser(participant.identity);
-
-  const [videoDims, setVideoDims] = createSignal<{
-    height: number;
-    width: number;
-  }>({ height: 0, width: 0 });
-
-  let videoRef: HTMLVideoElement | undefined;
-
-  const getHeight = () => {
-    if (!props.focus || videoDims().height == 0) {
-      return {};
-    }
-    // Calculate the aspect ratio
-    const ratio = videoDims().width / videoDims().height;
-
-    if (ratio > 1) {
-      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
-    } else {
-      return { height: "100%" };
-    }
-  };
-
-  const isMuted = useIsMuted({
-    participant,
-    source: Track.Source.ScreenShareAudio,
-  });
-
-  return (
-    <div
-      class={tile({ video: true, ...props }) + " vc_tile group"}
-      onClick={() => props.setFocus(track)}
-      style={{ ...getHeight() }}
-    >
-      <VideoTrack
-        style={{
-          "grid-area": "1/1",
-          "object-fit": "contain",
-          width: "100%",
-          height: "100%",
-          overflow: "hidden",
-        }}
-        trackRef={track as TrackReference}
-        manageSubscription={true}
-        ref={videoRef}
-        on:resize={() => {
-          setVideoDims({
-            height: videoRef?.videoHeight || 0,
-            width: videoRef?.videoWidth || 0,
-          });
-        }}
-      />
-
-      <Overlay showOnHover>
-        <OverlayInner>
-          <OverflowingText>{user().username}</OverflowingText>
-          <Show when={isMuted()}>
-            <Symbol size={18}>no_sound</Symbol>
-          </Show>
-        </OverlayInner>
-      </Overlay>
-    </div>
-  );
-}
 
 const tile = cva({
   base: {
