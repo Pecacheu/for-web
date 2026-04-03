@@ -55,7 +55,8 @@ const FadeOut = styled("div", {
         opacity: 0,
         fontSize: 0,
         paddingLeft: 0,
-        transition: "opacity .3s 5s ease, font-size 0s 6s, padding-left 0s 6s",
+        transition:
+          "opacity .3s 5s ease, font-size .3s 6s, padding-left .3s 6s",
       },
     },
   },
