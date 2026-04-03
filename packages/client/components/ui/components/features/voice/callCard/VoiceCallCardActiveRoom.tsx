@@ -28,6 +28,7 @@ import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { scrollableStyles } from "@revolt/ui/directives";
 
+import { Row } from "@revolt/ui/components/layout";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
@@ -227,7 +228,7 @@ const Call = styled("div", {
     position: "relative",
     display: "flex",
     flexDirection: "column",
-    gap: "var(--gap-md)",
+    gap: "var(--gap-sm)",
     flexGrow: 1,
     minHeight: 0,
   },
@@ -239,8 +240,8 @@ const Grid = styled("div", {
     flexWrap: "wrap",
     justifyContent: "safe center",
     alignContent: "safe center",
-    gap: "var(--gap-md)",
     minHeight: "100%",
+    gap: "var(--gap-md)",
   },
 
   variants: {
@@ -379,11 +380,13 @@ function UserTile(props: TileProps) {
       <Overlay>
         <OverlayInner>
           <OverflowingText>{user().username}</OverflowingText>
-          <VoiceStatefulUserIcons
-            userId={participant.identity}
-            muted={isMuted()}
-            camera={isVideo()}
-          />
+          <Row gap="md">
+            <VoiceStatefulUserIcons
+              userId={participant.identity}
+              muted={isMuted()}
+              camera={isVideo()}
+            />
+          </Row>
         </OverlayInner>
       </Overlay>
     </div>
@@ -479,6 +482,8 @@ const tile = cva({
     focus: {
       true: {
         height: "100%",
+        width: "auto",
+        // Does this do anything?
         maxHeight: "calc(var(--vc-w) * 9/ 16)",
       },
     },
@@ -493,8 +498,16 @@ const tile = cva({
     {
       fullscreen: [true],
       video: [true],
+      focus: [true],
       css: {
         aspectRatio: "auto",
+      },
+    },
+    {
+      focus: [true],
+      fullscreen: [true],
+      css: {
+        maxHeight: "none",
       },
     },
   ],
