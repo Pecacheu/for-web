@@ -534,12 +534,6 @@ const tile = cva({
       focus: [true],
       css: {
         aspectRatio: "auto",
-      },
-    },
-    {
-      focus: [true],
-      fullscreen: [true],
-      css: {
         maxHeight: "none",
       },
     },
