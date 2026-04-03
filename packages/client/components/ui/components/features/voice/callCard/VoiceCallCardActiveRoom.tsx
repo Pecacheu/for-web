@@ -69,6 +69,7 @@ const View = styled("div", {
 const VoiceCallControls = styled("div", {
   base: {
     display: "flex",
+    flexShrink: "0",
     overflow: "hidden",
     flexDirection: "row-reverse",
   },
