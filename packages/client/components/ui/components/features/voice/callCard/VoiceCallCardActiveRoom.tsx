@@ -145,6 +145,7 @@ function Participants() {
     ],
     { onlySubscribed: false },
   );
+  const voice = useVoice();
 
   // Modify this value to get test tracks
   const testTrackCount = 0;
@@ -153,8 +154,12 @@ function Participants() {
   const [showBar, setShowBar] = createSignal(true);
   let callRef: HTMLDivElement | undefined;
 
-  const tileWidth = () =>
-    `min(var(--vc-h) * 16 / 9, max(${TILE_MIN_WIDTH}, var(--vc-h) / 2, ${Math.round(100 / (tracks().length + testTrackCount))}% - var(--gap-md)))`;
+  const tileWidth = () => {
+    const trackPercentage = Math.round(
+      100 / (tracks().length + testTrackCount),
+    );
+    return `max(${TILE_MIN_WIDTH}, ${trackPercentage}% - var(--gap-md))`;
+  };
 
   const getFocusID = (t: TrackReferenceOrPlaceholder) =>
     `${t.source}_${t.participant.sid}`;
@@ -190,6 +195,7 @@ function Participants() {
           toggleFocus={toggleFocus}
           showBar={showBar}
           setShowBar={setShowBar}
+          fullscreen={voice.fullscreen()}
         />
         <Show when={focus()}>
           <ShowBarButtonHolder>
@@ -222,10 +228,19 @@ function Participants() {
           style={{ "--vc-tile-width": tileWidth() }}
         >
           <TrackLoop tracks={() => tracks().filter((track) => !isFocus(track))}>
-            {() => <ParticipantTile setFocus={toggleFocus} />}
+            {() => (
+              <ParticipantTile
+                setFocus={toggleFocus}
+                fullscreen={voice.fullscreen()}
+              />
+            )}
           </TrackLoop>
           <For each={Array(testTrackCount)}>
-            {() => <div class={tile() + " vc_tile"} />}
+            {() => (
+              <div
+                class={tile({ fullscreen: voice.fullscreen() }) + " vc_tile"}
+              />
+            )}
           </For>
         </Grid>
       </InRoom>
@@ -248,13 +263,18 @@ function FocusedParticipant(props: {
   toggleFocus: (t?: TrackReferenceOrPlaceholder) => void;
   showBar: Accessor<boolean>;
   setShowBar: Setter<boolean>;
+  fullscreen?: boolean;
 }) {
   return (
     <Show when={props.track}>
       <TrackLoop tracks={() => [props.track!]}>
         {() => (
           <FocusBox>
-            <ParticipantTile setFocus={props.toggleFocus} focus />
+            <ParticipantTile
+              setFocus={props.toggleFocus}
+              fullscreen={props.fullscreen}
+              focus
+            />
           </FocusBox>
         )}
       </TrackLoop>
@@ -319,6 +339,7 @@ const FocusBox = styled("div", {
 type TileProps = {
   setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
   focus?: boolean;
+  fullscreen?: boolean;
 };
 
 /**
@@ -344,8 +365,6 @@ function UserTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
-  const voice = useVoice();
-
   const isMuted = useIsMuted({
     participant,
     source: Track.Source.Microphone,
@@ -368,7 +387,6 @@ function UserTile(props: TileProps) {
         tile({
           speaking: isSpeaking(),
           video: isVideo(),
-          fullscreen: voice.fullscreen(),
           ...props,
         }) + " vc_tile"
       }
@@ -450,7 +468,6 @@ function ScreenshareTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
   const user = useUser(participant.identity);
-  const voice = useVoice();
 
   const isMuted = useIsMuted({
     participant,
@@ -459,10 +476,7 @@ function ScreenshareTile(props: TileProps) {
 
   return (
     <div
-      class={
-        tile({ video: true, fullscreen: voice.fullscreen(), ...props }) +
-        " vc_tile group"
-      }
+      class={tile({ video: true, ...props }) + " vc_tile group"}
       onClick={() => props.setFocus(track)}
     >
       <VideoTrack
@@ -496,6 +510,7 @@ const tile = cva({
     transition: "all .3s ease, width 0s, height 0s",
     borderRadius: "var(--borderRadius-lg)",
     width: "var(--vc-tile-width)",
+    maxWidth: "calc(var(--vc-h) * 16 / 9)",
     cursor: "pointer",
 
     color: "var(--md-sys-color-on-surface)",
@@ -517,30 +532,31 @@ const tile = cva({
       true: {
         height: "100%",
         width: "auto",
-        maxHeight: "calc(var(--vc-w) * 9 / 16)",
+        maxWidth: "none",
       },
     },
     video: {
       true: {},
     },
     fullscreen: {
-      true: {},
+      true: {
+        minWidth: "20%",
+      },
     },
   },
   compoundVariants: [
+    {
+      video: [false],
+      focus: [true],
+      css: {
+        maxHeight: "calc(var(--vc-w) * 9 / 16)",
+      },
+    },
     {
       video: [true],
       focus: [true],
       css: {
         aspectRatio: "auto",
-      },
-    },
-    {
-      fullscreen: [true],
-      video: [true],
-      focus: [true],
-      css: {
-        maxHeight: "none",
       },
     },
   ],
