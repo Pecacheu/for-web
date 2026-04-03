@@ -15,6 +15,7 @@ import {
 } from "solid-livekit-components";
 
 import { AutoSizer } from "@dschz/solid-auto-sizer";
+import { t } from "@lingui/core/macro";
 import { Track } from "livekit-client";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -160,16 +161,33 @@ function Participants() {
           </FocusBox>
           <div
             style={{
-              height: "20px",
-              "text-align": "center",
-              color: "white",
+              height: "0px",
+              "align-self": "center",
+              overflow: "visible",
+              display: "flex",
+              "flex-direction": "column-reverse",
             }}
-            onClick={() => setShowBar(!showBar())}
-            //TODO Just a test button w/ no styling or translation yet
           >
-            <Show when={showBar()} fallback={"Maximize"}>
-              Minimize
-            </Show>
+            <div style={{ "margin-bottom": "10px" }}>
+              <IconButton
+                size="xs"
+                variant={"tonal"}
+                onPress={() => setShowBar(!showBar())}
+                use:floating={{
+                  tooltip: {
+                    placement: "top",
+                    content: showBar() ? t`Hide Others` : t`Show Others`,
+                  },
+                }}
+              >
+                <Show
+                  when={showBar()}
+                  fallback={<Symbol>keyboard_arrow_up</Symbol>}
+                >
+                  <Symbol>keyboard_arrow_down</Symbol>
+                </Show>
+              </IconButton>
+            </div>
           </div>
         </TrackRefContext.Provider>
       );
@@ -291,6 +309,8 @@ function UserTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
+  const voice = useVoice();
+
   const isMuted = useIsMuted({
     participant,
     source: Track.Source.Microphone,
@@ -305,9 +325,18 @@ function UserTile(props: TileProps) {
 
   const user = useUser(participant.identity);
 
+  const isVideo = () => isTrackReference(track) && !isVideoMuted();
+
   return (
     <div
-      class={tile({ speaking: isSpeaking(), ...props }) + " vc_tile"}
+      class={
+        tile({
+          speaking: isSpeaking(),
+          video: isVideo(),
+          fullscreen: voice.fullscreen(),
+          ...props,
+        }) + " vc_tile"
+      }
       onClick={() => props.setFocus(track)}
       use:floating={{
         // TODO: Conflicts with focusing, maybe only show if clicking name itself
@@ -332,7 +361,7 @@ function UserTile(props: TileProps) {
           </AvatarOnly>
         }
       >
-        <Match when={isTrackReference(track) && !isVideoMuted()}>
+        <Match when={isVideo()}>
           <VideoTrack
             style={{
               "grid-area": "1/1",
@@ -352,7 +381,7 @@ function UserTile(props: TileProps) {
           <VoiceStatefulUserIcons
             userId={participant.identity}
             muted={isMuted()}
-            camera={isTrackReference(track) && !isVideoMuted()}
+            camera={isVideo()}
           />
         </OverlayInner>
       </Overlay>
@@ -383,6 +412,7 @@ function ScreenshareTile(props: TileProps) {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
   const user = useUser(participant.identity);
+  const voice = useVoice();
 
   const isMuted = useIsMuted({
     participant,
@@ -391,7 +421,10 @@ function ScreenshareTile(props: TileProps) {
 
   return (
     <div
-      class={tile(props) + " vc_tile group"}
+      class={
+        tile({ video: true, fullscreen: voice.fullscreen(), ...props }) +
+        " vc_tile group"
+      }
       onClick={() => props.setFocus(track)}
     >
       <VideoTrack
@@ -445,13 +478,24 @@ const tile = cva({
       true: {
         height: "100%",
         maxHeight: "calc(var(--vc-w) * 9/ 16)",
-
-        "&:has(video)": {
-          aspectRatio: "auto",
-        },
       },
     },
+    video: {
+      true: {},
+    },
+    fullscreen: {
+      true: {},
+    },
   },
+  compoundVariants: [
+    {
+      fullscreen: [true],
+      video: [true],
+      css: {
+        aspectRatio: "auto",
+      },
+    },
+  ],
 });
 
 const Overlay = styled("div", {
