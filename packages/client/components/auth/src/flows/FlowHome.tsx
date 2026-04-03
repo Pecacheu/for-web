@@ -90,13 +90,10 @@ export default function FlowHome() {
       <Match when={isError()}>
         <Show
           when={lifecycle.permanentError === "InvalidSession"}
-          fallback={"an unknown error occurred"}
+          fallback={lifecycle.permanentError || "An unknown error occurred."}
         >
-          <h1>
-            <Trans>You were logged out!</Trans>
-          </h1>
+          <Trans>You were logged out!</Trans>
         </Show>
-
         <Button
           variant="filled"
           onPress={() =>

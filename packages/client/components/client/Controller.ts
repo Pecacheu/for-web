@@ -182,15 +182,13 @@ class Lifecycle {
 
     switch (nextState) {
       case State.LoggingIn:
-        this.client.api.get("/onboard/hello").then(({ onboarding }) => {
-          if (onboarding) {
-            this.transition({
-              type: TransitionType.NoUser,
-            });
-          } else {
-            this.client.connect();
-          }
-        });
+        this.client.api
+          .get("/onboard/hello")
+          .then(({ onboarding }) => {
+            if (onboarding) this.transition({ type: TransitionType.NoUser });
+            else this.client.connect();
+          })
+          .catch((e) => this.showError(e));
         break;
       case State.Connecting:
       case State.Reconnecting:
@@ -242,9 +240,14 @@ class Lifecycle {
   transition(transition: Transition) {
     console.debug("Received transition", transition.type);
 
-    if (transition.type === TransitionType.DisposeOnly) {
-      this.dispose();
-      return;
+    switch (transition.type) {
+      case TransitionType.DisposeOnly:
+        this.dispose();
+        return;
+      case TransitionType.PermanentFailure:
+        this.#permanentError = transition.error;
+        this.#enter(State.Error);
+        return;
     }
 
     const currentState = this.state();
@@ -281,11 +284,6 @@ class Lifecycle {
           case TransitionType.NoUser:
             this.#enter(State.Onboarding);
             break;
-          case TransitionType.PermanentFailure:
-          case TransitionType.TemporaryFailure:
-            // TODO: relay error
-            this.#enter(State.Error);
-            break;
         }
         break;
       case State.Onboarding:
@@ -309,10 +307,6 @@ class Lifecycle {
             break;
           case TransitionType.TemporaryFailure:
             this.#enter(State.Disconnected);
-            break;
-          case TransitionType.PermanentFailure:
-            this.#permanentError = transition.error;
-            this.#enter(State.Error);
             break;
           case TransitionType.Logout:
             this.#enter(State.Dispose);
@@ -349,10 +343,6 @@ class Lifecycle {
             break;
           case TransitionType.TemporaryFailure:
             this.#enter(State.Disconnected);
-            break;
-          case TransitionType.PermanentFailure:
-            // TODO: relay error
-            this.#enter(State.Error);
             break;
           case TransitionType.Logout:
             this.#enter(State.Dispose);
@@ -405,21 +395,13 @@ class Lifecycle {
       case ConnectionState.Disconnected:
         if (this.client.events.lastError) {
           if (this.client.events.lastError.type === "revolt") {
-            // if (this.client.events.lastError.data.type == 'InvalidSession') {
-
-            this.transition({
-              type: TransitionType.PermanentFailure,
-              error: this.client.events.lastError.data.type,
-            });
-
+            this.showError(this.client.events.lastError.data.type);
             break;
           }
         }
-
         this.transition({
           type: TransitionType.TemporaryFailure,
         });
-
         break;
     }
   }
@@ -429,6 +411,14 @@ class Lifecycle {
    */
   get permanentError() {
     return this.#permanentError!;
+  }
+
+  /** Redirect to client error page */
+  showError(e: string) {
+    this.transition({
+      type: TransitionType.PermanentFailure,
+      error: e,
+    });
   }
 }
 
@@ -474,6 +464,7 @@ export default class ClientController {
     this.selectUsername = this.selectUsername.bind(this);
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.isError = this.isError.bind(this);
+    this.isSwapping = this.isSwapping.bind(this);
 
     this.loginCached(false, true);
   }
@@ -572,9 +563,7 @@ export default class ClientController {
     }
 
     if (session.result === "Disabled") {
-      // TODO
-      alert("Account is disabled, run special logic here.");
-      return;
+      return this.lifecycle.showError("This account is disabled.");
     }
 
     const createdSession = {
@@ -631,7 +620,7 @@ export default class ClientController {
         for (let i = sl.length - 1; i >= 0; --i)
           if ((sl[i].host || DefaultHost) === host) {
             console.log("SES SWAP TO BETTER FIT", sl[i]);
-            this.state.auth.swapSession(sl[i].userId);
+            this.#swapSession(sl[i].userId);
             this.lifecycle.transition({
               type: TransitionType.LoginCached,
               session: this.state.auth.getSession()!,
@@ -651,10 +640,27 @@ export default class ClientController {
     }
   }
 
+  #swapping = false;
+
+  /** True if the user session is about to be swapped */
+  isSwapping() {
+    return this.#swapping;
+  }
+
+  #swapSession(userId: string) {
+    try {
+      this.#cacheUserInfo();
+      this.#swapping = true;
+      this.state.auth.swapSession(userId);
+    } catch (e) {
+      this.#swapping = false;
+      throw e;
+    }
+  }
+
   swapAccount(userId: string) {
     console.log("AUTH swapAccount", userId);
-    this.#cacheUserInfo();
-    this.state.auth.swapSession(userId);
+    this.#swapSession(userId);
     if (this.#checkSwapInstance(false)) return;
     this.lifecycle.transition({
       type: TransitionType.Logout,

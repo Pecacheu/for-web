@@ -111,10 +111,6 @@ function BotRedirect() {
 
 function MountContext(props: { children?: JSX.Element }) {
   const state = useState();
-
-  /**
-   * Tanstack Query client
-   */
   const client = new QueryClient();
 
   return (
@@ -140,7 +136,7 @@ function MountContext(props: { children?: JSX.Element }) {
   );
 }
 
-const routes = (
+const routes = () => (
   <>
     <Route component={StateContext}>
       <Route component={MountContext}>
@@ -181,10 +177,10 @@ render(
     <>
       <Router>
         <Route path="/i/:host" component={InstanceContext}>
-          {routes}
+          {routes()}
         </Route>
         <Route path="/" component={InstanceContext}>
-          {routes}
+          {routes()}
         </Route>
       </Router>
       {/* <ReportBug /> */}
