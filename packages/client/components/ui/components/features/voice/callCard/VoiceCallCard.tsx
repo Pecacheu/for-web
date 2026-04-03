@@ -174,11 +174,9 @@ export function VoiceCallCardContext(props: { children: JSX.Element }) {
           style={{
             position: "fixed",
             "z-index": 10,
-            "transition-duration": moving() ? ".2s" : voice.room() && ".3s",
-            "transition-property": "all",
-            "transition-timing-function": moving()
-              ? "cubic-bezier(0, 1.67, 0.85, 0.8)"
-              : "cubic-bezier(1, 0, 0, 1)",
+            transition: moving()
+              ? "all .2s cubic-bezier(0, 1.67, 0.85, 0.8), width 0s"
+              : "all .3s cubic-bezier(1, 0, 0, 1), width 0s",
             ...position(),
             "pointer-events": "none",
             cursor:

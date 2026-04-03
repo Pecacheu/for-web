@@ -491,7 +491,7 @@ const tile = cva({
   base: {
     display: "grid",
     aspectRatio: "16/9",
-    transition: ".3s ease all",
+    transition: "all .3s ease, width 0s, height 0s",
     borderRadius: "var(--borderRadius-lg)",
     width: "var(--vc-tile-width)",
     cursor: "pointer",
