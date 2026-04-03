@@ -244,7 +244,6 @@ function FocusedParticipant(props: {
 
   return (
     <Show when={props.id && track()}>
-      {/* Bang is here because we know track will be defined if we get this far. */}
       <TrackLoop tracks={() => [track()!]}>
         {() => (
           <FocusBox>
@@ -516,8 +515,7 @@ const tile = cva({
       true: {
         height: "100%",
         width: "auto",
-        // Does this do anything?
-        maxHeight: "calc(var(--vc-w) * 9/ 16)",
+        maxHeight: "calc(var(--vc-w) * 9 / 16)",
       },
     },
     video: {
@@ -529,11 +527,17 @@ const tile = cva({
   },
   compoundVariants: [
     {
-      fullscreen: [true],
       video: [true],
       focus: [true],
       css: {
         aspectRatio: "auto",
+      },
+    },
+    {
+      fullscreen: [true],
+      video: [true],
+      focus: [true],
+      css: {
         maxHeight: "none",
       },
     },
