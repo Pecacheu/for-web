@@ -5,6 +5,7 @@ import { AriaButtonProps, createButton } from "@solid-aria/button";
 import { cva } from "styled-system/css/cva";
 
 import { debounce } from "@revolt/common";
+
 import { Ripple } from "./Ripple";
 import { typography } from "./Text";
 
@@ -14,7 +15,7 @@ type Props = Omit<
     JSX.DirectiveAttributes &
     Pick<
       JSX.ButtonHTMLAttributes<HTMLButtonElement>,
-      "role" | "tabIndex" | "aria-selected" | "style"
+      "role" | "tabIndex" | "aria-selected"
     >,
   "onClick" | "disabled"
 >;
@@ -29,24 +30,24 @@ export function IconButton(props: Props) {
     "aria-selected",
     "tabIndex",
     "role",
-    "style",
   ]);
-  const [style, btnRest] = splitProps(propsRest, [
+
+  const [style, rest] = splitProps(propsRest, [
     "size",
     "shape",
     "width",
     "variant",
     "_compositionSendMessage",
   ]);
-  const [btn, noBtnRest] = splitProps(btnRest, ["onPress"]);
   let ref: HTMLButtonElement | undefined;
+
+  const [btn, noBtnRest] = splitProps(rest, ["onPress"]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, solid/reactivity
   const onPress = debounce((e: any) => btn.onPress?.(e), 100),
-    rest = mergeProps(noBtnRest, { onPress });
+    restBtn = mergeProps(noBtnRest, { onPress });
 
-  const { buttonProps } = createButton(rest, () => ref);
-
+  const { buttonProps } = createButton(restBtn, () => ref);
   return (
     <button
       {...passthrough}
