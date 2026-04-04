@@ -3,6 +3,7 @@ import {
   createEffect,
   createSignal,
   For,
+  onMount,
   Setter,
   Show,
 } from "solid-js";
@@ -18,8 +19,8 @@ import {
   VideoTrack,
 } from "solid-livekit-components";
 
-import { AutoSizer } from "@dschz/solid-auto-sizer";
 import { t } from "@lingui/core/macro";
+import { createResizeObserver } from "@solid-primitives/resize-observer";
 import { Track } from "livekit-client";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -121,16 +122,18 @@ function Participants() {
     }
   });
 
+  onMount(() => {
+    createResizeObserver(callRef, ({ width, height }, el) => {
+      if (el === callRef) {
+        el.style.setProperty("--vc-w", `${width}px`);
+        el.style.setProperty("--vc-h", `${height}px`);
+      }
+    });
+  });
+
   return (
     <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
       <InRoom>
-        <AutoSizer style={{ position: "absolute", "pointer-events": "none" }}>
-          {({ width, height }) => {
-            callRef?.style.setProperty("--vc-w", `${width}px`);
-            callRef?.style.setProperty("--vc-h", `${height}px`);
-            return null;
-          }}
-        </AutoSizer>
         <FocusedParticipant
           track={tracks().find((t) => isFocus(t))}
           toggleFocus={toggleFocus}
