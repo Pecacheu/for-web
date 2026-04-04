@@ -72,7 +72,7 @@ msgstr ""
 msgid "{0} changed the channel icon"
 msgstr ""
 
-#. placeholder {0}: CONFIGURATION.MAX_EMOJI - props.server.emojis.length
+#. placeholder {0}: instance.maxEmoji - props.server.emojis.length
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "{0} emoji slots remaining"
 msgstr ""
@@ -229,6 +229,10 @@ msgstr ""
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr ""
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/Reactions.tsx
 msgid "1 person reacted"
 msgstr ""
@@ -282,6 +286,14 @@ msgstr ""
 msgid "Add a new friend"
 msgstr ""
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr ""
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an additional account login for fast-switching"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Tambah rakan"
@@ -310,6 +322,9 @@ msgstr ""
 msgid "Admin Panel"
 msgstr ""
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/auth/src/flows/FlowCreate.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Advanced"
 msgstr ""
@@ -390,6 +405,10 @@ msgstr "Berikan Peranan"
 msgid "Authenticator App"
 msgstr "Aplikasi pengesah"
 
+#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
+msgid "Automatic Gain Control"
+msgstr ""
+
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Avatar"
 msgstr "Avatar"
@@ -400,6 +419,7 @@ msgstr "Avatar"
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 #: components/auth/src/flows/FlowCheck.tsx
+#: components/app/interface/settings/user/_AccountCard.tsx
 msgid "Back"
 msgstr ""
 
@@ -516,6 +536,7 @@ msgstr ""
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/AddBot.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Cancel"
@@ -620,6 +641,10 @@ msgstr "Semak e-mel anda!"
 msgid "Choose a username"
 msgstr ""
 
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
 msgstr ""
@@ -651,6 +676,7 @@ msgstr "Tetapan Klien"
 #: components/modal/modals/UserProfileRoles.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/ServerInfo.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
@@ -686,6 +712,11 @@ msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
+msgstr ""
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Coming soon! 👀"
 msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
@@ -869,6 +900,7 @@ msgid "Create Bot"
 msgstr ""
 
 #: components/app/menus/ServerSidebarContextMenu.tsx
+#: components/app/menus/ChannelContextMenu.tsx
 #: components/app/menus/CategoryContextMenu.tsx
 msgid "Create category"
 msgstr "Cipta kategori"
@@ -876,6 +908,7 @@ msgstr "Cipta kategori"
 #: components/modal/modals/CreateChannel.tsx
 #: components/app/menus/ServerSidebarContextMenu.tsx
 #: components/app/menus/ChannelContextMenu.tsx
+#: components/app/menus/CategoryContextMenu.tsx
 msgid "Create channel"
 msgstr "Cipta saluran"
 
@@ -963,6 +996,14 @@ msgstr "Lalai"
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "Default Permissions"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to stoat.chat"
+msgstr ""
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Defean"
 msgstr ""
 
 #: components/modal/modals/EmojiPreview.tsx
@@ -1186,8 +1227,8 @@ msgid "Emoji Name"
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Emoji Pack (affects your messages only)"
-msgstr ""
+#~ msgid "Emoji Pack (affects your messages only)"
+#~ msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Emojis"
@@ -1207,6 +1248,11 @@ msgstr "Dayakan Pemberitahuan Desktop."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Enable transparency glass/blur effects (slow on older machines)"
+msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "End call"
 msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
@@ -1453,11 +1499,19 @@ msgid "Illegal hacking or cracking"
 msgstr ""
 
 #: components/auth/src/AuthPage.tsx
-msgid "Image by @fakurian"
-msgstr ""
+#~ msgid "Image by @fakurian"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
@@ -1465,8 +1519,8 @@ msgid "Instead of closing, Stoat will hide in your tray."
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Interface Font"
-msgstr ""
+#~ msgid "Interface Font"
+#~ msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Invisible"
@@ -1528,6 +1582,7 @@ msgstr ""
 msgid "Join the Stoat Lounge"
 msgstr ""
 
+#: src/interface/channels/ChannelHeader.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
 msgstr ""
@@ -1622,6 +1677,7 @@ msgstr "Beritahu kami cara kami boleh menambah baik aplikasi kami dengan memberi
 msgid "Light"
 msgstr ""
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Listen"
 msgstr ""
@@ -1807,8 +1863,8 @@ msgid "Monochrome"
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Monospace Font"
-msgstr ""
+#~ msgid "Monospace Font"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "More Contrast"
@@ -1827,6 +1883,7 @@ msgstr ""
 msgid "Multi-factor authentication is already enabled for this account."
 msgstr ""
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/menus/UserContextMenu.tsx
 msgid "Mute"
 msgstr ""
@@ -1957,6 +2014,7 @@ msgstr "Di Luar Talian"
 #: components/modal/modals/SignedOut.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/CreateInvite.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/auth/src/flows/FlowHome.tsx
 msgid "OK"
 msgstr "OK"
@@ -2118,10 +2176,15 @@ msgstr ""
 msgid "Provided email or password is wrong."
 msgstr ""
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
 msgstr ""
 
+#: components/app/menus/MessageContextMenu.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "React"
 msgstr ""
@@ -2192,6 +2255,14 @@ msgstr ""
 #: src/interface/channels/text/TextSearchSidebar.tsx
 msgid "Relevance"
 msgstr "Perkaitan"
+
+#: components/markdown/plugins/anchors.tsx
+msgid "Remote Channel"
+msgstr ""
+
+#: components/markdown/plugins/anchors.tsx
+msgid "Remote Server"
+msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove all reactions"
@@ -2304,6 +2375,10 @@ msgstr ""
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Retry sending"
+msgstr ""
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Return to voice channel"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
@@ -2507,6 +2582,10 @@ msgstr "Beberapa orang sedang menaip…"
 msgid "Share camera or screen in voice call"
 msgstr ""
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Share screen"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
 msgstr ""
@@ -2568,6 +2647,10 @@ msgstr "Cakap"
 msgid "Spellchecker"
 msgstr ""
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Start camera"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Start Minimised to Tray"
 msgstr ""
@@ -2604,8 +2687,20 @@ msgstr ""
 msgid "Stoat is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr ""
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
+msgstr ""
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Stop camera"
+msgstr ""
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Stop sharing"
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
@@ -2631,6 +2726,10 @@ msgstr ""
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
 msgstr "Sokong projek dengan menderma - terima kasih!"
+
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -2828,6 +2927,10 @@ msgstr ""
 msgid "Unmark this channel as mature?"
 msgstr ""
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+msgid "Unmute"
+msgstr ""
+
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Unmute Channel"
 msgstr ""
@@ -2863,6 +2966,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
 msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
@@ -3134,9 +3241,12 @@ msgstr ""
 msgid "You cannot undo this action."
 msgstr "Anda tidak boleh membuat asal tindakan ini."
 
-#. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr ""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
 msgstr ""
 
 #: components/i18n/errors.ts
