@@ -5,6 +5,7 @@ import { AriaButtonProps, createButton } from "@solid-aria/button";
 import { cva } from "styled-system/css/cva";
 
 import { debounce } from "@revolt/common";
+
 import { Ripple } from "./Ripple";
 import { typography } from "./Text";
 
@@ -90,7 +91,7 @@ export function Button(props: Props) {
     "role",
   ]);
 
-  const [style, noSty] = splitProps(propsRest, [
+  const [style, rest] = splitProps(propsRest, [
     "bg",
     "size",
     "shape",
@@ -119,17 +120,18 @@ export function Button(props: Props) {
     ),
   );
 
-  const [btn, noBtnRest] = splitProps(noSty, ["onPress"]);
+  const [btn, noBtnRest] = splitProps(rest, ["onPress"]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, solid/reactivity
   const onPress = debounce((e: any) => btn.onPress?.(e), 100),
-    rest = mergeProps(noBtnRest, { onPress });
+    btnRest = mergeProps(noBtnRest, { onPress });
 
-  const { buttonProps } = createButton(rest, () => ref);
+  const { buttonProps } = createButton(btnRest, () => ref);
   return (
     <button
       {...passthrough}
       {...buttonProps}
+      onTouchEnd={onPress}
       ref={ref}
       class={button({
         shape: shape(),

@@ -1,8 +1,10 @@
-import { Show, splitProps } from "solid-js";
+import { mergeProps, Show, splitProps } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
 import { AriaButtonProps, createButton } from "@solid-aria/button";
 import { cva } from "styled-system/css/cva";
+
+import { debounce } from "@revolt/common";
 
 import { Ripple } from "./Ripple";
 import { typography } from "./Text";
@@ -39,11 +41,18 @@ export function IconButton(props: Props) {
   ]);
   let ref: HTMLButtonElement | undefined;
 
-  const { buttonProps } = createButton(rest, () => ref);
+  const [btn, noBtnRest] = splitProps(rest, ["onPress"]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, solid/reactivity
+  const onPress = debounce((e: any) => btn.onPress?.(e), 100),
+    restBtn = mergeProps(noBtnRest, { onPress });
+
+  const { buttonProps } = createButton(restBtn, () => ref);
   return (
     <button
       {...passthrough}
       {...buttonProps}
+      onTouchEnd={onPress}
       ref={ref}
       class={iconButton2({
         ...style,
