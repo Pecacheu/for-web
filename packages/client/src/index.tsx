@@ -24,6 +24,7 @@ import FlowReset from "@revolt/auth/src/flows/FlowReset";
 import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
 import { ClientContext, useClient } from "@revolt/client";
 import { I18nProvider } from "@revolt/i18n";
+import { InstanceContext } from "@revolt/instance";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
@@ -110,36 +111,35 @@ function BotRedirect() {
 
 function MountContext(props: { children?: JSX.Element }) {
   const state = useState();
-
-  /**
-   * Tanstack Query client
-   */
   const client = new QueryClient();
 
   return (
-    <KeybindContext>
-      <ModalContext>
-        <ClientContext state={state}>
-          <I18nProvider>
-            <VoiceContext>
-              <QueryClientProvider client={client}>
-                {props.children}
-                <ModalRenderer />
-                <FloatingManager />
-              </QueryClientProvider>
-            </VoiceContext>
-          </I18nProvider>
-          <SyncWorker />
-        </ClientContext>
-      </ModalContext>
-    </KeybindContext>
+    <>
+      <KeybindContext>
+        <ModalContext>
+          <ClientContext state={state}>
+            <I18nProvider>
+              <VoiceContext>
+                <QueryClientProvider client={client}>
+                  {props.children}
+                  <ModalRenderer />
+                  <FloatingManager />
+                </QueryClientProvider>
+              </VoiceContext>
+            </I18nProvider>
+            <SyncWorker />
+          </ClientContext>
+        </ModalContext>
+      </KeybindContext>
+      <LoadTheme />
+    </>
   );
 }
 
-render(
-  () => (
-    <StateContext>
-      <Router root={MountContext}>
+const routes = () => (
+  <>
+    <Route component={StateContext}>
+      <Route component={MountContext}>
         <Route path="/login" component={AuthPage as never}>
           <Route path="/delete/:token" component={FlowDeleteAccount} />
           <Route path="/check" component={FlowCheck} />
@@ -167,11 +167,24 @@ render(
           <Route path="/channel/:channel/*" component={ChannelPage} />
           <Route path="/*" component={HomePage} />
         </Route>
-      </Router>
+      </Route>
+    </Route>
+  </>
+);
 
-      <LoadTheme />
+render(
+  () => (
+    <>
+      <Router>
+        <Route path="/i/:host" component={InstanceContext}>
+          {routes()}
+        </Route>
+        <Route path="/" component={InstanceContext}>
+          {routes()}
+        </Route>
+      </Router>
       {/* <ReportBug /> */}
-    </StateContext>
+    </>
   ),
   document.getElementById("root") as HTMLElement,
 );

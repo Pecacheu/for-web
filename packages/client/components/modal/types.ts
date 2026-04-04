@@ -306,4 +306,10 @@ export type Modals =
       type: "edit_category";
       server: Server;
       category: CategoryData;
+    }
+  | {
+      type: "swap_user";
+    }
+  | {
+      type: "login_advanced";
     };

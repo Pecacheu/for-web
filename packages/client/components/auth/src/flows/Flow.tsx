@@ -20,14 +20,15 @@ export const FlowBase = styled("div", {
     background: "var(--md-sys-color-surface-container)",
     color: "var(--md-sys-color-on-surface)",
     width: "360px",
-    maxWidth: "360px",
-    maxHeight: "600px",
+    maxWidth: "100%",
     padding: "45px 40px",
     borderRadius: "32px",
     marginTop: "20px",
     marginBottom: "20px",
     justifySelf: "center",
     marginInline: "auto",
+
+    smDown: { padding: "20px" },
   },
 });
 
