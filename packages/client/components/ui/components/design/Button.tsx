@@ -1,9 +1,10 @@
-import { Show, createRenderEffect, on, splitProps } from "solid-js";
+import { Show, createRenderEffect, mergeProps, on, splitProps } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
 import { AriaButtonProps, createButton } from "@solid-aria/button";
 import { cva } from "styled-system/css/cva";
 
+import { debounce } from "@revolt/common";
 import { Ripple } from "./Ripple";
 import { typography } from "./Text";
 
@@ -89,7 +90,7 @@ export function Button(props: Props) {
     "role",
   ]);
 
-  const [style, rest] = splitProps(propsRest, [
+  const [style, noSty] = splitProps(propsRest, [
     "bg",
     "size",
     "shape",
@@ -117,6 +118,12 @@ export function Button(props: Props) {
       { defer: true },
     ),
   );
+
+  const [btn, noBtnRest] = splitProps(noSty, ["onPress"]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, solid/reactivity
+  const onPress = debounce((e: any) => btn.onPress?.(e), 100),
+    rest = mergeProps(noBtnRest, { onPress });
 
   const { buttonProps } = createButton(rest, () => ref);
   return (
