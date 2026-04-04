@@ -1,3 +1,4 @@
+import { useNavigate } from "@solidjs/router";
 import { Show } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
@@ -10,33 +11,46 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
   const voice = useVoice();
+  const navigate = useNavigate();
   const { t } = useLingui();
   const instance = useInstance();
 
-  function isVideoEnabled() {
-    return instance.enableVideo;
-  }
+  const enableVideo = instance.enableVideo;
 
   return (
     <Actions>
       <Show when={props.size === "xs"}>
-        <a href={voice.channel()?.path}>
-          <IconButton variant="standard" size={props.size}>
-            <Symbol>arrow_top_left</Symbol>
-          </IconButton>
-        </a>
+        <IconButton
+          variant="standard"
+          size={props.size}
+          onPress={() => {
+            navigate(voice.channel()?.path ?? "");
+            //TODO For change in PR #835
+            //state.appDrawer()?.setShown(true);
+          }}
+          use:floating={{
+            tooltip: {
+              placement: "top",
+              content: t`Return to voice channel`,
+            },
+          }}
+        >
+          <Symbol>arrow_top_left</Symbol>
+        </IconButton>
       </Show>
       <IconButton
         size={props.size}
         variant={voice.microphone() ? "filled" : "tonal"}
         onPress={() => voice.toggleMute()}
         use:floating={{
-          tooltip: voice.speakingPermission
-            ? undefined
-            : {
-                placement: "top",
-                content: t`Missing permission`,
-              },
+          tooltip: {
+            placement: "top",
+            content: voice.speakingPermission
+              ? voice.microphone()
+                ? t`Mute`
+                : t`Unmute`
+              : t`Missing permission`,
+          },
         }}
         isDisabled={!voice.speakingPermission}
       >
@@ -49,12 +63,14 @@ export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
         variant={voice.deafen() || !voice.listenPermission ? "tonal" : "filled"}
         onPress={() => voice.toggleDeafen()}
         use:floating={{
-          tooltip: voice.listenPermission
-            ? undefined
-            : {
-                placement: "top",
-                content: t`Missing permission`,
-              },
+          tooltip: {
+            placement: "top",
+            content: voice.listenPermission
+              ? voice.deafen()
+                ? t`Listen`
+                : t`Defean`
+              : t`Missing permission`,
+          },
         }}
         isDisabled={!voice.listenPermission}
       >
@@ -67,44 +83,44 @@ export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
       </IconButton>
       <IconButton
         size={props.size}
-        variant={isVideoEnabled() && voice.video() ? "filled" : "tonal"}
+        variant={enableVideo && voice.video() ? "filled" : "tonal"}
         onPress={() => {
-          if (isVideoEnabled()) voice.toggleCamera();
+          if (enableVideo) voice.toggleCamera();
         }}
         use:floating={{
           tooltip: {
             placement: "top",
-            content: isVideoEnabled()
+            content: enableVideo
               ? voice.video()
-                ? "Stop Camera"
-                : "Start Camera"
-              : "Coming soon! 👀",
+                ? t`Stop camera`
+                : t`Start camera`
+              : t`Coming soon! 👀`,
           },
         }}
-        isDisabled={!isVideoEnabled()}
+        isDisabled={!enableVideo}
       >
         <Symbol>camera_video</Symbol>
       </IconButton>
       <IconButton
         size={props.size}
-        variant={isVideoEnabled() && voice.screenshare() ? "filled" : "tonal"}
+        variant={enableVideo && voice.screenshare() ? "filled" : "tonal"}
         onPress={() => {
-          if (isVideoEnabled()) voice.toggleScreenshare();
+          if (enableVideo) voice.toggleScreenshare();
         }}
         use:floating={{
           tooltip: {
             placement: "top",
-            content: isVideoEnabled()
+            content: enableVideo
               ? voice.screenshare()
-                ? "Stop Sharing"
-                : "Share Screen"
-              : "Coming soon! 👀",
+                ? t`Stop sharing`
+                : t`Share screen`
+              : t`Coming soon! 👀`,
           },
         }}
-        isDisabled={!isVideoEnabled()}
+        isDisabled={!enableVideo}
       >
         <Show
-          when={!isVideoEnabled() || voice.screenshare()}
+          when={!enableVideo || voice.screenshare()}
           fallback={<Symbol>stop_screen_share</Symbol>}
         >
           <Symbol>screen_share</Symbol>
@@ -114,6 +130,12 @@ export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
         size={props.size}
         variant="_error"
         onPress={() => voice.disconnect()}
+        use:floating={{
+          tooltip: {
+            placement: "top",
+            content: t`End call`,
+          },
+        }}
       >
         <Symbol>call_end</Symbol>
       </Button>
@@ -126,6 +148,7 @@ const Actions = styled("div", {
     flexShrink: 0,
     gap: "var(--gap-md)",
     padding: "var(--gap-md)",
+    zIndex: 2,
 
     display: "flex",
     width: "fit-content",
