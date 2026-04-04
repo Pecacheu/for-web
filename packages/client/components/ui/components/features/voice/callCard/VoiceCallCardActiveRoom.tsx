@@ -1,21 +1,8 @@
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  For,
-  onMount,
-  Setter,
-  Show,
-} from "solid-js";
-import {
-  TrackLoop,
-  TrackReferenceOrPlaceholder,
-  useTracks,
-} from "solid-livekit-components";
+import { createEffect, For, onMount, Show } from "solid-js";
+import { TrackLoop } from "solid-livekit-components";
 
 import { t } from "@lingui/core/macro";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
-import { Track } from "livekit-client";
 import { styled } from "styled-system/jsx";
 
 import { InRoom, useVoice } from "@revolt/rtc";
@@ -69,46 +56,23 @@ const TILE_MIN_WIDTH = "250px",
  * Show a grid of participants
  */
 function Participants() {
-  const tracks = useTracks(
-    [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ],
-    { onlySubscribed: false },
-  );
   const voice = useVoice();
 
   // Modify this value to get test tracks
   const testTrackCount = 0;
 
-  const [focus, setFocus] = createSignal<string>();
-  const [showBar, setShowBar] = createSignal(true);
   let callRef: HTMLDivElement | undefined;
 
   const tileWidth = () => {
-    const trackPercentage = Math.round(
-      100 / (tracks().length + testTrackCount),
+    const vidWidth = Math.round(
+      100 / (voice.vidTracks().length + testTrackCount),
     );
-    return `max(${TILE_MIN_WIDTH}, ${trackPercentage}% - var(--gap-md))`;
+    return `max(${TILE_MIN_WIDTH}, ${vidWidth}% - var(--gap-md))`;
   };
-
-  const getFocusID = (t: TrackReferenceOrPlaceholder) =>
-    `${t.source}_${t.participant.sid}`;
-
-  const toggleFocus = (t?: TrackReferenceOrPlaceholder) => {
-    const id = t ? getFocusID(t) : undefined;
-    setFocus(focus() === id || tracks().length < 2 ? undefined : id);
-    setShowBar(true);
-  };
-
-  const isFocus = (t?: TrackReferenceOrPlaceholder) =>
-    t && focus() && getFocusID(t) === focus();
 
   // Clear out any focus when the track that was focused is no longer available.
   createEffect(() => {
-    if (!tracks().find((t) => isFocus(t))) {
-      toggleFocus();
-    }
+    if (!voice.focusTrack()) voice.toggleFocus();
   });
 
   onMount(() => {
@@ -121,31 +85,25 @@ function Participants() {
   });
 
   return (
-    <Call ref={callRef} class={focus() ? "" : scrollableStyles()}>
+    <Call ref={callRef} class={voice.focusId() ? "" : scrollableStyles()}>
       <InRoom>
-        <FocusedParticipant
-          track={tracks().find((t) => isFocus(t))}
-          toggleFocus={toggleFocus}
-          showBar={showBar}
-          setShowBar={setShowBar}
-          fullscreen={voice.fullscreen()}
-        />
-        <Show when={focus()}>
+        <FocusedParticipant />
+        <Show when={voice.focusId()}>
           <ShowBarButtonHolder>
             <div style={{ "margin-bottom": "10px" }}>
               <IconButton
                 size="xs"
                 variant={"tonal"}
-                onPress={() => setShowBar(!showBar())}
+                onPress={() => voice.toggleShowBar()}
                 use:floating={{
                   tooltip: {
                     placement: "top",
-                    content: showBar() ? t`Hide Others` : t`Show Others`,
+                    content: voice.showBar() ? t`Hide Others` : t`Show Others`,
                   },
                 }}
               >
                 <Show
-                  when={showBar()}
+                  when={voice.showBar()}
                   fallback={<Symbol>keyboard_arrow_up</Symbol>}
                 >
                   <Symbol>keyboard_arrow_down</Symbol>
@@ -155,18 +113,15 @@ function Participants() {
           </ShowBarButtonHolder>
         </Show>
         <Grid
-          focus={!!focus()}
-          show={showBar()}
-          class={focus() ? scrollableStyles({ direction: "x" }) : ""}
+          focus={!!voice.focusId()}
+          show={voice.showBar()}
+          class={voice.focusId() ? scrollableStyles({ direction: "x" }) : ""}
           style={{ "--vc-tile-width": tileWidth() }}
         >
-          <TrackLoop tracks={() => tracks().filter((track) => !isFocus(track))}>
-            {() => (
-              <ParticipantTile
-                setFocus={toggleFocus}
-                fullscreen={voice.fullscreen()}
-              />
-            )}
+          <TrackLoop
+            tracks={() => voice.vidTracks().filter((t) => !voice.isFocus(t))}
+          >
+            {() => <ParticipantTile />}
           </TrackLoop>
           <For each={Array(testTrackCount)}>
             {() => (
@@ -181,23 +136,15 @@ function Participants() {
   );
 }
 
-function FocusedParticipant(props: {
-  track?: TrackReferenceOrPlaceholder;
-  toggleFocus: (t?: TrackReferenceOrPlaceholder) => void;
-  showBar: Accessor<boolean>;
-  setShowBar: Setter<boolean>;
-  fullscreen?: boolean;
-}) {
+function FocusedParticipant() {
+  const voice = useVoice();
+
   return (
-    <Show when={props.track}>
-      <TrackLoop tracks={() => [props.track!]}>
+    <Show when={voice.focusTrack()}>
+      <TrackLoop tracks={() => [voice.focusTrack()!]}>
         {() => (
           <FocusBox>
-            <ParticipantTile
-              setFocus={props.toggleFocus}
-              fullscreen={props.fullscreen}
-              focus
-            />
+            <ParticipantTile focus />
           </FocusBox>
         )}
       </TrackLoop>

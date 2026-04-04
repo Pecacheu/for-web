@@ -1,7 +1,6 @@
 import { createSignal, Show } from "solid-js";
 import {
   TrackReference,
-  TrackReferenceOrPlaceholder,
   useEnsureParticipant,
   useIsMuted,
   useIsSpeaking,
@@ -15,6 +14,7 @@ import { styled } from "styled-system/jsx";
 
 import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
+import { useVoice } from "@revolt/rtc";
 import { Avatar } from "@revolt/ui/components/design";
 import { Row } from "@revolt/ui/components/layout";
 import { OverflowingText } from "@revolt/ui/components/utils";
@@ -23,15 +23,14 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 
 type TileProps = {
-  setFocus: (t: TrackReferenceOrPlaceholder | undefined) => void;
   focus?: boolean;
-  fullscreen?: boolean;
 };
 
 /**
  * Individual participant tile
  */
 export function ParticipantTile(props: TileProps) {
+  const voice = useVoice();
   const participant = useEnsureParticipant();
   const track = useTrackRefContext();
   const user = useUser(participant.identity);
@@ -59,23 +58,17 @@ export function ParticipantTile(props: TileProps) {
   });
 
   const isVideo = () => !isVideoMuted();
-
   const isScreenShare = () => track.source === Track.Source.ScreenShare;
-
   const isSpeaking = useIsSpeaking(participant);
 
   const getHeight = () => {
-    if (!props.focus || videoDims().height == 0) {
-      return {};
-    }
+    if (!props.focus || videoDims().height == 0) return {};
     // Calculate the aspect ratio
     const ratio = videoDims().width / videoDims().height;
 
-    if (ratio > 1) {
-      return { height: `min(var(--vc-w) / ${ratio}, 100%)` };
-    } else {
-      return { height: "100%" };
-    }
+    return ratio > 1
+      ? { height: `min(var(--vc-w) / ${ratio}, 100%)` }
+      : { height: "100%" };
   };
 
   return (
@@ -84,10 +77,11 @@ export function ParticipantTile(props: TileProps) {
         tile({
           speaking: !isScreenShare() && isSpeaking(),
           video: isVideo() || isScreenShare(),
+          fullscreen: voice.fullscreen(),
           ...props,
         }) + (isScreenShare() ? " vc_tile group" : " vc_tile")
       }
-      onClick={() => props.setFocus(track)}
+      onClick={() => voice.toggleFocus(track)}
       use:floating={
         isScreenShare()
           ? undefined
