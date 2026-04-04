@@ -24,7 +24,7 @@ export function SwapUserModal(
       <For each={auth.getSaved()}>
         {(ses) => (
           <MenuButton
-            //noDrawer //TODO Needed for PR #835
+            noDrawer
             icon={
               <Show when={ses.cachedAvatar}>
                 <Avatar src={ses.cachedAvatar} size={32} />
