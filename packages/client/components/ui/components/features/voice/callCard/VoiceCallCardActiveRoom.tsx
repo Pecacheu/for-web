@@ -28,11 +28,11 @@ import { UserContextMenu } from "@revolt/app";
 import { useUser } from "@revolt/markdown/users";
 import { InRoom, useVoice } from "@revolt/rtc";
 import { Avatar, IconButton } from "@revolt/ui/components/design";
+import { Row } from "@revolt/ui/components/layout";
 import { OverflowingText } from "@revolt/ui/components/utils";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { scrollableStyles } from "@revolt/ui/directives";
 
-import { Row } from "@revolt/ui/components/layout";
 import { VoiceStatefulUserIcons } from "../VoiceStatefulUserIcons";
 import { VoiceCallCardActions } from "./VoiceCallCardActions";
 import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
