@@ -43,6 +43,7 @@ export function IconButton(props: Props) {
 
   const [btn, noBtnRest] = splitProps(rest, ["onPress"]);
 
+  //Eslint being silly, this is reactive
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, solid/reactivity
   const onPress = debounce((e: any) => btn.onPress?.(e), 100),
     restBtn = mergeProps(noBtnRest, { onPress });
