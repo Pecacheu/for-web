@@ -1,14 +1,16 @@
 import { JSX, Show, splitProps } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
+import { MessageEmbed } from "stoat.js";
 import { cva } from "styled-system/css";
 
 import { useClient } from "@revolt/client";
 import { DefaultHost, useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
+import { trimURL } from "@revolt/modal/modals/LinkWarning";
 import { paramsFromPathname } from "@revolt/routing";
 import { useState } from "@revolt/state";
-import { Avatar, iconSize } from "@revolt/ui";
+import { Avatar, Embed, iconSize } from "@revolt/ui";
 import { Invite } from "@revolt/ui/components/features/messaging/elements/Invite";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
@@ -57,19 +59,27 @@ function inAppScope(link: URL, root: string): boolean {
 }
 
 export function RenderAnchor(
-  props: { disabled?: boolean } & JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
+  props: {
+    disabled?: boolean;
+    embeds?: MessageEmbed[];
+    node?: Element;
+  } & JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
 ) {
   /* eslint-disable solid/reactivity */
   /* eslint-disable solid/components-return-once */
 
-  const [localProps, remoteProps] = splitProps(props, [
-    "href",
-    "target",
-    "disabled",
-  ]);
+  const text = Array.isArray(props.children) && props.children[0]?.toString(),
+    plainLink = text === props.href && !props.disabled;
 
   // Handle empty link
-  if (!localProps.href) return <span>{remoteProps.children}</span>;
+  if (
+    !props.href ||
+    (props.node &&
+      !text &&
+      // Nested anchor, continue down the stack
+      [...props.node.children].find((el) => el.tagName === "a"))
+  )
+    return props.children;
 
   const instance = useInstance(),
     host = instance.host || undefined,
@@ -77,7 +87,8 @@ export function RenderAnchor(
 
   // Handle links that navigate internally
   try {
-    let url = new URL(localProps.href);
+    let url = new URL(props.href),
+      internal = false;
 
     // Remap discover links to native links
     if (url.origin === "https://rvlt.gg" || url.origin === "https://stt.gg") {
@@ -170,26 +181,22 @@ export function RenderAnchor(
             </LinkComponent>
           </Show>
         );
-      } else if (
-        params.inviteId &&
-        // only display invites if it is just the plain link:
-        Array.isArray(remoteProps.children) &&
-        remoteProps.children[0] === localProps.href &&
-        !localProps.disabled
-      ) {
+      } else if (params.inviteId && plainLink) {
         return <Invite code={params.inviteId} />;
-      } else {
-        const internalUrl = () =>
-          new URL(url.pathname, location.origin).toString();
+      }
+      internal = true;
+    }
 
-        return (
-          <LinkComponent
-            {...remoteProps}
-            class={link()}
-            disabled={localProps.disabled}
-            href={internalUrl()}
-          />
-        );
+    //Inline link embed
+    if (plainLink && props.embeds) {
+      const href = trimURL(url, true);
+      for (let i = 0, l = props.embeds.length, em; i < l; ++i) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        em = props.embeds[i] as any;
+        if (trimURL(em.originalUrl || em.url, true) === href) {
+          props.embeds.splice(i, 1);
+          return <Embed embed={em} link={url} />;
+        }
       }
     }
 
@@ -207,29 +214,33 @@ export function RenderAnchor(
         openModal({
           type: "link_warning",
           url,
-          display: event.currentTarget!.innerText,
+          display: text || url.href,
         });
       }
     }
 
+    //Override internal URL
+    if (internal)
+      url = new URL(url.pathname + url.search + url.hash, location.origin);
+
     return (
       <Show
-        when={state.linkSafety.isTrusted(url)}
+        when={internal || state.linkSafety.isTrusted(url)}
         fallback={
           <LinkComponent
-            {...remoteProps}
+            children={props.node ? text : props.children}
             class={link()}
-            disabled={localProps.disabled}
+            disabled={props.disabled}
             onClick={onHandleWarning}
             onAuxClick={onHandleWarning}
           />
         }
       >
         <LinkComponent
-          {...remoteProps}
+          children={props.node ? text : props.children}
           class={link()}
-          disabled={localProps.disabled}
-          href={localProps.href}
+          disabled={props.disabled}
+          href={trimURL(url)}
           target={"_blank"}
           rel="noreferrer"
         />
@@ -239,7 +250,7 @@ export function RenderAnchor(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_) {
     // invalid URL
-    return <span>{props.children}</span>;
+    return props.children;
   }
 }
 

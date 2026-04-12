@@ -13,6 +13,7 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { VFile } from "vfile";
 
+import { Message } from "stoat.js";
 import * as elements from "./elements";
 import { injectEmojiSize } from "./emoji/util";
 import { RenderCodeblock } from "./plugins/Codeblock";
@@ -46,7 +47,7 @@ import {
   unicodeEmojiHandler,
 } from "./plugins/unicodeEmoji";
 import { remarkInsertBreaks, sanitise } from "./sanitise";
-import { childrenToSolid } from "./solid-markdown/ast-to-solid";
+import { Container, childrenToSolid } from "./solid-markdown/ast-to-solid";
 import { defaults } from "./solid-markdown/defaults";
 
 /**
@@ -255,6 +256,12 @@ export interface MarkdownProps {
    * Content to render
    */
   content?: string;
+  message?: Message;
+
+  /**
+   * Container to wrap render in
+   */
+  container?: Container;
 
   /**
    * Whether to prevent big emoji from rendering
@@ -283,7 +290,6 @@ export function renderSimpleMarkdown(content: string) {
         components: replyComponents(),
       },
       schema: html,
-      listDepth: 0,
     },
     hastNode,
   );
@@ -297,7 +303,7 @@ export function Markdown(props: MarkdownProps) {
    * Render some given Markdown content
    * @param content content
    */
-  function render(content = "") {
+  function render(content = "", message?: Message, container?: Container) {
     const file = new VFile();
     file.value = sanitise(content);
 
@@ -315,23 +321,26 @@ export function Markdown(props: MarkdownProps) {
           ...defaults,
           // @ts-expect-error it doesn't like the td component
           components: components(),
+          container,
+          message,
         },
         schema: html,
-        listDepth: 0,
       },
       hastNode,
     );
   }
 
   // Render once immediately
-  // eslint-disable-next-line solid/reactivity
-  const [children, setChildren] = createSignal(render(props.content));
+  const [children, setChildren] = createSignal(
+    // eslint-disable-next-line solid/reactivity
+    render(props.content, props.message, props.container),
+  );
 
   // If it ever updates, re-render the whole tree:
   createEffect(
     on(
-      () => props.content,
-      (content) => setChildren(render(content)),
+      [() => props.content, () => props.message?.embeds],
+      (data) => setChildren(render(data[0], props.message, props.container)),
       { defer: true },
     ),
   );
