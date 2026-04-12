@@ -8,16 +8,13 @@ import {
   useContext,
 } from "solid-js";
 
+import { useInstance } from "@revolt/instance";
+import { useModals } from "@revolt/modal";
+import { CHANGELOG_MODAL_CONST } from "@revolt/modal/modals/Changelog";
+import { State } from "@revolt/state";
 import type { Client, User } from "stoat.js";
 
-import { useModals } from "@revolt/modal";
-import { State } from "@revolt/state";
-
-import { State as LifecycleState } from "./Controller";
-
-import { CHANGELOG_MODAL_CONST } from "@revolt/modal/modals/Changelog";
-import ClientController from "./Controller";
-
+import ClientController, { State as LifecycleState } from "./Controller";
 export type { default as ClientController } from "./Controller";
 
 const clientContext = createContext(null! as ClientController);
@@ -27,9 +24,10 @@ const clientContext = createContext(null! as ClientController);
  */
 export function ClientContext(props: { state: State; children: JSXElement }) {
   const { openModal } = useModals();
+  const instance = useInstance();
 
   // eslint-disable-next-line solid/reactivity
-  const controller = new ClientController(props.state);
+  const controller = new ClientController(props.state, instance);
   onCleanup(() => controller.dispose());
 
   createEffect(() => {
@@ -81,17 +79,7 @@ export function ClientContext(props: { state: State; children: JSXElement }) {
  * @returns Lifecycle information
  */
 export function useClientLifecycle() {
-  const { login, logout, selectUsername, lifecycle, isLoggedIn, isError } =
-    useContext(clientContext);
-
-  return {
-    login,
-    logout,
-    selectUsername,
-    lifecycle,
-    isLoggedIn,
-    isError,
-  };
+  return useContext(clientContext);
 }
 
 /**

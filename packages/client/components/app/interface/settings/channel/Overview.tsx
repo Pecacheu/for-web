@@ -5,7 +5,7 @@ import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import type { API } from "stoat.js";
 
 import { useClient } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
+import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { Button, CircularProgress, Column, Form2, Row, Text } from "@revolt/ui";
 
@@ -18,6 +18,7 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
   const { t } = useLingui();
   const client = useClient();
   const { openModal } = useModals();
+  const instance = useInstance();
 
   /* eslint-disable solid/reactivity */
   // we want to take the initial value only
@@ -63,16 +64,13 @@ export default function ChannelOverview(props: ChannelSettingsProps) {
         body.append("file", editGroup.controls.icon.value[0]);
 
         const [key, value] = client().authenticationHeader;
-        const data: { id: string } = await fetch(
-          `${CONFIGURATION.DEFAULT_MEDIA_URL}/icons`,
-          {
-            method: "POST",
-            body,
-            headers: {
-              [key]: value,
-            },
+        const data: { id: string } = await fetch(`${instance.mediaUrl}/icons`, {
+          method: "POST",
+          body,
+          headers: {
+            [key]: value,
           },
-        ).then((res) => res.json());
+        }).then((res) => res.json());
 
         changes.icon = data.id;
       }

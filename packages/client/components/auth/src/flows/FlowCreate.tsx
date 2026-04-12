@@ -1,14 +1,14 @@
 import { Trans } from "@lingui-solid/solid/macro";
+import { Show } from "solid-js";
 
 import { useApi, useClient, useClientLifecycle } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
+import { useInstance } from "@revolt/instance";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Row, iconSize } from "@revolt/ui";
+import { Button, Column, iconSize, Row } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { Show } from "solid-js";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
@@ -23,6 +23,7 @@ export default function FlowCreate() {
   const { code } = useParams();
   const modals = useModals();
   const { login } = useClientLifecycle();
+  const instance = useInstance();
 
   /**
    * Create an account
@@ -70,11 +71,19 @@ export default function FlowCreate() {
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
+      <Form onSubmit={create} captcha={instance.captchaKey}>
         <Fields fields={["email", "password"]} />
         <Show when={isInviteOnly()}>
           <Fields fields={[{ field: "invite", value: code }]} />
         </Show>
+        <Column align>
+          <Button
+            variant="text"
+            onPress={() => modals.openModal({ type: "login_advanced" })}
+          >
+            <Trans>Advanced</Trans>
+          </Button>
+        </Column>
         <Row justify>
           <a href="..">
             <Button variant="text">

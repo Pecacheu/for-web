@@ -1,14 +1,17 @@
 import { BiLogosGithub } from "solid-icons/bi";
-import { JSX } from "solid-js";
+import { JSX, Show } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
+import { useClientLifecycle } from "@revolt/client";
+import { State } from "@revolt/client/Controller";
 import { useState } from "@revolt/state";
 import { IconButton, iconSize } from "@revolt/ui";
 
 import MdDarkMode from "@material-design-icons/svg/filled/dark_mode.svg?component-solid";
+import MdArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg?component-solid";
 
 import background from "./background.jpg";
 import { FlowBase } from "./flows/Flow";
@@ -37,9 +40,8 @@ const Base = styled("div", {
     flexDirection: "column",
     justifyContent: "space-between",
 
-    mdDown: {
-      padding: "30px 20px",
-    },
+    mdDown: { padding: "30px 20px" },
+    smDown: { padding: "10px 5px" },
   },
 });
 
@@ -116,7 +118,8 @@ const Bullet = styled("div", {
  * Authentication page
  */
 export function AuthPage(props: { children: JSX.Element }) {
-  const state = useState();
+  const state = useState(),
+    ctrl = useClientLifecycle();
 
   return (
     <div
@@ -132,7 +135,17 @@ export function AuthPage(props: { children: JSX.Element }) {
         css={{ scrollbar: "hidden" }}
       >
         <Nav>
-          <div />
+          <Show
+            when={
+              ctrl.lifecycle.state() === State.Ready &&
+              state.auth.hasMultiSession()
+            }
+            fallback={<div />}
+          >
+            <IconButton variant="tonal" onPress={() => ctrl.loginCached(true)}>
+              <MdArrowBack {...iconSize("24px")} />
+            </IconButton>
+          </Show>
           <IconButton
             variant="tonal"
             onPress={() =>
@@ -173,13 +186,6 @@ export function AuthPage(props: { children: JSX.Element }) {
                 <Trans>Privacy Policy</Trans>
               </a>
             </NavItems>
-          </NavItems>
-          <NavItems variant="hide">
-            <Trans>Image by {"@fakurian"}</Trans>
-            <Bullet />
-            <a href="https://unsplash.com/" target="_blank" rel="noreferrer">
-              unsplash.com
-            </a>
           </NavItems>
         </Nav>
       </Base>

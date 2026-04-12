@@ -1,15 +1,15 @@
 import HCaptcha, { HCaptchaFunctions } from "solid-hcaptcha";
-import { For, JSX, Show, createSignal } from "solid-js";
+import { For, JSX, Show } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 
-import { useError } from "@revolt/i18n";
-import { Checkbox2, Column, Text, TextField } from "@revolt/ui";
+import { useModals } from "@revolt/modal";
+import { Checkbox2, Column, TextField } from "@revolt/ui";
 
 /**
  * Available field types
  */
-type Field =
+export type Field =
   | "email"
   | "password"
   | "new-password"
@@ -20,7 +20,7 @@ type Field =
 /**
  * Properties to apply to fields
  */
-const useFieldConfiguration = () => {
+export const useFieldConfig = () => {
   const { t } = useLingui();
 
   return {
@@ -81,28 +81,28 @@ interface FieldPreset {
  * Render a bunch of fields with preset values
  */
 export function Fields(props: FieldProps) {
-  const fieldConfiguration = useFieldConfiguration();
+  const fieldConfig = useFieldConfig();
 
   return (
     <For each={props.fields}>
       {(field) => {
         // If field is just a Field value, convert it to a FieldPreset
-        if (typeof field === "string") {
-          field = { field: field };
-        }
+        if (typeof field === "string") field = { field };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const conf = fieldConfig[field.field] as any;
+        if (!("required" in conf)) conf.required = true;
+
         return (
           <label>
             {field.field === "log-out" ? (
-              <Checkbox2 name={field.field}>
-                {fieldConfiguration[field.field].name()}
-              </Checkbox2>
+              <Checkbox2 name={field.field}>{conf.name()}</Checkbox2>
             ) : (
               <TextField
-                required
-                {...fieldConfiguration[field.field]}
+                {...conf}
                 name={field.field}
-                label={fieldConfiguration[field.field].name()}
-                placeholder={fieldConfiguration[field.field].placeholder()}
+                label={conf.name()}
+                placeholder={conf.placeholder()}
                 disabled={field.disabled}
                 value={field.value}
               />
@@ -135,8 +135,7 @@ interface Props {
  * Small wrapper for HTML form
  */
 export function Form(props: Props) {
-  const [error, setError] = createSignal();
-  const err = useError();
+  const { openModal } = useModals();
   let hcaptcha: HCaptchaFunctions | undefined;
 
   /**
@@ -156,21 +155,14 @@ export function Form(props: Props) {
 
     try {
       await props.onSubmit(formData);
-    } catch (err) {
-      setError(err);
+    } catch (e) {
+      openModal({ type: "error2", error: e });
     }
   }
 
   return (
     <form onSubmit={onSubmit}>
-      <Column gap="lg">
-        {props.children}
-        <Show when={error()}>
-          <Text class="label" size="small">
-            {err(error())}
-          </Text>
-        </Show>
-      </Column>
+      <Column gap="lg">{props.children}</Column>
       <Show when={props.captcha}>
         <HCaptcha
           sitekey={props.captcha!}

@@ -4,10 +4,11 @@ import { detect } from "detect-browser";
 import { API, Client, ConnectionState } from "stoat.js";
 import { ProtocolV1 } from "stoat.js/lib/events/v1";
 
-import { CONFIGURATION } from "@revolt/common";
+import { DefaultHost, DefaultURL } from "@revolt/instance";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
+import Instance from "../instance/Instance";
 
 export enum State {
   Ready = "Ready",
@@ -126,7 +127,7 @@ class Lifecycle {
     }
 
     this.client = new Client({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: this.#controller.instance.apiUrl,
       autoReconnect: false,
       syncUnreads: true,
       debug: import.meta.env.DEV,
@@ -143,11 +144,11 @@ class Lifecycle {
       features: {
         autumn: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_MEDIA_URL,
+          url: this.#controller.instance.mediaUrl,
         },
         january: {
           enabled: true,
-          url: CONFIGURATION.DEFAULT_PROXY_URL,
+          url: this.#controller.instance.proxyUrl,
         },
         captcha: {} as never,
         email: true,
@@ -158,7 +159,7 @@ class Lifecycle {
         },
       },
       vapid: String(),
-      ws: CONFIGURATION.DEFAULT_WS_URL,
+      ws: this.#controller.instance.wsUrl,
     };
 
     this.client.events.on("state", this.onState);
@@ -181,16 +182,13 @@ class Lifecycle {
 
     switch (nextState) {
       case State.LoggingIn:
-        this.client.api.get("/onboard/hello").then(({ onboarding }) => {
-          if (onboarding) {
-            this.transition({
-              type: TransitionType.NoUser,
-            });
-          } else {
-            this.client.connect();
-          }
-        });
-
+        this.client.api
+          .get("/onboard/hello")
+          .then(({ onboarding }) => {
+            if (onboarding) this.transition({ type: TransitionType.NoUser });
+            else this.client.connect();
+          })
+          .catch((e) => this.showError(e));
         break;
       case State.Connecting:
       case State.Reconnecting:
@@ -203,10 +201,12 @@ class Lifecycle {
         break;
       case State.Dispose:
         this.dispose();
-        this.transition({
-          type: TransitionType.Ready,
-        });
-        this.#setLoadedOnce(false);
+        if (this.#controller.state.auth.getSession()) {
+          this.#controller.loginCached();
+        } else {
+          this.transition({ type: TransitionType.Ready });
+          this.#setLoadedOnce(false);
+        }
         break;
       case State.Disconnected:
         this.#connectionFailures++;
@@ -240,28 +240,40 @@ class Lifecycle {
   transition(transition: Transition) {
     console.debug("Received transition", transition.type);
 
-    if (transition.type === TransitionType.DisposeOnly) {
-      this.dispose();
-      return;
+    switch (transition.type) {
+      case TransitionType.DisposeOnly:
+        this.dispose();
+        return;
+      case TransitionType.PermanentFailure:
+        this.#permanentError = transition.error;
+        this.#enter(State.Error);
+        return;
     }
 
     const currentState = this.state();
     switch (currentState) {
+      case State.Dispose:
+        if (transition.type === TransitionType.Ready) {
+          this.#enter(State.Ready);
+        }
+      // eslint-disable-next-line no-fallthrough
       case State.Ready:
-        if (transition.type === TransitionType.LoginUncached) {
-          this.client.useExistingSession({
-            ...transition.session,
-            user_id: transition.session.userId,
-          });
+        switch (transition.type) {
+          case TransitionType.LoginUncached:
+            this.client.useExistingSession({
+              ...transition.session,
+              user_id: transition.session.userId,
+            });
 
-          this.#enter(State.LoggingIn);
-        } else if (transition.type === TransitionType.LoginCached) {
-          this.client.useExistingSession({
-            ...transition.session,
-            user_id: transition.session.userId,
-          });
+            this.#enter(State.LoggingIn);
+            break;
+          case TransitionType.LoginCached:
+            this.client.useExistingSession({
+              ...transition.session,
+              user_id: transition.session.userId,
+            });
 
-          this.#enter(State.Connecting);
+            this.#enter(State.Connecting);
         }
         break;
       case State.LoggingIn:
@@ -271,11 +283,6 @@ class Lifecycle {
             break;
           case TransitionType.NoUser:
             this.#enter(State.Onboarding);
-            break;
-          case TransitionType.PermanentFailure:
-          case TransitionType.TemporaryFailure:
-            // TODO: relay error
-            this.#enter(State.Error);
             break;
         }
         break;
@@ -288,12 +295,9 @@ class Lifecycle {
         break;
       case State.Error:
         if (transition.type === TransitionType.Dismiss) {
+          if (this.permanentError === "InvalidSession")
+            this.#controller.state.auth.removeSession();
           this.#enter(State.Dispose);
-        }
-        break;
-      case State.Dispose:
-        if (transition.type === TransitionType.Ready) {
-          this.#enter(State.Ready);
         }
         break;
       case State.Connecting:
@@ -303,10 +307,6 @@ class Lifecycle {
             break;
           case TransitionType.TemporaryFailure:
             this.#enter(State.Disconnected);
-            break;
-          case TransitionType.PermanentFailure:
-            this.#permanentError = transition.error;
-            this.#enter(State.Error);
             break;
           case TransitionType.Logout:
             this.#enter(State.Dispose);
@@ -343,10 +343,6 @@ class Lifecycle {
             break;
           case TransitionType.TemporaryFailure:
             this.#enter(State.Disconnected);
-            break;
-          case TransitionType.PermanentFailure:
-            // TODO: relay error
-            this.#enter(State.Error);
             break;
           case TransitionType.Logout:
             this.#enter(State.Dispose);
@@ -399,21 +395,13 @@ class Lifecycle {
       case ConnectionState.Disconnected:
         if (this.client.events.lastError) {
           if (this.client.events.lastError.type === "revolt") {
-            // if (this.client.events.lastError.data.type == 'InvalidSession') {
-
-            this.transition({
-              type: TransitionType.PermanentFailure,
-              error: this.client.events.lastError.data.type,
-            });
-
+            this.showError(this.client.events.lastError.data.type);
             break;
           }
         }
-
         this.transition({
           type: TransitionType.TemporaryFailure,
         });
-
         break;
     }
   }
@@ -423,6 +411,14 @@ class Lifecycle {
    */
   get permanentError() {
     return this.#permanentError!;
+  }
+
+  /** Redirect to client error page */
+  showError(e: string) {
+    this.transition({
+      type: TransitionType.PermanentFailure,
+      error: e,
+    });
   }
 }
 
@@ -446,29 +442,31 @@ export default class ClientController {
   readonly state: ApplicationState;
 
   /**
+   * Reference to the instance the client connects to
+   */
+  readonly instance: Instance;
+
+  /**
    * Construct new client controller
    */
-  constructor(state: ApplicationState) {
+  constructor(state: ApplicationState, instance: Instance) {
     this.state = state;
+    this.instance = instance;
     this.api = new API.API({
-      baseURL: CONFIGURATION.DEFAULT_API_URL,
+      baseURL: instance.apiUrl,
     });
 
     this.lifecycle = new Lifecycle(this);
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.swapAccount = this.swapAccount.bind(this);
     this.selectUsername = this.selectUsername.bind(this);
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.isError = this.isError.bind(this);
+    this.isSwapping = this.isSwapping.bind(this);
 
-    const session = state.auth.getSession();
-    if (session) {
-      this.lifecycle.transition({
-        type: TransitionType.LoginCached,
-        session,
-      });
-    }
+    this.loginCached(false, true);
   }
 
   getCurrentClient() {
@@ -489,11 +487,22 @@ export default class ClientController {
     return this.lifecycle.state() === State.Error;
   }
 
+  loginCached(unhold = false, cached = unhold) {
+    console.log("AUTH loginCached", unhold, cached);
+    const session = this.state.auth.getSession(unhold);
+    if (!session || this.#checkSwapInstance()) return;
+    this.lifecycle.transition({
+      type: cached ? TransitionType.LoginCached : TransitionType.LoginUncached,
+      session,
+    });
+  }
+
   /**
    * Login given a set of credentials
    * @param credentials Credentials
    */
   async login(credentials: API.DataLogin, modals: ModalControllerExtended) {
+    console.log("AUTH login", credentials);
     const browser = detect();
 
     // Generate a friendly name for this browser
@@ -550,29 +559,31 @@ export default class ClientController {
         }
       }
 
-      if (session.result === "MFA") {
-        throw "Cancelled";
-      }
+      if (session.result === "MFA") throw "Cancelled";
     }
 
     if (session.result === "Disabled") {
-      // TODO
-      alert("Account is disabled, run special logic here.");
-      return;
+      return this.lifecycle.showError("This account is disabled.");
     }
 
     const createdSession = {
       _id: session._id,
       token: session.token,
       userId: session.user_id,
+      host: this.instance.host,
       valid: false,
     };
 
-    this.state.auth.setSession(createdSession);
-    this.lifecycle.transition({
-      type: TransitionType.LoginUncached,
-      session: createdSession,
-    });
+    try {
+      this.state.auth.addSession(createdSession);
+      this.lifecycle.transition({
+        type: TransitionType.LoginUncached,
+        session: createdSession,
+      });
+      return true;
+    } catch (e) {
+      modals.openModal({ type: "error2", error: e });
+    }
   }
 
   async selectUsername(username: string) {
@@ -585,14 +596,91 @@ export default class ClientController {
     });
   }
 
-  logout() {
-    this.state.auth.removeSession();
+  #cacheUserInfo() {
+    const user = this.lifecycle.client.user;
+    if (user) this.state.auth.cacheUserInfo(user);
+  }
+
+  /** Check if instance matches auth, and switch if it doesn't */
+  #checkSwapInstance(swapUser = true) {
+    const host = this.instance.host || DefaultHost,
+      ses = this.state.auth.getSession();
+    if (ses)
+      console.log(
+        "SES CHECK",
+        (ses.host || DefaultHost) !== host,
+        ses.host || DefaultHost,
+        host,
+      );
+    if (ses && (ses.host || DefaultHost) !== host) {
+      //First try to find an account that fits this instance
+      if (swapUser) {
+        const sl = this.state.auth.getSaved();
+        //Itterate backwards to prefer last-used
+        for (let i = sl.length - 1; i >= 0; --i)
+          if ((sl[i].host || DefaultHost) === host) {
+            console.log("SES SWAP TO BETTER FIT", sl[i]);
+            this.#swapSession(sl[i].userId);
+            this.lifecycle.transition({
+              type: TransitionType.LoginCached,
+              session: this.state.auth.getSession()!,
+            });
+            return true;
+          }
+      }
+      //Delay to ensure auth is written to disk
+      setTimeout(
+        () =>
+          this.instance.switchTo(
+            ses.host ? new URL(`https://${ses.host}`) : DefaultURL,
+          ),
+        1,
+      );
+      return true;
+    }
+  }
+
+  #swapping = false;
+
+  /** True if the user session is about to be swapped */
+  isSwapping() {
+    return this.#swapping;
+  }
+
+  #swapSession(userId: string) {
+    try {
+      this.#cacheUserInfo();
+      this.#swapping = true;
+      this.state.auth.swapSession(userId);
+    } catch (e) {
+      this.#swapping = false;
+      throw e;
+    }
+  }
+
+  swapAccount(userId: string) {
+    console.log("AUTH swapAccount", userId);
+    this.#swapSession(userId);
+    if (this.#checkSwapInstance(false)) return;
+    this.lifecycle.transition({
+      type: TransitionType.Logout,
+    });
+  }
+
+  logout(delSes = true) {
+    console.log("AUTH LOGOUT", delSes);
+    if (delSes) this.state.auth.removeSession();
+    else {
+      this.#cacheUserInfo();
+      this.state.auth.holdSession();
+    }
     this.lifecycle.transition({
       type: TransitionType.Logout,
     });
   }
 
   dispose() {
+    console.log("AUTH DISPOSE");
     this.lifecycle.transition({
       type: TransitionType.DisposeOnly,
     });
