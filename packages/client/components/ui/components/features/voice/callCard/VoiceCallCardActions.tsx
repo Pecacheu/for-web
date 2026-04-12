@@ -6,10 +6,12 @@ import { styled } from "styled-system/jsx";
 
 import { useInstance } from "@revolt/instance";
 import { useVoice } from "@revolt/rtc";
+import { useState } from "@revolt/state";
 import { Button, IconButton } from "@revolt/ui/components/design";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
+  const state = useState();
   const voice = useVoice();
   const navigate = useNavigate();
   const { t } = useLingui();
@@ -24,8 +26,7 @@ export function VoiceCallCardActions(props: { size: "xs" | "sm" }) {
           size={props.size}
           onPress={() => {
             navigate(voice.channel()?.path ?? "");
-            //TODO For change in PR #835
-            //state.appDrawer()?.setShown(true);
+            state.appDrawer()?.setShown(true);
           }}
           use:floating={{
             tooltip: {

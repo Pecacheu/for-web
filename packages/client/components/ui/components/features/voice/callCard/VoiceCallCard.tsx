@@ -18,6 +18,8 @@ import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { useVoice } from "@revolt/rtc";
+import { useState } from "@revolt/state";
+import { SlideState } from "@revolt/ui/components/navigation/SlideDrawer";
 
 import { VoiceCallCardActiveRoom } from "./VoiceCallCardActiveRoom";
 import { VoiceCallCardPiP } from "./VoiceCallCardPiP";
@@ -29,7 +31,7 @@ type FloatType = "tl" | "tr" | "bl" | "br";
 type Info = {
   channel: Channel;
   pos?: DOMRect;
-  //drawer?: SlideState; TODO PR #835
+  drawer?: SlideState;
 };
 
 const PAD = 16,
@@ -122,8 +124,7 @@ export function VoiceCallCardContext(props: { children: JSX.Element }) {
     const sty = ref.style;
 
     //Set mode based on state
-    //TODO for PR #835 to adapt VoiceCallCard to mobile UI
-    if (inf?.pos /*&& (!inf.drawer || inf.drawer === SlideState.SHOWN)*/) {
+    if (inf?.pos && (!inf.drawer || inf.drawer === SlideState.SHOWN)) {
       sty.transform = `translate(${inf.pos.x}px, ${inf.pos.y}px)`;
       sty.width = `${inf.pos.width}px`;
       setMode();
@@ -204,7 +205,7 @@ const Float = styled("div", {
 
 /** 'Marker' to send position information for mounting the floating call card */
 export function VoiceChannelCallCardMount(props: { channel: Channel }) {
-  //const state = useState();
+  const state = useState();
   const voice = useVoice();
   const [width, setWidth] = createSignal(0);
   const setInfo = useContext(callCardContext)!;
@@ -222,7 +223,7 @@ export function VoiceChannelCallCardMount(props: { channel: Channel }) {
       setInfo({
         channel: props.channel,
         pos: ref!.getBoundingClientRect(),
-        //drawer: state.appDrawer()?.state, TODO PR #835
+        drawer: state.appDrawer()?.state,
       });
   });
 
