@@ -42,6 +42,16 @@ msgstr "dddd [في] LT"
 msgid "(changes are being saved…)"
 msgstr "(يتم حفظ التعديلات…)"
 
+#. placeholder {0}: shares.size
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {} one { to # chat} other { to # chats}}"
+msgstr ""
+
+#. placeholder {0}: stat()
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {Loading shares} one {Share # file} other {Share # files}}"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -50,6 +60,11 @@ msgstr "{0, plural, one {# رسالة مرفوضة} other {# رسائل مرفو
 #~ msgid "{0, plural, one {# Member} other {# Members}}"
 #~ msgstr ""
 
+#. placeholder {0}: mentions()
+#: components/ui/components/features/navigation/UnreadCallout.tsx
+msgid "{0, plural, one {# new mention} other {# new mentions}}"
+msgstr ""
+
 #. placeholder {0}: items().length
 #: components/ui/components/utils/files/FileDropAnywhereCollector.tsx
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
@@ -57,7 +72,7 @@ msgstr "{0, plural, one {تنزيل ملف} other {تنزيل # ملفات}}"
 
 #. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
 #. placeholder {1}: users().slice(-1)[0]!.username
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "{0} and {1} are typing…"
 msgstr "{0} و {1} يكتبون…"
 
@@ -71,18 +86,34 @@ msgstr "{0} غير وصف القناة"
 msgid "{0} changed the channel icon"
 msgstr "{0} غير شعار القناة"
 
+#. placeholder {0}: name(held)
+#. placeholder {0}: name(id)
+#: src/interface/navigation/servers/railDrag.ts
+msgid "{0} dropped"
+msgstr ""
+
 #. placeholder {0}: instance.globalLimits.server_emoji - props.server.emojis.length
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "{0} emoji slots remaining"
 msgstr "{0} رموز تعبيرية متبقية"
 
 #. placeholder {0}: rejectedFiles.length
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} ملفات تفوق الحجم الاقصى من {maxSizeFormatted} ولم يتم رفعها."
 
+#. placeholder {0}: name(id)
+#: src/interface/navigation/servers/railDrag.ts
+msgid "{0} is already at the bottom"
+msgstr ""
+
+#. placeholder {0}: name(id)
+#: src/interface/navigation/servers/railDrag.ts
+msgid "{0} is already at the top"
+msgstr ""
+
 #. placeholder {0}: users()[0]!.username
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "{0} is typing…"
 msgstr "{0} يكتب…"
 
@@ -101,6 +132,18 @@ msgstr "{0} غادر"
 #: components/client/NotificationsWorker.tsx
 msgid "{0} made {1} the new group owner"
 msgstr "{0} قام بجعل {1} المالك الجديد للمجموعة"
+
+#. placeholder {0}: name(id)
+#. placeholder {1}: to + 1
+#. placeholder {2}: list.length
+#: src/interface/navigation/servers/railDrag.ts
+msgid "{0} moved to position {1} of {2}"
+msgstr ""
+
+#. placeholder {0}: name(id)
+#: src/interface/navigation/servers/railDrag.ts
+msgid "{0} picked up, use the arrow keys to move it and space to drop it"
+msgstr ""
 
 #. placeholder {0}: (message.systemMessage as MessagePinnedSystemMessage).by?.username
 #: components/client/NotificationsWorker.tsx
@@ -139,6 +182,11 @@ msgstr "تم طرد {0}"
 msgid "{0} was removed by {1}"
 msgstr "تمت إزالة {0} بواسطة {1}"
 
+#. placeholder {0}: props.member.user?.username
+#: components/modal/modals/TimeoutMember.tsx
+msgid "{0} will not be able to interact with the server until the timeout expires."
+msgstr ""
+
 #. placeholder {0}: page() * itemsPerPage() + 1
 #. placeholder {1}: Math.min( props.itemCount!, page() * itemsPerPage() + itemsPerPage(), )
 #. placeholder {2}: props.itemCount
@@ -150,6 +198,11 @@ msgstr "{0}-{1} من {2}"
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "{0}'s roles"
 msgstr "رتب {0}"
+
+#. placeholder {0}: props.member.user?.username
+#: components/modal/modals/RemoveTimeout.tsx
+msgid "{0}'s timeout will be removed and they will be able to interact with the server again."
+msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "{h} hours"
@@ -239,6 +292,14 @@ msgstr "قام <0/> بتحديث اسم المجموعة الى <1>{0}</1>"
 #: components/modal/modals/LinkWarning.tsx
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>كن حذرا!</0><1/>هذا ليس نفس الرابط الذي تم عرضه:"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "<0>Warning:</0> Web App support on Firefox is limited- Your mileage may vary."
+msgstr ""
 
 #: components/modal/modals/BanMember.tsx
 #~ msgid "1 day"
@@ -350,6 +411,14 @@ msgstr "إضافة"
 msgid "Add a new friend"
 msgstr "إضافة صديق جديد"
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr ""
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an additional account login for fast-switching"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileActions.tsx
 msgid "Add Bot"
 msgstr ""
@@ -371,6 +440,10 @@ msgstr "إضافة اعضاء جدد للمجموعة"
 msgid "Add status text"
 msgstr "إضافة نص الحالة"
 
+#: components/app/menus/ServerContextMenu.tsx
+msgid "Add to folder"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Admin"
 msgstr "مسؤول"
@@ -383,6 +456,9 @@ msgid "Admin Panel"
 msgstr "لوحة المسؤول"
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 msgid "Advanced"
 msgstr "متقدم"
 
@@ -412,9 +488,17 @@ msgstr "جميع الأنظمة تعمل"
 msgid "Allow members to change name and avatar per-message"
 msgstr "السماح للأعضاء بتغيير الإسم والصورة الرمزية لكل رسالة"
 
-#: components/app/interface/settings/user/bots/ViewBot.tsx
+#: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Allow others to add your bot to their servers from Discover"
 msgstr "السماح للأخرين بإضافة البوت الخاص بك لسيرفراتهم من Discover"
+
+#: components/app/interface/settings/user/bots/ViewBot.tsx
+msgid "Allow others to invite your bot"
+msgstr ""
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Allow others to join your server from Discover"
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "Already friends with this user."
@@ -428,6 +512,11 @@ msgstr "اطلب دائمًا جودة مشاركة الشاشة"
 msgid "American (MM/DD/YYYY)"
 msgstr "النمط الأمريكي (MM/DD/YYYY)"
 
+#. placeholder {0}: e()
+#: components/modal/modals/CropProcess.tsx
+msgid "An error occurred while processing the image: {0}"
+msgstr ""
+
 #: components/modal/modals/Error2.tsx
 msgid "An error occurred."
 msgstr "حدث خطأ."
@@ -436,6 +525,10 @@ msgstr "حدث خطأ."
 #: components/i18n/errors.tsx
 msgid "An internal error occurred. ({0})"
 msgstr "حدث خطأ داخلي. ({0})"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Android"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -542,6 +635,7 @@ msgstr "احظر المستخم"
 msgid "Ban User"
 msgstr "حظر المستخدم"
 
+#: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Banner"
 msgstr "غلاف"
@@ -587,6 +681,10 @@ msgstr "متعقب الأخطاء"
 msgid "Busy"
 msgstr "مشغول"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "button"
+msgstr ""
+
 #: components/modal/modals/CreateBot.tsx
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 msgstr "عند صنعك لهذا البوت, أنت توافق على <0>Acceptable Use Policy</0>."
@@ -607,17 +705,25 @@ msgstr "يتجاوز الوضع البطيء في القنوات"
 msgid "Can't find the perfect GIF? Head to Gifbox and upload your own for everyone to use."
 msgstr "لم تجد الصورة المتحركة المثالية؟ توجه إلى Gifbox وارفع صورتك الخاصة ليستخدمها الجميع."
 
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Can't get discover request status right now"
+msgstr ""
+
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/AddBot.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
+#: components/modal/modals/CropProcess.tsx
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
 #: components/modal/modals/DeleteChannel.tsx
+#: components/modal/modals/DeleteEmoji.tsx
 #: components/modal/modals/DeleteMessage.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/EditCategory.tsx
+#: components/modal/modals/EditServerFolder.tsx
 #: components/modal/modals/Invite.tsx
 #: components/modal/modals/KickMember.tsx
 #: components/modal/modals/LeaveServer.tsx
@@ -626,15 +732,22 @@ msgstr "لم تجد الصورة المتحركة المثالية؟ توجه إ
 #: components/modal/modals/Onboarding.tsx
 #: components/modal/modals/PinMessage.tsx
 #: components/modal/modals/RemoveMember.tsx
+#: components/modal/modals/RemoveTimeout.tsx
 #: components/modal/modals/RenameSession.tsx
 #: components/modal/modals/ReportContent.tsx
 #: components/modal/modals/ResetBotToken.tsx
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ServerIdentity.tsx
+#: components/modal/modals/ShareToModal.tsx
 #: components/modal/modals/SignOutSessions.tsx
+#: components/modal/modals/TimeoutMember.tsx
 msgid "Cancel"
 msgstr "ألغ"
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Cancel discover request"
+msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Cancel friend request"
@@ -643,6 +756,10 @@ msgstr "إلغاء طلب الصداقه"
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Cancel message"
 msgstr "إلغاء الرسالة"
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Cancel your discover request and remove it from the review queue"
+msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Cannot delete account until servers are deleted or transferred"
@@ -653,6 +770,7 @@ msgid "Cannot edit this message."
 msgstr "لا يمكن تعديل هذه الرسالة."
 
 #: components/modal/modals/EditBotUsername.tsx
+#: components/modal/modals/EditEmoji.tsx
 #: components/modal/modals/EditPassword.tsx
 #: components/modal/modals/EditUsername.tsx
 msgid "Change"
@@ -724,6 +842,10 @@ msgid "Channel Description"
 msgstr "وصف القناة"
 
 #: components/app/interface/settings/channel/Overview.tsx
+msgid "Channel Icon"
+msgstr ""
+
+#: components/app/interface/settings/channel/Overview.tsx
 msgid "Channel Info"
 msgstr "معلومات القناة"
 
@@ -748,6 +870,11 @@ msgstr "القنوات"
 msgid "Chat Input"
 msgstr "إدخال الدردشة"
 
+#. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Check back often to see if your {0} has been approved!"
+msgstr ""
+
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your mail!"
 msgstr "راجع بريدك الإلكتروني!"
@@ -755,6 +882,10 @@ msgstr "راجع بريدك الإلكتروني!"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
 msgstr "قم بإختيار اسم مستعار"
+
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
 
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
@@ -799,6 +930,7 @@ msgstr "إعدادات التطبيق"
 #: components/modal/modals/DeleteChannel.tsx
 #: components/modal/modals/EditBotUsername.tsx
 #: components/modal/modals/EditEmail.tsx
+#: components/modal/modals/EditEmoji.tsx
 #: components/modal/modals/EditPassword.tsx
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EmojiPreview.tsx
@@ -806,6 +938,7 @@ msgstr "إعدادات التطبيق"
 #: components/modal/modals/LinkWarning.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/ServerInfo.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileRoles.tsx
@@ -824,6 +957,10 @@ msgstr "قفل الدردشة مع {0}؟"
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
 msgstr "رمز"
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
+msgid "Collapse call window"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Coming soon! 👀"
@@ -861,6 +998,11 @@ msgstr "متصل"
 #: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
 msgid "Connecting"
 msgstr "اتصال"
+
+#. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Contact support to remove this {0} from discover"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Content breaks one or more laws"
@@ -906,6 +1048,10 @@ msgstr "نسخ رابط الملف"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy ID"
 msgstr "انسخ المعرّف"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Copy invite link"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy Invite URL"
@@ -960,6 +1106,10 @@ msgstr "لم يتم العثور على طلبك."
 
 #: components/instance/index.tsx
 msgid "Couldn't fetch Stoat configuration from {hStr}."
+msgstr ""
+
+#: components/ui/components/design/ImageCropper.tsx
+msgid "Couldn't load this image."
 msgstr ""
 
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
@@ -1068,6 +1218,47 @@ msgstr "انشاء وبهوك"
 msgid "Created <0/>"
 msgstr "تم انشاء <0/>"
 
+#: components/modal/modals/CropProcess.tsx
+msgid "Crop"
+msgstr ""
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Crop Avatar"
+msgstr ""
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Crop Banner"
+msgstr ""
+
+#: components/app/interface/settings/channel/Overview.tsx
+msgid "Crop Channel Icon"
+msgstr ""
+
+#: components/app/interface/settings/server/emojis/EmojiList.tsx
+msgid "Crop Emoji"
+msgstr ""
+
+#: components/modal/modals/CropProcess.tsx
+msgid "Crop image"
+msgstr ""
+
+#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+msgid "Crop Role Icon"
+msgstr ""
+
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Crop Server Banner"
+msgstr ""
+
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Crop Server Icon"
+msgstr ""
+
+#. placeholder {0}: humanFileSize(e().maxSize)
+#: components/modal/modals/CropProcess.tsx
+msgid "Cropped image is too large — try a smaller crop area (max. {0})"
+msgstr ""
+
 #: components/modal/modals/EditEmail.tsx
 #: components/modal/modals/EditPassword.tsx
 #: components/modal/modals/EditUsername.tsx
@@ -1078,7 +1269,7 @@ msgstr "كلمة السر الحالية"
 msgid "Current Session"
 msgstr "الجلسة الحالية"
 
-#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+#: components/ui/components/design/ColourPicker.tsx
 msgid "Custom colour"
 msgstr ""
 
@@ -1121,8 +1312,8 @@ msgstr "تعطيل الاستماع و المحادحثة للأفراد ذوي 
 msgid "Deafen Members"
 msgstr "منع الأعضاء من الاستماع"
 
-#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
+#: components/ui/components/design/ColourPicker.tsx
 msgid "Default"
 msgstr "إفتراضي"
 
@@ -1132,6 +1323,10 @@ msgstr "إفتراضي"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 #~ msgid "Default Permissions"
 #~ msgstr "المستأذنات الافتراضية"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to {DefaultHost}"
+msgstr ""
 
 #~ msgid "Defean"
 #~ msgstr ""
@@ -1143,14 +1338,19 @@ msgstr "أداء منخفض"
 #: components/modal/modals/DeleteBot.tsx
 #: components/modal/modals/DeleteCategory.tsx
 #: components/modal/modals/DeleteChannel.tsx
+#: components/modal/modals/DeleteEmoji.tsx
 #: components/modal/modals/DeleteMessage.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteServer.tsx
-#: components/modal/modals/EmojiPreview.tsx
 msgid "Delete"
 msgstr "احذف"
 
-#. placeholder {0}: props.bot.user!.displayName
+#. placeholder {0}: props.emoji.name
+#: components/modal/modals/DeleteEmoji.tsx
+msgid "Delete :{0}:?"
+msgstr ""
+
+#. placeholder {0}: props.bot.user?.displayName ?? props.bot.id
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.role.name
 #: components/modal/modals/DeleteBot.tsx
@@ -1185,6 +1385,14 @@ msgstr "حذف القناة"
 msgid "Delete Channel"
 msgstr "حذف القنات"
 
+#: components/app/interface/settings/server/emojis/EmojiList.tsx
+msgid "Delete Emoji"
+msgstr ""
+
+#: components/app/menus/ServerFolderContextMenu.tsx
+msgid "Delete folder"
+msgstr ""
+
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Delete Invite"
 msgstr "حذف الدعوة"
@@ -1206,6 +1414,10 @@ msgstr "حذف الرتبة"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Delete Server"
 msgstr "حذف الخادم"
+
+#: components/modal/modals/DeleteEmoji.tsx
+msgid "Deleting this emoji will disallow future use. All past uses will remain."
+msgstr ""
 
 #. placeholder {0}: props.invite.username
 #: components/modal/modals/AddBot.tsx
@@ -1240,6 +1452,11 @@ msgstr "مفصول"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Discord RPC"
 msgstr "ديسكورد RPC"
+
+#: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Discover"
+msgstr ""
 
 #: src/interface/Home.tsx
 msgid "Discover Stoat"
@@ -1304,6 +1521,14 @@ msgstr "تم إنجازه"
 msgid "Drugs or illegal goods"
 msgstr "المخدرات أو البضائع غير المشروعة"
 
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Duration"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Easy Install"
+msgstr ""
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -1320,6 +1545,15 @@ msgstr "تعديل كل المستأذنات على السيرفر"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Edit channel-specific role and default permissions"
 msgstr "تعديل الأدوار و المستأذنات الإفتراضية لقناة معينة"
+
+#: components/app/interface/settings/server/emojis/EmojiList.tsx
+msgid "Edit Emoji"
+msgstr ""
+
+#: components/app/menus/ServerFolderContextMenu.tsx
+#: components/modal/modals/EditServerFolder.tsx
+msgid "Edit folder"
+msgstr ""
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Edit Global Profile"
@@ -1369,6 +1603,11 @@ msgid "Email"
 msgstr "البريد الإلكتروني"
 
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
+msgid "Emoji"
+msgstr ""
+
+#: components/app/interface/settings/server/emojis/EmojiList.tsx
+#: components/modal/modals/EditEmoji.tsx
 msgid "Emoji Name"
 msgstr "إسم الرمز التعبيري"
 
@@ -1399,6 +1638,10 @@ msgstr "تمكين الإشعارات الفورية"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Enable transparency glass/blur effects (slow on older machines)"
 msgstr "تفعيل التأثيرات الشفافة/الغير واضحة (بطيئة على الآلات القديمة)"
+
+#: components/i18n/errors.tsx
+msgid "Encountered a problem while saving previous session."
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
@@ -1510,6 +1753,18 @@ msgstr "قم بإيجاد مجمت<0/>معك،<1/> إتصل بالعالم."
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Focus"
 msgstr "مركز"
+
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Folder"
+msgstr ""
+
+#: components/modal/modals/EditServerFolder.tsx
+msgid "Folder colour"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Follow the prompts"
+msgstr ""
 
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
@@ -1682,6 +1937,7 @@ msgstr ""
 
 #: src/interface/Home.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
+#: src/interface/navigation/servers/ServerList.tsx
 msgid "Home"
 msgstr "الصفحة الرئيسية"
 
@@ -1721,6 +1977,27 @@ msgstr "في هذه الأثناء، قم بتثبيت Stoat من Google Play ل
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Input Volume"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Install"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing Stoat only takes a few taps. We'll guide you through it."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing..."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
@@ -1763,6 +2040,10 @@ msgstr "الداعي"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
 msgstr "الدعوات"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "iOS / iPadOS"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
@@ -1927,6 +2208,10 @@ msgstr "تسجيل الدخول"
 msgid "Logs you out of all sessions except this device."
 msgstr "يقوم بتسجيل خروجك من جميع الاجهزة ما عدا هذا الجهاز."
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Looks like you declined the installation... You can refresh the page if you'd like to try again, or try the manual instructions below."
+msgstr ""
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
 msgstr "الأحرف الصغيرة والأرقام والشرطات السفلية فقط."
@@ -1971,6 +2256,10 @@ msgstr "إدارة السيرفر"
 msgid "Manage Webhooks"
 msgstr "إدارة ربط الخدمات"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Manual Install"
+msgstr ""
+
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark as mature"
 msgstr "تفعيل وضع البالغين فقط"
@@ -1997,13 +2286,17 @@ msgstr "تفعيل وضع البالغين للقناة؟"
 msgid "Masquerade"
 msgstr "التَّنَكُّر"
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
+msgid "Maximize call window"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Members"
 msgstr "الأعضاء"
 
 #. placeholder {0}: slowmodeWaitTime()
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Members can send one message every {0}."
 msgstr "يمكن للأعضاء إرسال رسالة واحدة كل {0}."
 
@@ -2042,7 +2335,7 @@ msgstr "راسِل"
 
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.channel.recipient?.username
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Message {0}"
 msgstr "مراسلة {0}"
 
@@ -2163,6 +2456,7 @@ msgid "My Bots"
 msgstr "البوتّات الخاصة بي"
 
 #: components/modal/modals/CreateCategory.tsx
+#: components/modal/modals/EditServerFolder.tsx
 #: components/modal/modals/RenameSession.tsx
 msgid "Name"
 msgstr "الاسم"
@@ -2174,6 +2468,10 @@ msgstr "محايد"
 #: components/ui/components/features/messaging/elements/MessageDivider.tsx
 msgid "NEW"
 msgstr "جديد"
+
+#: components/app/menus/ServerContextMenu.tsx
+msgid "New folder"
+msgstr ""
 
 #. placeholder {0}: dayjs(decodeTime(props.lastId()!)).fromNow()
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
@@ -2197,9 +2495,17 @@ msgstr "جديد على Stoat"
 msgid "New to the server"
 msgstr "جديد على السيرفر"
 
+#: components/ui/components/features/navigation/UnreadCallout.tsx
+msgid "New unreads"
+msgstr ""
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Nickname"
 msgstr "لقب"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "No file data found"
+msgstr ""
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
@@ -2255,6 +2561,7 @@ msgid "Offline"
 msgstr "غير متصل"
 
 #: components/auth/src/flows/FlowHome.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/CreateInvite.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/SignedOut.tsx
@@ -2325,6 +2632,14 @@ msgstr "فتح اعدادات السيرفر"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "افتح الإعدادات"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Chrome"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Safari"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2411,8 +2726,8 @@ msgid "Please enter your email."
 msgstr "الرجاء إدخال بريدك الإلكتروني."
 
 #: components/i18n/errors.tsx
-msgid "Please log in again."
-msgstr "يرجى تسجيل الدخول مرة اخرى."
+#~ msgid "Please log in again."
+#~ msgstr "يرجى تسجيل الدخول مرة اخرى."
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Please save these to a safe location."
@@ -2433,6 +2748,10 @@ msgstr "يرجى اختيار سبب"
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr "مدعوم بواسطة RNNoise"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Press the"
+msgstr ""
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Preview"
@@ -2472,6 +2791,10 @@ msgstr "الضمائر"
 msgid "Provided email or password is wrong."
 msgstr "البريد الإلكتروني أو كلمة المرور المدخلة غير صحيحة."
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
 msgstr "هجوم أو رسائل مزعجة (سبام)"
@@ -2509,6 +2832,16 @@ msgstr "السبب"
 #: components/modal/modals/ReportContent.tsx
 msgid "Reason for report"
 msgstr "سبب التقرير"
+
+#. placeholder {0}: (dr.status as { Denied: string | null }) .Denied
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Reason: {0}"
+msgstr ""
+
+#. placeholder {0}: (dr.status as { Removed: string | null }) .Removed
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Reason: {0} Contact support for more information."
+msgstr ""
 
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Receive notifications while the app is open and in the background."
@@ -2582,6 +2915,10 @@ msgstr "إزالة الصور الرمزية"
 msgid "Remove friend"
 msgstr "إزالة الصديق"
 
+#: components/app/menus/ServerContextMenu.tsx
+msgid "Remove from folder"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 #: components/modal/modals/RemoveMember.tsx
 msgid "Remove Member"
@@ -2595,6 +2932,11 @@ msgstr "حذف الصور الشخصية للاعضاء الاخرين"
 msgid "Remove reaction"
 msgstr "حذف التفاعل"
 
+#: components/app/menus/UserContextMenu.tsx
+#: components/modal/modals/RemoveTimeout.tsx
+msgid "Remove Timeout"
+msgstr ""
+
 #: components/app/interface/settings/user/Sessions.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/modal/modals/RenameSession.tsx
@@ -2605,6 +2947,10 @@ msgstr "اعادة تسمية"
 #: components/modal/modals/EditCategory.tsx
 msgid "Rename category"
 msgstr "إعادة تسمية الفآت"
+
+#: components/modal/modals/EditEmoji.tsx
+msgid "Rename emoji"
+msgstr ""
 
 #: components/modal/modals/RenameSession.tsx
 msgid "Rename Session"
@@ -2638,6 +2984,10 @@ msgstr "الإبلاغ عن السيرفر"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Report user"
 msgstr "أبلغ عن مستخدم"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Request timed out"
+msgstr ""
 
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
@@ -2678,6 +3028,11 @@ msgstr "اعادة تعيين الرمز (Token)"
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Responsibly disclosed security issues"
 msgstr "ثغرات امنية تم الابلاغ عنها"
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
+msgid "Restore call window"
+msgstr ""
 
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Retry sending"
@@ -2730,6 +3085,7 @@ msgstr ""
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/modal/modals/CustomStatus.tsx
+#: components/modal/modals/EditServerFolder.tsx
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Save"
 msgstr "احفظ"
@@ -2742,7 +3098,7 @@ msgstr "حفظ الملف"
 msgid "Save permissions"
 msgstr ""
 
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "الحفظ في ملاحظاتك"
 
@@ -2771,6 +3127,10 @@ msgstr "حجم مشاركة الشاشة"
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search"
 msgstr "أبحث"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Search for chats..."
+msgstr ""
 
 #: components/modal/modals/AddBot.tsx
 msgid "Search for groups..."
@@ -2865,6 +3225,10 @@ msgstr "أرسل مرفقًا"
 msgid "Sent multiple attachments"
 msgstr "أرسل عدة مرفقات"
 
+#: src/interface/navigation/servers/railDrag.ts
+msgid "Server"
+msgstr ""
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
 msgstr "صورة السيرفر الشخصية"
@@ -2902,6 +3266,14 @@ msgstr "رتب السيرفر"
 msgid "Sessions"
 msgstr "الجلسات"
 
+#: components/ui/components/design/ColourPicker.tsx
+msgid "Set colour to {colour}"
+msgstr ""
+
+#: components/modal/modals/EditServerFolder.tsx
+msgid "Set folder colour to {value}"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Set role colour to {colour}"
 msgstr ""
@@ -2922,9 +3294,13 @@ msgstr "اعداد موثق كلمة المرور للاستخدام الواح�
 msgid "Setup recovery codes"
 msgstr "اعداد رموز الاسترجاع"
 
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Several people are typing…"
 msgstr "العديد من الأشخاص يكتبون…"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Share"
+msgstr ""
 
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -2938,6 +3314,11 @@ msgstr "تفعيل الكاميرا أو الشاشة في المكالمة ال
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "مشاركة الشاشة"
+
+#. placeholder {0}: shares.length
+#: components/app/interface/channels/text/Composition.tsx
+msgid "Sharing to {0} users."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
@@ -2963,11 +3344,11 @@ msgstr "انشاء حساب"
 msgid "Silent"
 msgstr "صامت"
 
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Slowmode Immune"
 msgstr ""
 
-#: src/interface/channels/text/CompositionInfo.tsx
+#: components/app/interface/channels/text/CompositionInfo.tsx
 msgid "Slowmode is enabled."
 msgstr "تم تمكين الوضع البطيء."
 
@@ -3015,6 +3396,14 @@ msgstr "تحدث"
 msgid "Spellchecker"
 msgstr "مدقق الاملاء"
 
+#: components/app/interface/settings/channel/Overview.tsx
+#: components/app/interface/settings/server/emojis/EmojiList.tsx
+#: components/app/interface/settings/server/Overview.tsx
+#: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Square"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Start camera"
 msgstr "بدء تشغيل الكاميرا"
@@ -3058,6 +3447,10 @@ msgstr "Stoat هو واحد من الطرق المفضلة للبقاء على �
 msgid "Stoat rocks!"
 msgstr ""
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
 msgstr "سيبدأ Stoat في علبة النظام."
@@ -3090,7 +3483,7 @@ msgstr "أرسل إلينا اقتراحاتك لإضافة الميزات"
 msgid "Submit feedback"
 msgstr "إرسال اقتراحات لتحسين المنصة"
 
-#: components/app/interface/settings/user/bots/ViewBot.tsx
+#: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Submit to Discover"
 msgstr "إرسال للعرض في Discover"
 
@@ -3105,6 +3498,11 @@ msgstr "اقترح ميزات جديدة لـ Stoat في منتديات GitHub."
 #: src/interface/Home.tsx
 msgid "Support the project by donating - thank you!"
 msgstr "ادعم المشروع بالتبرع - شكرًا لك!"
+
+#: components/modal/modals/ShareToModal.tsx
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -3129,6 +3527,14 @@ msgstr "النظام"
 #: components/app/interface/settings/server/Overview.tsx
 msgid "System message channels"
 msgstr "القنوات لرسائل النظام"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Add to Home Screen\""
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Install app\" or \"Add to Home screen\""
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
@@ -3162,18 +3568,55 @@ msgstr "قناة نصية"
 msgid "That action had no effect."
 msgstr "لم يكن لهذا الإجراء أي تأثير."
 
+#: components/i18n/errors.tsx
+msgid "The bot has been removed from discover by moderators, the user must contact support."
+msgstr ""
+
+#: components/i18n/errors.tsx
+msgid "The bot is already on discover, the user must contact support to have it removed"
+msgstr ""
+
+#: components/i18n/errors.tsx
+msgid "The Discover request is approved or the item has been removed from discover. In either case, the user must contact support."
+msgstr ""
+
+#: components/i18n/errors.tsx
+msgid "The Discover request was declined. Declined requests cannot be removed, but the user may submit again."
+msgstr ""
+
 #. placeholder {0}: file.name
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "الملف \"{0}\" ({fileSize}) يتعدى الحجم الأقصى المسموح {maxSizeFormatted}."
+
+#: components/i18n/errors.tsx
+msgid "The item was removed by moderators, and as such future applications are prohibited. Contact support for more information."
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "The password is too short."
 msgstr "كلمة المرور أقصر من الحد الادنى."
 
+#: components/i18n/errors.tsx
+msgid "The server has been removed from discover by moderators, the user must contact support."
+msgstr ""
+
+#: components/i18n/errors.tsx
+msgid "The server is already on discover, the user must contact support to have it removed."
+msgstr ""
+
+#: components/i18n/errors.tsx
+msgid "The web socket was unable to connect to the backend."
+msgstr ""
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
 msgstr "السمة"
+
+#. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "This {0} is discoverable"
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "This account is not activated! Please check your account's inbox and try again."
@@ -3272,6 +3715,25 @@ msgstr "سيؤدي هذا إلى إبطال الرمز الحالي وإيقاف
 msgid "Time format"
 msgstr "تنسيق الوقت"
 
+#. placeholder {0}: props.member!.timeout!.toLocaleString()
+#: src/interface/channels/text/MemberSidebar.tsx
+msgid "Timed out until {0}"
+msgstr ""
+
+#. placeholder {0}: props.message.member!.timeout!.toLocaleString()
+#: components/app/interface/channels/text/Message.tsx
+msgid "Timed Out until {0}"
+msgstr ""
+
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Timeout"
+msgstr ""
+
+#: components/app/menus/UserContextMenu.tsx
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Timeout Member"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Timeout Members"
 msgstr "حظر مؤقت للأعضاء"
@@ -3348,6 +3810,10 @@ msgstr "إلغاء كتم القناة"
 msgid "Unmute Server"
 msgstr "إلغاء كتم السيرفر"
 
+#: components/app/menus/ServerContextMenu.tsx
+msgid "Unnamed folder"
+msgstr ""
+
 #: components/modal/modals/PinMessage.tsx
 msgid "Unpin"
 msgstr "إلغاء التثبيت"
@@ -3386,6 +3852,10 @@ msgstr "إستخدام رمز أو رابط دعوة"
 msgid "Use the graphics card to improve performance."
 msgstr "إستخدام كرت الشاشة لتحسين الآداء."
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
+msgstr ""
+
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
 msgstr "المستخدم"
@@ -3422,6 +3892,10 @@ msgstr "عند مغادرة مستخدم للمكالمة"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "User Management"
 msgstr "إدارة المستخدمين"
+
+#: components/i18n/errors.tsx
+msgid "User session not found. Try switching users or logging in again."
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "User Settings"
@@ -3580,6 +4054,10 @@ msgstr "ما هو الجديد"
 msgid "Whether other users can edit these settings"
 msgstr "ما إذا كان بإمكان المستخدمين الآخرين تعديل هذه الخيارت"
 
+#: components/i18n/errors.tsx
+msgid "Whoops, you're already logged in as this user!"
+msgstr ""
+
 #. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "with {0}"
@@ -3623,6 +4101,10 @@ msgstr "أنت على وشك طرد {0}"
 msgid "You are banned from this server."
 msgstr "تم حظرك من هذا السيرفر."
 
+#: components/ui/components/features/messaging/composition/MessageBox.tsx
+msgid "You are timed out and can't send messages right now."
+msgstr ""
+
 #: src/interface/Home.tsx
 msgid "You can also click the gear icon in the bottom left."
 msgstr "بإمكانك أيضا الضغط على أيقونة الترس في أسفل اليسار."
@@ -3638,6 +4120,10 @@ msgstr "يمكنك فتحها لاحقاً ولكنها ستختفي من كِل
 #: src/interface/Home.tsx
 msgid "You can report issues and discuss improvements with us directly here."
 msgstr "يمكنك الإبلاغ عن أية مشاكل ومناقشة التحسينات معنا مباشرةً هنا."
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "You can request again below"
+msgstr ""
 
 #. placeholder {0}: err.max
 #: components/i18n/errors.tsx
@@ -3680,8 +4166,12 @@ msgstr "لا يمكنك التراجع عن هذا الفعل."
 
 #. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
-msgstr "لقد ضغتط على \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr "لقد ضغتط على \"{0}\""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "You do not have permission to do this."
@@ -3690,6 +4180,11 @@ msgstr "ليس لديك الإذن لفعل هذا."
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
 msgstr "ليس لديك صلاحية لإرسال رسائل في هذه القناة."
+
+#. placeholder {0}: homeNotifications()
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "You have {0} pending friend requests."
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."
@@ -3703,11 +4198,15 @@ msgstr "قمت بحضر هذا المستخدم."
 msgid "You may be experiencing connection issues."
 msgstr "أنكا ربما تواجه مشكلات في الاتصال."
 
+#: components/i18n/errors.tsx
+msgid "You may not submit this item to discover."
+msgstr ""
+
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
 msgstr "قمت بكتم هذا المستخدم."
 
-#: components/auth/src/flows/FlowHome.tsx
+#: components/i18n/errors.tsx
 msgid "You were logged out!"
 msgstr "لقد خرجت من الحساب!"
 
@@ -3754,6 +4253,15 @@ msgstr "لقد وصلت إلى حد البوت الشخصي الأقصى."
 msgid "You've sent too many friend requests, the maximum is {0}"
 msgstr "لقد أرسلت كثيرا من طلبات الصداقة، الحد الأقصى هو {0}"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "You've successfully installed Stoat!"
+msgstr ""
+
+#. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Your {0} is under review"
+msgstr ""
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Your account and all of your data (including your messages and friends list) will be queued for deletion. A confirmation email will be sent - you can cancel this within 7 days by contacting support."
 msgstr "حسابك و كل بياناتك (تشمل رسائلك و قائمة أصدقائك) تم إدراجها في قائمة الحذف. سيتم إرسال رسالة إلى بريدك الإلكتروني - يمكنك إلغاء هذه العملية في خلال 7 أيام عن طريق التواصل مع خدمة الحرفاء."
@@ -3761,6 +4269,14 @@ msgstr "حسابك و كل بياناتك (تشمل رسائلك و قائمة �
 #: components/auth/src/flows/FlowVerify.tsx
 msgid "Your account has been verified!"
 msgstr "تم توثيق حسابك بنجاح!"
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Your discover request has been denied"
+msgstr ""
+
+#: components/app/interface/settings/shared/Discoverable.tsx
+msgid "Your discover request has been removed"
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "Your discriminator change has been ratelimited, please try again later."
@@ -3773,6 +4289,10 @@ msgstr "رسالتك طويلة جدا، الرجاء حذف بعض الحروف
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"
 msgstr "رموز الإسترجاع الخاصة بك"
+
+#: components/i18n/errors.tsx
+msgid "Your request failed. Please contact support."
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "Your role ranking is too low to take this action."
