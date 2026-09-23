@@ -388,4 +388,7 @@ export type Modals =
     }
   | {
       type: "login_advanced";
+    }
+  | {
+      type: "share_to";
     };
