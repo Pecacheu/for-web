@@ -42,6 +42,16 @@ msgstr "dddd [pukul] LT"
 msgid "(changes are being saved…)"
 msgstr "(perubahan sedang disimpan…)"
 
+#. placeholder {0}: shares.size
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {} one { to # chat} other { to # chats}}"
+msgstr ""
+
+#. placeholder {0}: stat()
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {Loading shares} one {Share # file} other {Share # files}}"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -88,7 +98,7 @@ msgid "{0} emoji slots remaining"
 msgstr "{0} slot emoji tersedia"
 
 #. placeholder {0}: rejectedFiles.length
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} berkas melebihi batas ukuran maksimum {maxSizeFormatted} dan tidak berhasil diunggah."
 
@@ -280,6 +290,14 @@ msgstr "<0/> mengubah nama grup ke <1>{0}</1>"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>Hati-hati!</0><1/>Ini tidak sama dengan tautan yang ditampilkan:"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "<0>Warning:</0> Web App support on Firefox is limited- Your mileage may vary."
+msgstr ""
+
 #~ msgid "1 day"
 #~ msgstr ""
 
@@ -371,6 +389,14 @@ msgstr "Tambahkan"
 msgid "Add a new friend"
 msgstr "Tambahkan teman baru"
 
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an account"
+msgstr ""
+
+#: components/app/interface/settings/user/Account.tsx
+msgid "Add an additional account login for fast-switching"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileActions.tsx
 msgid "Add Bot"
 msgstr "Tambahkan Bot"
@@ -408,6 +434,9 @@ msgid "Admin Panel"
 msgstr "Panel Admin"
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 msgid "Advanced"
 msgstr "Lanjutan"
 
@@ -476,6 +505,10 @@ msgstr "Terjadi kesalahan."
 #: components/i18n/errors.tsx
 msgid "An internal error occurred. ({0})"
 msgstr "Terjadi kesalahan internal. ({0})"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Android"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -627,6 +660,10 @@ msgstr "Pelacak Bug"
 msgid "Busy"
 msgstr "Sibuk"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "button"
+msgstr ""
+
 #: components/modal/modals/CreateBot.tsx
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 msgstr "Dengan membuat bot ini, kamu menyetujui <0>Kebijakan Penggunaan yang Dapat Diterima</0>."
@@ -653,6 +690,7 @@ msgstr "Tidak bisa mendapatkan status permintaan jelajahi saat ini"
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/AddBot.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/CropProcess.tsx
@@ -680,6 +718,7 @@ msgstr "Tidak bisa mendapatkan status permintaan jelajahi saat ini"
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ServerIdentity.tsx
+#: components/modal/modals/ShareToModal.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Cancel"
@@ -830,6 +869,10 @@ msgstr "Pilih kata sandi baru untuk akun Stoat Anda."
 msgid "Choose a username"
 msgstr "Pilih sebuah nama panggilan"
 
+#: components/modal/modals/SwapUser.tsx
+msgid "Choose an account"
+msgstr ""
+
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
 msgstr "Pilih nama panggilan"
@@ -881,6 +924,7 @@ msgstr "Pengaturan Klien"
 #: components/modal/modals/LinkWarning.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/ServerInfo.tsx
+#: components/modal/modals/SwapUser.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileRoles.tsx
@@ -1277,6 +1321,10 @@ msgstr "Bawaan"
 #~ msgid "Default Permissions"
 #~ msgstr "Izin Bawaan"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to {DefaultHost}"
+msgstr ""
+
 #~ msgid "Defean"
 #~ msgstr ""
 
@@ -1363,6 +1411,10 @@ msgstr "Hapus Peran"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Delete Server"
 msgstr "Hapus Server"
+
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Delete session"
+msgstr ""
 
 #: components/modal/modals/DeleteEmoji.tsx
 msgid "Deleting this emoji will disallow future use. All past uses will remain."
@@ -1478,6 +1530,10 @@ msgstr "Narkoba atau barang ilegal"
 msgid "Duration"
 msgstr "Durasi"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Easy Install"
+msgstr ""
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -1587,6 +1643,10 @@ msgstr "Hidupkan Notifikasi Dorong"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Enable transparency glass/blur effects (slow on older machines)"
 msgstr "Hidupkan efek transparansi kaca/buram (lambat pada mesin lama)"
+
+#: components/i18n/errors.tsx
+msgid "Encountered a problem while saving previous session."
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
@@ -1709,6 +1769,10 @@ msgstr "Folder"
 #: components/modal/modals/EditServerFolder.tsx
 msgid "Folder colour"
 msgstr "Warna folder"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Follow the prompts"
+msgstr ""
 
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
@@ -1939,6 +2003,27 @@ msgstr "Sementara itu, instal Stoat dari Google Play untuk pengalaman yang lebih
 msgid "Input Volume"
 msgstr "Volume Masukan"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Install"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing Stoat only takes a few taps. We'll guide you through it."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing..."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, Stoat will hide in your tray."
 msgstr "Alih-alih menutup, Stoat akan bersembunyi di baki kamu."
@@ -1979,6 +2064,10 @@ msgstr "Pengundang"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
 msgstr "Undangan"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "iOS / iPadOS"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
@@ -2131,8 +2220,8 @@ msgstr "Masuk"
 #~ msgstr "Masuk"
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "Log in again"
-msgstr "Masuk lagi"
+#~ msgid "Log in again"
+#~ msgstr "Masuk lagi"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Log in to pick up right where you left off."
@@ -2161,6 +2250,10 @@ msgstr "Memasukkan Anda…"
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Logs you out of all sessions except this device."
 msgstr "Mengeluarkan kamu dari semua sesi kecuali perangkat ini."
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Looks like you declined the installation... You can refresh the page if you'd like to try again, or try the manual instructions below."
+msgstr ""
 
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
@@ -2205,6 +2298,10 @@ msgstr "Kelola Server"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Manage Webhooks"
 msgstr "Kelola Webhook"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Manual Install"
+msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark as mature"
@@ -2281,7 +2378,7 @@ msgstr "Pesan"
 
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.channel.recipient?.username
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Message {0}"
 msgstr "Pesan {0}"
 
@@ -2453,6 +2550,10 @@ msgstr "Baru yang belum dibaca"
 msgid "Nickname"
 msgstr "Nama panggilan"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "No file data found"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
 msgstr "Tidak ada GIF yang ditemukan"
@@ -2506,6 +2607,7 @@ msgstr "Server Resmi"
 msgid "Offline"
 msgstr "Luring"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/CreateInvite.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/SignedOut.tsx
@@ -2549,8 +2651,8 @@ msgid "Only mentions will notify you"
 msgstr "Hanya sebutan yang akan memberitahu kamu"
 
 #: components/instance/index.tsx
-msgid "Oops, something went wrong! {e}"
-msgstr "Ups, terjadi kesalahan! {e}"
+#~ msgid "Oops, something went wrong! {e}"
+#~ msgstr "Ups, terjadi kesalahan! {e}"
 
 #: components/modal/modals/Invite.tsx
 msgid "Open"
@@ -2576,6 +2678,14 @@ msgstr "Buka pengaturan server"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "Buka pengaturan"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Chrome"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Safari"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2662,8 +2772,8 @@ msgid "Please enter your email."
 msgstr "Silahkan masukkan email kamu."
 
 #: components/i18n/errors.tsx
-msgid "Please log in again."
-msgstr "Silahkan masuk kembali."
+#~ msgid "Please log in again."
+#~ msgstr "Silahkan masuk kembali."
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Please save these to a safe location."
@@ -2684,6 +2794,10 @@ msgstr "Silahkan pilih alasannya"
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr "Didukung oleh RNNoise"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Press the"
+msgstr ""
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Preview"
@@ -2726,6 +2840,10 @@ msgstr "Kata ganti"
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "Email atau kata sandi yang disediakan salah."
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2916,6 +3034,10 @@ msgstr "Laporkan server"
 msgid "Report user"
 msgstr "Laporkan pengguna"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Request timed out"
+msgstr ""
+
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
 msgstr "Kirim ulang"
@@ -3024,7 +3146,7 @@ msgstr "Simpan berkas"
 msgid "Save permissions"
 msgstr "Simpan izin"
 
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "Simpan ke catatan kamu"
 
@@ -3057,6 +3179,10 @@ msgstr "Volume Berbagi Layar"
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search"
 msgstr "Cari"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Search for chats..."
+msgstr ""
 
 #: components/modal/modals/AddBot.tsx
 msgid "Search for groups..."
@@ -3228,6 +3354,10 @@ msgstr "Siapkan kode pemulihan"
 msgid "Several people are typing…"
 msgstr "Beberapa orang sedang mengetik…"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Share"
+msgstr ""
+
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Share audio"
@@ -3240,6 +3370,11 @@ msgstr "Bagikan kamera atau layar dalam panggilan suara"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "Bagikan layar"
+
+#. placeholder {0}: shares.length
+#: components/app/interface/channels/text/Composition.tsx
+msgid "Sharing to {0} users."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
@@ -3369,6 +3504,10 @@ msgstr "Pendiri Stoat"
 msgid "Stoat rocks!"
 msgstr "Stoat keren!"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
 msgstr "Stoat akan dimulai di baki sistem."
@@ -3421,6 +3560,11 @@ msgstr "Sarankan fitur Stoat baru di diskusi GitHub."
 msgid "Support the project by donating - thank you!"
 msgstr "Dukung proyek ini dengan berdonasi - terima kasih!"
 
+#: components/modal/modals/ShareToModal.tsx
+#: src/interface/navigation/servers/UserMenu.tsx
+msgid "Switch Accounts"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
 msgstr "Beralih ke saluran suara ini"
@@ -3448,6 +3592,14 @@ msgstr "Saluran pesan sistem"
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr "Bawalah komunitas Anda <0>bersama Anda.</0>"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Add to Home Screen\""
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Install app\" or \"Add to Home screen\""
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
@@ -3498,7 +3650,7 @@ msgid "The Discover request was declined. Declined requests cannot be removed, b
 msgstr "Permintaan Jelajahi ditolak. Permintaan yang ditolak tidak dapat dihapus, tetapi pengguna dapat mengirimkannya lagi."
 
 #. placeholder {0}: file.name
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "Berkas \"{0}\" ({fileSize}) melebihi batas ukuran maksimum {maxSizeFormatted}."
 
@@ -3518,6 +3670,10 @@ msgstr "Server telah dihapus dari jelajahi oleh moderator, pengguna harus menghu
 msgid "The server is already on discover, the user must contact support to have it removed."
 msgstr "Server sudah ada di jelajahi, pengguna harus menghubungi dukungan untuk menghapusnya."
 
+#: components/i18n/errors.tsx
+msgid "The web socket was unable to connect to the backend."
+msgstr ""
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
 msgstr "Tema"
@@ -3526,6 +3682,10 @@ msgstr "Tema"
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "This {0} is discoverable"
 msgstr "{0} ini dapat dijelajahi"
+
+#: components/client/Controller.ts
+msgid "This account is disabled."
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "This account is not activated! Please check your account's inbox and try again."
@@ -3765,6 +3925,10 @@ msgstr "Gunakan kode atau tautan undangan"
 msgid "Use the graphics card to improve performance."
 msgstr "Gunakan kartu grafis untuk meningkatkan performa."
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
+msgstr ""
+
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
 msgstr "Pengguna"
@@ -3801,6 +3965,10 @@ msgstr "Pengguna Meninggalkan Panggilan"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "User Management"
 msgstr "Pengelolaan Pengguna"
+
+#: components/i18n/errors.tsx
+msgid "User session not found. Try switching users or logging in again."
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "User Settings"
@@ -3920,8 +4088,8 @@ msgid "We are working hard on optimising our web app for mobile."
 msgstr "Kami sedang bekerja keras untuk mengoptimalkan aplikasi web kami untuk perangkat seluler."
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "We couldn't finish logging you in. Try again, and if it keeps happening, check Stoat's status."
-msgstr "Kami tidak dapat menyelesaikan proses masuk Anda. Coba lagi, dan jika ini terus terjadi, periksa status Stoat."
+#~ msgid "We couldn't finish logging you in. Try again, and if it keeps happening, check Stoat's status."
+#~ msgstr "Kami tidak dapat menyelesaikan proses masuk Anda. Coba lagi, dan jika ini terus terjadi, periksa status Stoat."
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "We only use it to verify your account and help you get back in if you're ever locked out. We'll never sell it or send you spam."
@@ -3973,6 +4141,10 @@ msgstr "Apa yang Baru"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
 msgstr "Apakah pengguna lain dapat mengedit pengaturan ini"
+
+#: components/i18n/errors.tsx
+msgid "Whoops, you're already logged in as this user!"
+msgstr ""
 
 #. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
@@ -4080,8 +4252,12 @@ msgstr "Kamu tidak bisa membatalkan tindakan ini."
 
 #. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
-msgstr "Kamu mengklik \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr "Kamu mengklik \"{0}\""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "You do not have permission to do this."
@@ -4166,6 +4342,10 @@ msgstr "Kamu telah mencapai batas bot pribadi kamu."
 msgid "You've sent too many friend requests, the maximum is {0}"
 msgstr "Kamu sudah mengirim terlalu banyak permintaan pertemanan, maksimumnya adalah {0}"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "You've successfully installed Stoat!"
+msgstr ""
+
 #. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
 #: components/app/interface/settings/shared/Discoverable.tsx
 msgid "Your {0} is under review"
@@ -4211,7 +4391,7 @@ msgstr "Permintaan Anda gagal. Silahkan hubungi dukungan."
 msgid "Your role ranking is too low to take this action."
 msgstr "Peringkat peran kamu terlalu rendah untuk mengambil tindakan ini."
 
-#: components/auth/src/flows/FlowLogin.tsx
+#: components/i18n/errors.tsx
 msgid "Your session ended, possibly because you logged out on another device. Log in again to continue."
 msgstr "Sesi Anda berakhir, kemungkinan karena Anda keluar di perangkat lain. Masuk lagi untuk melanjutkan."
 
