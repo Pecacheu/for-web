@@ -489,7 +489,7 @@ export default class ClientController {
   _login(cached = false) {
     const session = this.state.auth.getSession();
     if (!session) return this.initUserState();
-    if (this.#checkSwapInstance(true, unhold)) return; //About to switch- Don't initialize app
+    if (this.#checkSwapInstance(true, false)) return; //About to switch- Don't initialize app
     this.lifecycle.transition({
       type: cached ? TransitionType.LoginCached : TransitionType.LoginUncached,
       session,
