@@ -22,6 +22,7 @@ const InfoColumn = styled(Column, {
     "& > *": {
       overflow: "hidden",
       textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
     },
   },
 });
