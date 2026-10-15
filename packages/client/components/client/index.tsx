@@ -75,10 +75,11 @@ export function ClientContext(props: {
     if (ready()) {
       const badgeVal =
         //Friend requests
-        instance.client.users.filter((user) => user.relationship === "Incoming")
-          .length +
-        //Unread DMs
-        instance.client.channels.filter((chan) => chan.unread).length;
+        instance.client.users.filter(
+          (user) => user.relationship === "Incoming",
+        ).length;
+      //Unread DMs
+      // instance.client.channels.filter((chan) => chan.unread).length;
       //TODO This is causing all messages to appear unread wtf
       //TODO Server unreads?
       setBadge(badgeVal);
