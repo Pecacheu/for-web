@@ -1,5 +1,12 @@
 /// <reference lib="webworker" />
-import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
+import {
+  cleanupOutdatedCaches,
+  createHandlerBoundToURL,
+  precacheAndRoute,
+} from "workbox-precaching";
+import { NavigationRoute, registerRoute } from "workbox-routing";
+
+import { RE_APP_PRIV_PATH, RE_APP_PUB_PATH } from "@revolt/common/lib/links";
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -60,12 +67,7 @@ precacheAndRoute(
 
       const fn = url.split("/").pop();
       if (fn) {
-        if (fn.endsWith("css") && !isNaN(parseInt(fn.substring(0, 3)))) {
-          return false;
-        }
-
-        // Don't cache index.html under any circumstances
-        if (fn.endsWith(".html")) {
+        if (fn.endsWith("css") && !isNaN(Number(fn.substring(0, 3)))) {
           return false;
         }
 
@@ -86,5 +88,12 @@ precacheAndRoute(
     } catch {
       return false;
     }
+  }),
+);
+
+registerRoute(
+  //Redirect app paths to index
+  new NavigationRoute(createHandlerBoundToURL("index.html"), {
+    allowlist: [RE_APP_PUB_PATH, RE_APP_PRIV_PATH],
   }),
 );
