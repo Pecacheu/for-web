@@ -6,7 +6,7 @@ import { cva } from "styled-system/css";
 
 import { MessageContextMenu, useMessage } from "@revolt/app";
 import { useClient } from "@revolt/client";
-import { getChannelIcon } from "@revolt/common/lib/channels";
+import { getChannelIcon } from "@revolt/common";
 import { normalizeHost } from "@revolt/common/lib/env";
 import { RE_APP_PRIV_PATH } from "@revolt/common/lib/links";
 import { DefaultHost, useInstance } from "@revolt/instance";
@@ -137,9 +137,7 @@ export function RenderAnchor(
               disabled={props.disabled}
               href={internalUrl()}
             >
-              <Symbol>
-                {remote ? "tag" : getChannelIcon(channel(), "mention")}
-              </Symbol>
+              <Symbol>{getChannelIcon(channel(), "mention")}</Symbol>
               {remote ? <Trans>Remote Channel</Trans> : channel()!.name}
               {params.exactMessage && (
                 <>
