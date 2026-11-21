@@ -12,9 +12,8 @@ const updateSW = registerSW({
   },
   onOfflineReady() {
     console.info("Ready to work offline =)");
-    // toast to users
   },
-  onRegistered(r) {
+  onRegisteredSW(_, r) {
     // Check for updates every hour
     setInterval(() => r!.update(), 36e5);
   },
