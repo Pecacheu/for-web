@@ -42,6 +42,16 @@ msgstr "dddd [saat] LT"
 msgid "(changes are being saved…)"
 msgstr "(değişiklikler kaydediliyor…)"
 
+#. placeholder {0}: shares.size
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {} one { to # chat} other { to # chats}}"
+msgstr ""
+
+#. placeholder {0}: stat()
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {Loading shares} one {Share # file} other {Share # files}}"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -88,7 +98,7 @@ msgid "{0} emoji slots remaining"
 msgstr "{0} emoji hakkı kaldı"
 
 #. placeholder {0}: rejectedFiles.length
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} dosya, {maxSizeFormatted} olan maksimum boyut sınırını aştığı için yüklenemedi."
 
@@ -199,6 +209,14 @@ msgstr "{0} kullanıcısının rolleri"
 msgid "{0}'s timeout will be removed and they will be able to interact with the server again."
 msgstr "Zaman aşımı {0} için kaldırılacak ve sunucu ile tekrar etkileşime girebilecek."
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in category {category}, in server {serverName}"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in server {serverName}"
+msgstr ""
+
 #~ msgid "{h} hours"
 #~ msgstr "{h} saat"
 
@@ -285,6 +303,14 @@ msgstr "<0/> grup adını <1>{0}</1> olarak güncelledi"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>Dikkat et!</0><1/>Bu gördüğün linkle aynı link değil:"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "<0>Warning:</0> Web App support on Firefox is limited- Your mileage may vary."
+msgstr ""
+
 #~ msgid "1 day"
 #~ msgstr "1 gün"
 
@@ -362,6 +388,10 @@ msgstr "Kabul et"
 msgid "Accept friend request"
 msgstr "Arkadaş isteğini kabul et"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Accounts..."
+msgstr ""
+
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
 msgstr "Kabul et"
@@ -421,6 +451,9 @@ msgid "Admin Panel"
 msgstr "Yönetici Paneli"
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 msgid "Advanced"
 msgstr "Gelişmiş"
 
@@ -468,6 +501,10 @@ msgstr "Bu kullanıcı ile zaten arkadaşsınız."
 msgid "Already have an account?"
 msgstr "Zaten hesabın var mı?"
 
+#: components/markdown/plugins/customEmoji.tsx
+msgid "Alt+Click to yoink"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
 msgid "Always Ask for Screen Share Quality"
 msgstr "Her Zaman Ekran Paylaşımı Kalitesini Sor"
@@ -489,6 +526,10 @@ msgstr "Bir hata oluştu."
 #: components/i18n/errors.tsx
 msgid "An internal error occurred. ({0})"
 msgstr "Bir sistem hatası oluştu. ({0})"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Android"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -645,6 +686,14 @@ msgstr "Hata İzleyici"
 msgid "Busy"
 msgstr "Meşgul"
 
+#: components/i18n/errors.tsx
+msgid "But not to worry! You can try logging in or swapping to another account from here."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "button"
+msgstr ""
+
 #: components/modal/modals/CreateBot.tsx
 #~ msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 #~ msgstr "Bu botu oluşturarak, <0>Kabul Edilebilir Kullanım Politikası</0>'nı kabul etmiş olursunuz."
@@ -679,6 +728,7 @@ msgstr "Keşfet isteğinin durumunu alamıyoruz"
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/AddBot.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/CropProcess.tsx
@@ -706,6 +756,7 @@ msgstr "Keşfet isteğinin durumunu alamıyoruz"
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ServerIdentity.tsx
+#: components/modal/modals/ShareToModal.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
@@ -872,6 +923,10 @@ msgstr "Durumu temizle"
 #: components/modal/modals/PolicyChange.tsx
 msgid "Click on the items below to learn more about different changes!"
 msgstr "Değişiklikler hakkında bilgi edinmek için aşağıdakilere tıkla!"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Click the star on gifs to stash them here."
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Click to copy username"
@@ -1303,11 +1358,16 @@ msgstr "Üyeleri Sağırlaştırabilme"
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/ui/components/design/ColourPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
 msgid "Default"
 msgstr "Varsayılan"
 
 #~ msgid "Default Permissions"
 #~ msgstr "Varsayılan İzinler"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to {DefaultHost}"
+msgstr ""
 
 #~ msgid "Defean"
 #~ msgstr ""
@@ -1514,6 +1574,10 @@ msgstr "Uyuşturucu veya yasadışı ürün"
 msgid "Duration"
 msgstr "Süre"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Easy Install"
+msgstr ""
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -1718,6 +1782,20 @@ msgstr "Gönderilemedi"
 msgid "Failed to verify!"
 msgstr "Doğrulanamadı!"
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Favourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Favourite Gif"
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Favourites"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
@@ -1750,6 +1828,10 @@ msgstr "Dosya"
 msgid "Folder colour"
 msgstr "Dosya Rengi"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Follow the prompts"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "For 1 hour"
@@ -1778,6 +1860,10 @@ msgstr "8 saat boyunca"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Forgot password?"
 msgstr "Şifrenizi mi unuttunuz?"
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently Used"
+msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -1983,6 +2069,27 @@ msgstr ""
 msgid "Input Volume"
 msgstr "Giriş Sesi"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Install"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing Stoat only takes a few taps. We'll guide you through it."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing..."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, Stoat will hide in your tray."
 msgstr "Stoat, kapanmak yerine simge durumuna küçülecektir."
@@ -2023,6 +2130,10 @@ msgstr "Davet Eden"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
 msgstr "Davetler"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "iOS / iPadOS"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
@@ -2206,6 +2317,10 @@ msgstr "Giriş yapılıyor…"
 msgid "Logs you out of all sessions except this device."
 msgstr "Bu cihaz hariç tüm oturumlarınızı kapatır."
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Looks like you declined the installation... You can refresh the page if you'd like to try again, or try the manual instructions below."
+msgstr ""
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
 msgstr "Sadece küçük harfler, rakamlar ve alt çizgiler."
@@ -2250,6 +2365,10 @@ msgstr "Sunucuyu Yönetebilme"
 msgid "Manage Webhooks"
 msgstr "Webhookları Yönetebilme"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Manual Install"
+msgstr ""
+
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark as mature"
 msgstr "Yetişkin olarak işaretle"
@@ -2267,6 +2386,10 @@ msgstr "Okundu olarak işaretle"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Mark as unread"
 msgstr "Okunmamış olarak işaretle"
+
+#: components/app/menus/ServerFolderContextMenu.tsx
+msgid "Mark folder as read"
+msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark this channel as mature?"
@@ -2325,7 +2448,7 @@ msgstr "Mesaj"
 
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.channel.recipient?.username
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Message {0}"
 msgstr "{0} Kullanıcısına Mesaj At"
 
@@ -2438,6 +2561,7 @@ msgid "Mutual Groups"
 msgstr "Ortak Gruplar"
 
 #: components/app/interface/settings/user/_AccountCard.tsx
+#: components/app/interface/settings/UserSettings.tsx
 msgid "My Account"
 msgstr "Hesabım"
 
@@ -2497,6 +2621,10 @@ msgstr "Okunmamış mesajlar"
 msgid "Nickname"
 msgstr "Takma Ad"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "No file data found"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
 msgstr "Hiç GIF bulunamadı"
@@ -2504,6 +2632,14 @@ msgstr "Hiç GIF bulunamadı"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr "Henüz bir izin ayarlanmadı"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No recent channels"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No results"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No role overrides have been configured."
@@ -2550,6 +2686,7 @@ msgstr "Resmi Sunucu"
 msgid "Offline"
 msgstr "Çevrim dışı"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/CreateInvite.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/SignedOut.tsx
@@ -2620,6 +2757,14 @@ msgstr "Sunucu ayarlarını aç"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "Ayarları aç"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Chrome"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Safari"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2733,9 +2878,17 @@ msgstr "Lütfen bir sebep seçin"
 msgid "Powered by RNNoise"
 msgstr "RNNoise Tarafından desteklenmektedir"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Press the"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Preview"
 msgstr "Önizleme"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "PREVIOUS CHANNELS"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/auth/src/AuthPage.tsx
@@ -2752,6 +2905,10 @@ msgstr "Gizlilik politikası"
 #: components/markdown/plugins/anchors.tsx
 msgid "Private Channel"
 msgstr "Gizli Kanal"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Pro tip:"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/menus/UserContextMenu.tsx
@@ -2774,6 +2931,14 @@ msgstr "Zamirlerin"
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "Girilen e-posta veya şifre yanlış."
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
+
+#: components/client/NotificationsController.ts
+msgid "Push worker updated! Be sure to quick-switch to each at least once to automatically re-enable push notifications."
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2964,6 +3129,10 @@ msgstr "Sunucuyu bildir"
 msgid "Report user"
 msgstr "Kullanıcıyı bildir"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Request timed out"
+msgstr ""
+
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
 msgstr "Tekrar gönder"
@@ -3072,10 +3241,11 @@ msgstr "Dosyayı kaydet"
 msgid "Save permissions"
 msgstr "İzinleri kaydet"
 
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "Notlarına kaydet"
 
+#: components/modal/modals/QuickSwitch.tsx
 #: src/interface/channels/ChannelHeader.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Saved Notes"
@@ -3105,6 +3275,22 @@ msgstr "Ekran Paylaşma Ses Seviyesi"
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search"
 msgstr "Ara"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Search channels"
+msgstr ""
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Search for chats..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Search for emojis..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Search for GIFs..."
+msgstr ""
 
 #: components/modal/modals/AddBot.tsx
 msgid "Search for groups..."
@@ -3236,6 +3422,10 @@ msgstr "Sunucu Adı"
 msgid "Server Roles"
 msgstr "Sunucudaki Roller"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Server: {name}"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Sessions"
 msgstr "Oturumlar"
@@ -3276,6 +3466,10 @@ msgstr "Kurtarma kodu ayarla"
 msgid "Several people are typing…"
 msgstr "Birkaç kişi yazıyor…"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Share"
+msgstr ""
+
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Share audio"
@@ -3288,6 +3482,11 @@ msgstr "Sesli aramalarda ekran veya kamera paylaşabilme"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "Ekran paylaş"
+
+#. placeholder {0}: shares.length
+#: components/app/interface/channels/text/Composition.tsx
+msgid "Sharing to {0} users."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
@@ -3383,6 +3582,10 @@ msgstr "Kameranı aç"
 msgid "Start Minimised to Tray"
 msgstr "Küçültülmüş olarak başlat"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Start searches with <0>@</0> <1>#</1> <2>!</2> <3>*</3> to narrow results."
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Start the call"
 msgstr "Aramayı başlat"
@@ -3416,6 +3619,10 @@ msgstr "Stoat Kurucusu"
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Stoat rocks!"
 msgstr "Stoat harika!"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
@@ -3469,6 +3676,10 @@ msgstr "GitHub tartışma sayfalarında Stoat için yeni özellik önerilerinde 
 msgid "Support the project by donating - thank you!"
 msgstr "Bağış yaparak projeyi destekleyin - teşekkürler!"
 
+#: components/ui/components/design/LoadingScreen.tsx
+msgid "Switch Account"
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"
 msgstr ""
@@ -3500,6 +3711,14 @@ msgstr "Sistem mesajı kanalları"
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr "Topluluklarınızı <0>yanınızda getirin.</0>"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Add to Home Screen\""
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Install app\" or \"Add to Home screen\""
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
@@ -3550,7 +3769,7 @@ msgid "The Discover request was declined. Declined requests cannot be removed, b
 msgstr "Keşfet talebi reddedildi. Reddedilen talepler silinemez, ancak kullanıcı talebini yeniden gönderebilir."
 
 #. placeholder {0}: file.name
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "\"{0}\" adlı dosya ({fileSize}) maksimum dosya limiti olan {maxSizeFormatted} boyutunu aşıyor."
 
@@ -3754,6 +3973,15 @@ msgstr "Stoat'ta gözden kaçan hata: {0}"
 msgid "Undeafen"
 msgstr "Sağırlaştırmayı Kaldır"
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Unfavourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Unfavourite Gif"
+msgstr ""
+
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Unknown"
 msgstr "Bilinmeyen"
@@ -3837,6 +4065,10 @@ msgstr ""
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
 msgstr "Ekran kartını kullanarak performansı arttır."
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
+msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
@@ -4047,6 +4279,10 @@ msgstr "Yenilikler"
 msgid "What's New"
 msgstr "Neler yeni"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Where would you like to go?"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
 msgstr "Bu ayarları başka kullanıcıların düzenleyip düzenleyemeceği"
@@ -4161,8 +4397,12 @@ msgstr "Bu eylemi geri alamazsınız."
 
 #. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
-msgstr "Şuna tıkladınız \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr "Şuna tıkladınız \"{0}\""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "You do not have permission to do this."
@@ -4250,6 +4490,10 @@ msgstr "Kişisel bot oluşturma sayına ulaştın."
 #: components/i18n/errors.tsx
 msgid "You've sent too many friend requests, the maximum is {0}"
 msgstr "Çok fazla arkadaş isteği gönderdin, en fazla {0} tane gönderebilirsin"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "You've successfully installed Stoat!"
+msgstr ""
 
 #. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
 #: components/app/interface/settings/shared/Discoverable.tsx

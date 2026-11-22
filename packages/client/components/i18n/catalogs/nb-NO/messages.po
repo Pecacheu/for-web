@@ -42,6 +42,16 @@ msgstr "dddd [kl.] LT"
 msgid "(changes are being saved…)"
 msgstr "(endringer blir lagret…)"
 
+#. placeholder {0}: shares.size
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {} one { to # chat} other { to # chats}}"
+msgstr ""
+
+#. placeholder {0}: stat()
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {Loading shares} one {Share # file} other {Share # files}}"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -88,7 +98,7 @@ msgid "{0} emoji slots remaining"
 msgstr "{0} emoji-plasser igjen"
 
 #. placeholder {0}: rejectedFiles.length
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} filer overstiger maksstørrelsen på {maxSizeFormatted} og ble ikke lastet opp."
 
@@ -199,6 +209,14 @@ msgstr "Rollene til {0}"
 msgid "{0}'s timeout will be removed and they will be able to interact with the server again."
 msgstr "Tidsbegrensningen for {0} fjernes, og vedkommende vil igjen kunne samhandle med serveren."
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in category {category}, in server {serverName}"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in server {serverName}"
+msgstr ""
+
 #~ msgid "{h} hours"
 #~ msgstr ""
 
@@ -285,6 +303,14 @@ msgstr "<0/> oppdaterte gruppenavnet til <1>{0}</1>"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>Vær forsiktig!</0><1/>Dette er ikke den samme lenken som ble vist:"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "<0>Warning:</0> Web App support on Firefox is limited- Your mileage may vary."
+msgstr ""
+
 #~ msgid "1 day"
 #~ msgstr ""
 
@@ -362,6 +388,10 @@ msgstr "Aksepter"
 msgid "Accept friend request"
 msgstr "Aksepter venneforespørsel"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Accounts..."
+msgstr ""
+
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
 msgstr "Bekreft"
@@ -421,6 +451,9 @@ msgid "Admin Panel"
 msgstr "Administratorpanel"
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 msgid "Advanced"
 msgstr "Avansert"
 
@@ -468,6 +501,10 @@ msgstr "Allerede venn med denne brukeren."
 msgid "Already have an account?"
 msgstr "Har du allerede en konto?"
 
+#: components/markdown/plugins/customEmoji.tsx
+msgid "Alt+Click to yoink"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
 msgid "Always Ask for Screen Share Quality"
 msgstr "Be alltid om kvalitet for skjermdeling"
@@ -489,6 +526,10 @@ msgstr "Det oppstod en feil."
 #: components/i18n/errors.tsx
 msgid "An internal error occurred. ({0})"
 msgstr "En intern feil oppstod. ({0})"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Android"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -645,6 +686,14 @@ msgstr "Feilsporer"
 msgid "Busy"
 msgstr "Opptatt"
 
+#: components/i18n/errors.tsx
+msgid "But not to worry! You can try logging in or swapping to another account from here."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "button"
+msgstr ""
+
 #: components/modal/modals/CreateBot.tsx
 #~ msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 #~ msgstr "Ved å opprette denne boten godtar du <0>retningslinjene for akseptabel bruk</0>."
@@ -679,6 +728,7 @@ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/AddBot.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/CropProcess.tsx
@@ -706,6 +756,7 @@ msgstr ""
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ServerIdentity.tsx
+#: components/modal/modals/ShareToModal.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
@@ -872,6 +923,10 @@ msgstr "Tøm status"
 #: components/modal/modals/PolicyChange.tsx
 msgid "Click on the items below to learn more about different changes!"
 msgstr "Trykk på punktene nedenfor for å lære mer om de ulike endringene!"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Click the star on gifs to stash them here."
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Click to copy username"
@@ -1303,11 +1358,16 @@ msgstr "Sla av lyd for medlemmer"
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/ui/components/design/ColourPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
 msgid "Default"
 msgstr "Standard"
 
 #~ msgid "Default Permissions"
 #~ msgstr "Standarad tillatelser"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to {DefaultHost}"
+msgstr ""
 
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Degraded Performance"
@@ -1509,6 +1569,10 @@ msgstr "Narkotika eller ulovlige varer"
 
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Duration"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Easy Install"
 msgstr ""
 
 #. placeholder {0}: props.member.displayName
@@ -1715,6 +1779,20 @@ msgstr "Klarte ikke å sende"
 msgid "Failed to verify!"
 msgstr "Kunne ikke bekrefte!"
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Favourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Favourite Gif"
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Favourites"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
@@ -1747,6 +1825,10 @@ msgstr ""
 msgid "Folder colour"
 msgstr ""
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Follow the prompts"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "For 1 hour"
@@ -1774,6 +1856,10 @@ msgstr "I 8 timer"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Forgot password?"
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently Used"
 msgstr ""
 
 #: src/interface/Friends.tsx
@@ -1980,6 +2066,27 @@ msgstr ""
 msgid "Input Volume"
 msgstr ""
 
+#: components/app/interface/settings/InstallInstructions.tsx
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Install"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing Stoat only takes a few taps. We'll guide you through it."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing..."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, Stoat will hide in your tray."
 msgstr "I stedet for å lukke, Stoat vil gjemme seg i systemskuffen."
@@ -2020,6 +2127,10 @@ msgstr "Innbyder"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
 msgstr "Invitasjoner"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "iOS / iPadOS"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
@@ -2203,6 +2314,10 @@ msgstr ""
 msgid "Logs you out of all sessions except this device."
 msgstr "Logger deg ut av alle økter utenom denne."
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Looks like you declined the installation... You can refresh the page if you'd like to try again, or try the manual instructions below."
+msgstr ""
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
 msgstr ""
@@ -2247,6 +2362,10 @@ msgstr "Administrer server"
 msgid "Manage Webhooks"
 msgstr "Administrer Webhooks"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Manual Install"
+msgstr ""
+
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark as mature"
 msgstr "Marker som \"for voksne\""
@@ -2264,6 +2383,10 @@ msgstr "Marker som lest"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Mark as unread"
 msgstr "Merk som ulest"
+
+#: components/app/menus/ServerFolderContextMenu.tsx
+msgid "Mark folder as read"
+msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark this channel as mature?"
@@ -2322,7 +2445,7 @@ msgstr "Melding"
 
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.channel.recipient?.username
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Message {0}"
 msgstr "Melding {0}"
 
@@ -2435,6 +2558,7 @@ msgid "Mutual Groups"
 msgstr "Felles Grupper"
 
 #: components/app/interface/settings/user/_AccountCard.tsx
+#: components/app/interface/settings/UserSettings.tsx
 msgid "My Account"
 msgstr "Min konto"
 
@@ -2494,6 +2618,10 @@ msgstr ""
 msgid "Nickname"
 msgstr "Kallenavn"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "No file data found"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
 msgstr ""
@@ -2501,6 +2629,14 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr "Ingen tillatelser har blitt satt enda"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No recent channels"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No results"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No role overrides have been configured."
@@ -2547,6 +2683,7 @@ msgstr "Offisiell Server"
 msgid "Offline"
 msgstr "Frakoblet"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/CreateInvite.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/SignedOut.tsx
@@ -2617,6 +2754,14 @@ msgstr "Åpne sørverinstillinger"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "Åpne innstillinger"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Chrome"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Safari"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2730,8 +2875,16 @@ msgstr "Vennligst velg en grunn"
 msgid "Powered by RNNoise"
 msgstr ""
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Press the"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Preview"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "PREVIOUS CHANNELS"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -2749,6 +2902,10 @@ msgstr ""
 #: components/markdown/plugins/anchors.tsx
 msgid "Private Channel"
 msgstr "Privat kanal"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Pro tip:"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/menus/UserContextMenu.tsx
@@ -2771,6 +2928,14 @@ msgstr ""
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "Den oppgitte e-postadressen eller passordet er feil."
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
+
+#: components/client/NotificationsController.ts
+msgid "Push worker updated! Be sure to quick-switch to each at least once to automatically re-enable push notifications."
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2961,6 +3126,10 @@ msgstr "Rapporter server"
 msgid "Report user"
 msgstr "Rapporter bruker"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Request timed out"
+msgstr ""
+
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
 msgstr "Send på nytt"
@@ -3069,10 +3238,11 @@ msgstr "Lagre fil"
 msgid "Save permissions"
 msgstr ""
 
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "Lagre i notater"
 
+#: components/modal/modals/QuickSwitch.tsx
 #: src/interface/channels/ChannelHeader.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Saved Notes"
@@ -3101,6 +3271,22 @@ msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Search channels"
+msgstr ""
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Search for chats..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Search for emojis..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Search for GIFs..."
 msgstr ""
 
 #: components/modal/modals/AddBot.tsx
@@ -3233,6 +3419,10 @@ msgstr "Servernavn"
 msgid "Server Roles"
 msgstr "Sørverroller"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Server: {name}"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Sessions"
 msgstr "Økter"
@@ -3273,6 +3463,10 @@ msgstr "Sett opp gjenopprettingskoder"
 msgid "Several people are typing…"
 msgstr "Flere personer skriver…"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Share"
+msgstr ""
+
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Share audio"
@@ -3284,6 +3478,11 @@ msgstr "Del kamera eller skjerm i stemmekanal"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
+msgstr ""
+
+#. placeholder {0}: shares.length
+#: components/app/interface/channels/text/Composition.tsx
+msgid "Sharing to {0} users."
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
@@ -3380,6 +3579,10 @@ msgstr ""
 msgid "Start Minimised to Tray"
 msgstr ""
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Start searches with <0>@</0> <1>#</1> <2>!</2> <3>*</3> to narrow results."
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Start the call"
 msgstr "Start anropet"
@@ -3412,6 +3615,10 @@ msgstr "Stoatgrunnlegger"
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Stoat rocks!"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
 msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
@@ -3466,6 +3673,10 @@ msgstr "Foreslå nye funksjoner for Stoat på Github-diskusjoner."
 msgid "Support the project by donating - thank you!"
 msgstr "Støtt prosjektet ved å donere - takk!"
 
+#: components/ui/components/design/LoadingScreen.tsx
+msgid "Switch Account"
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"
 msgstr ""
@@ -3496,6 +3707,14 @@ msgstr "Kanaler for systemmeldinger"
 
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Add to Home Screen\""
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Install app\" or \"Add to Home screen\""
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
@@ -3547,7 +3766,7 @@ msgid "The Discover request was declined. Declined requests cannot be removed, b
 msgstr ""
 
 #. placeholder {0}: file.name
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "Filen \"{0}\" ({fileSize}) overskrider den maksimale størrelsegrensen på {maxSizeFormatted}."
 
@@ -3751,6 +3970,15 @@ msgstr "Ufanget Stoat error: {0}"
 msgid "Undeafen"
 msgstr ""
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Unfavourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Unfavourite Gif"
+msgstr ""
+
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Unknown"
 msgstr ""
@@ -3834,6 +4062,10 @@ msgstr ""
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
 msgstr "Bruk grafikkort for å forbedre ytelse."
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
+msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
@@ -4044,6 +4276,10 @@ msgstr ""
 msgid "What's New"
 msgstr ""
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Where would you like to go?"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
 msgstr "Om andre brukere kan redigere disse innstillingene"
@@ -4158,8 +4394,12 @@ msgstr "Du kan ikke angre denne handlingen."
 
 #. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
-msgstr "Du klikket på \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr "Du klikket på \"{0}\""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
+msgstr ""
 
 #: components/i18n/errors.tsx
 msgid "You do not have permission to do this."
@@ -4247,6 +4487,10 @@ msgstr "Du har nådd din personlige bot-grense."
 #: components/i18n/errors.tsx
 msgid "You've sent too many friend requests, the maximum is {0}"
 msgstr "Du har sendt for mange venneforespørsler, grensen er {0}"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "You've successfully installed Stoat!"
+msgstr ""
 
 #. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
 #: components/app/interface/settings/shared/Discoverable.tsx

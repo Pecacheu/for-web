@@ -42,6 +42,16 @@ msgstr ""
 msgid "(changes are being saved…)"
 msgstr "(変更を保存しています...)"
 
+#. placeholder {0}: shares.size
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {} one { to # chat} other { to # chats}}"
+msgstr ""
+
+#. placeholder {0}: stat()
+#: components/modal/modals/ShareToModal.tsx
+msgid "{0, plural, =0 {Loading shares} one {Share # file} other {Share # files}}"
+msgstr ""
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -85,7 +95,7 @@ msgid "{0} emoji slots remaining"
 msgstr "あと {0} 個追加可能"
 
 #. placeholder {0}: rejectedFiles.length
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "{0} files exceed the maximum size limit of {maxSizeFormatted} and were not uploaded."
 msgstr "{0} 個のファイルは、最大容量の {maxSizeFormatted} を超過していたためアップロードされませんでした。"
 
@@ -196,6 +206,14 @@ msgstr "{0}のロール"
 msgid "{0}'s timeout will be removed and they will be able to interact with the server again."
 msgstr "{0}のタイムアウトが解除され、再びサーバーを利用できるようになります。"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in category {category}, in server {serverName}"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "{channel}, in server {serverName}"
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/Reactions.tsx
 msgid "{unknown} reacted"
 msgstr "{unknown} がリアクションしました"
@@ -273,6 +291,14 @@ msgstr "<0/> がグループの名前を <1>{0}</1> に変更しました"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>警告！</0><1/>表示されていたリンクとは異なります:"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "<0>Warning:</0> Stoat is not responsible for content you access or upload through 3rd party instances, and does not guarantee moderation or user safety. For more info, please contact your 3rd party instance's team."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "<0>Warning:</0> Web App support on Firefox is limited- Your mileage may vary."
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/Reactions.tsx
 msgid "1 person reacted"
 msgstr "1 人が反応しました"
@@ -307,6 +333,10 @@ msgstr "承認"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Accept friend request"
 msgstr "フレンド申請を承認"
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Accounts..."
+msgstr ""
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
@@ -367,6 +397,9 @@ msgid "Admin Panel"
 msgstr "管理者パネル"
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 msgid "Advanced"
 msgstr "詳細設定"
 
@@ -414,6 +447,10 @@ msgstr "既にフレンドになっています。"
 msgid "Already have an account?"
 msgstr "アカウントをお持ちですか？"
 
+#: components/markdown/plugins/customEmoji.tsx
+msgid "Alt+Click to yoink"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
 msgid "Always Ask for Screen Share Quality"
 msgstr "常に画面共有の画質を確認する"
@@ -435,6 +472,10 @@ msgstr "エラーが発生しました。"
 #: components/i18n/errors.tsx
 msgid "An internal error occurred. ({0})"
 msgstr "サーバー内部でエラーが発生しました ({0})"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Android"
+msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -585,6 +626,14 @@ msgstr "バグトラッカー"
 msgid "Busy"
 msgstr "忙しい"
 
+#: components/i18n/errors.tsx
+msgid "But not to worry! You can try logging in or swapping to another account from here."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "button"
+msgstr ""
+
 #: components/modal/modals/CreateBot.tsx
 #~ msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
 #~ msgstr "ボットを作成することで、あなたは<0>コミュニティガイドライン</0>に同意したことになります。"
@@ -619,6 +668,7 @@ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/modal/modals/AddBot.tsx
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/CropProcess.tsx
@@ -646,6 +696,7 @@ msgstr ""
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ServerIdentity.tsx
+#: components/modal/modals/ShareToModal.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/TransferGroup.tsx
@@ -809,6 +860,10 @@ msgstr "ステータスをクリア"
 #: components/modal/modals/PolicyChange.tsx
 msgid "Click on the items below to learn more about different changes!"
 msgstr "各項目をクリックして、変更点の詳細を確認しましょう!"
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Click the star on gifs to stash them here."
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBanner.tsx
 msgid "Click to copy username"
@@ -1240,11 +1295,16 @@ msgstr "メンバーのスピーカーをミュート"
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/ui/components/design/ColourPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
 msgid "Default"
 msgstr "デフォルト"
 
 #~ msgid "Default Permissions"
 #~ msgstr "デフォルトの権限"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Defaults to {DefaultHost}"
+msgstr ""
 
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Degraded Performance"
@@ -1444,6 +1504,10 @@ msgstr "薬物または違法物品"
 #: components/modal/modals/TimeoutMember.tsx
 msgid "Duration"
 msgstr "期間"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Easy Install"
+msgstr ""
 
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
@@ -1649,6 +1713,20 @@ msgstr "送信失敗"
 msgid "Failed to verify!"
 msgstr "認証に失敗しました!"
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Favourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Favourite Gif"
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Favourites"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Feedback"
@@ -1681,6 +1759,10 @@ msgstr "フォルダー"
 msgid "Folder colour"
 msgstr "フォルダーの色"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Follow the prompts"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "For 1 hour"
@@ -1709,6 +1791,10 @@ msgstr "8時間"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Forgot password?"
 msgstr "パスワードをお忘れですか？"
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Frequently Used"
+msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -1911,6 +1997,27 @@ msgstr ""
 msgid "Input Volume"
 msgstr "入力音量"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Install"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing Stoat only takes a few taps. We'll guide you through it."
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Installing..."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance"
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Instance Settings"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, Stoat will hide in your tray."
 msgstr "Stoatを終了する代わりに、システムトレイに格納します。"
@@ -1951,6 +2058,10 @@ msgstr "招待者"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Invites"
 msgstr "招待"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "iOS / iPadOS"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "irrelevant joke badge 1"
@@ -2131,6 +2242,10 @@ msgstr "ログイン中…"
 msgid "Logs you out of all sessions except this device."
 msgstr "このデバイスを除く、全てのデバイスでログアウトされます。"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Looks like you declined the installation... You can refresh the page if you'd like to try again, or try the manual instructions below."
+msgstr ""
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Lowercase letters, numbers and underscores only."
 msgstr "使用できるのは英小文字、数字、アンダースコア（_）のみです。"
@@ -2175,6 +2290,10 @@ msgstr "サーバーの管理"
 msgid "Manage Webhooks"
 msgstr "ウェブフックの管理"
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Manual Install"
+msgstr ""
+
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark as mature"
 msgstr "成人向けとしてマーク"
@@ -2192,6 +2311,10 @@ msgstr "既読にする"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Mark as unread"
 msgstr "未読にする"
+
+#: components/app/menus/ServerFolderContextMenu.tsx
+msgid "Mark folder as read"
+msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark this channel as mature?"
@@ -2250,7 +2373,7 @@ msgstr "メッセージ"
 
 #. placeholder {0}: props.channel.name
 #. placeholder {0}: props.channel.recipient?.username
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Message {0}"
 msgstr "{0} へメッセージを送信"
 
@@ -2363,6 +2486,7 @@ msgid "Mutual Groups"
 msgstr "共通のグループ"
 
 #: components/app/interface/settings/user/_AccountCard.tsx
+#: components/app/interface/settings/UserSettings.tsx
 msgid "My Account"
 msgstr "自分のアカウント"
 
@@ -2422,6 +2546,10 @@ msgstr "新着メッセージ"
 msgid "Nickname"
 msgstr "ニックネーム"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "No file data found"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "No GIFs found"
 msgstr "GIFが見つかりませんでした"
@@ -2429,6 +2557,14 @@ msgstr "GIFが見つかりませんでした"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr "権限の設定はまだありません"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No recent channels"
+msgstr ""
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "No results"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No role overrides have been configured."
@@ -2475,6 +2611,7 @@ msgstr "公式サーバー"
 msgid "Offline"
 msgstr "オフライン"
 
+#: components/modal/modals/AdvancedLoginModal.tsx
 #: components/modal/modals/CreateInvite.tsx
 #: components/modal/modals/Error2.tsx
 #: components/modal/modals/SignedOut.tsx
@@ -2545,6 +2682,14 @@ msgstr "サーバー設定"
 #: src/interface/Home.tsx
 msgid "Open settings"
 msgstr "設定を開く"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Chrome"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Open this page in Safari"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -2658,9 +2803,17 @@ msgstr "理由を選択してください"
 msgid "Powered by RNNoise"
 msgstr ""
 
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Press the"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Preview"
 msgstr "プレビュー"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "PREVIOUS CHANNELS"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/auth/src/AuthPage.tsx
@@ -2677,6 +2830,10 @@ msgstr "プライバシーポリシー"
 #: components/markdown/plugins/anchors.tsx
 msgid "Private Channel"
 msgstr "プライベートチャンネル"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Pro tip:"
+msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/menus/UserContextMenu.tsx
@@ -2699,6 +2856,14 @@ msgstr "代名詞"
 #: components/i18n/errors.tsx
 msgid "Provided email or password is wrong."
 msgstr "メールアドレス、またはパスワードが間違っています。"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Proxy Settings"
+msgstr ""
+
+#: components/client/NotificationsController.ts
+msgid "Push worker updated! Be sure to quick-switch to each at least once to automatically re-enable push notifications."
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2886,6 +3051,10 @@ msgstr "サーバーを報告"
 msgid "Report user"
 msgstr "ユーザーを報告"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Request timed out"
+msgstr ""
+
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
 msgstr "再送信"
@@ -2991,10 +3160,11 @@ msgstr "ファイルを保存"
 msgid "Save permissions"
 msgstr "権限を保存"
 
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "ノートに保存"
 
+#: components/modal/modals/QuickSwitch.tsx
 #: src/interface/channels/ChannelHeader.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Saved Notes"
@@ -3024,6 +3194,22 @@ msgstr "画面共有の音量"
 #: src/interface/channels/ChannelHeader.tsx
 msgid "Search"
 msgstr "検索"
+
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Search channels"
+msgstr ""
+
+#: components/modal/modals/ShareToModal.tsx
+msgid "Search for chats..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/EmojiPicker.tsx
+msgid "Search for emojis..."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Search for GIFs..."
+msgstr ""
 
 #: components/modal/modals/AddBot.tsx
 msgid "Search for groups..."
@@ -3152,6 +3338,10 @@ msgstr "サーバー名"
 msgid "Server Roles"
 msgstr ""
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Server: {name}"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Sessions"
 msgstr "セッション"
@@ -3192,6 +3382,10 @@ msgstr "リカバリーコードを設定"
 msgid "Several people are typing…"
 msgstr "複数人が入力中…"
 
+#: components/modal/modals/ShareToModal.tsx
+msgid "Share"
+msgstr ""
+
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Share audio"
@@ -3204,6 +3398,11 @@ msgstr "通話でカメラや画面を共有"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "画面を共有"
+
+#. placeholder {0}: shares.length
+#: components/app/interface/channels/text/Composition.tsx
+msgid "Sharing to {0} users."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
@@ -3296,6 +3495,10 @@ msgstr "カメラをオン"
 msgid "Start Minimised to Tray"
 msgstr "トレイに最小化して起動"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Start searches with <0>@</0> <1>#</1> <2>!</2> <3>*</3> to narrow results."
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Start the call"
 msgstr "通話を開始"
@@ -3326,6 +3529,10 @@ msgstr "Stoat創設者"
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Stoat rocks!"
 msgstr "Stoat最高！"
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Stoat uses your browser or operating system's HTTP proxy configuration. To review, open system settings."
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Stoat will start in the system tray."
@@ -3379,6 +3586,10 @@ msgstr "GitHub Discussionsで、Stoatの新機能を提案しましょう。"
 msgid "Support the project by donating - thank you!"
 msgstr "寄付でプロジェクトを支援する - ありがとうございます!"
 
+#: components/ui/components/design/LoadingScreen.tsx
+msgid "Switch Account"
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Switch Accounts"
 msgstr ""
@@ -3410,6 +3621,14 @@ msgstr ""
 #: components/auth/src/AppUpsell.tsx
 msgid "Take your communities <0>with you.</0>"
 msgstr "コミュニティを<0>いつでもどこでも。</0>"
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Add to Home Screen\""
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "Tap \"Install app\" or \"Add to Home screen\""
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
@@ -3460,7 +3679,7 @@ msgid "The Discover request was declined. Declined requests cannot be removed, b
 msgstr ""
 
 #. placeholder {0}: file.name
-#: src/interface/channels/text/Composition.tsx
+#: components/app/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr ""
 
@@ -3664,6 +3883,15 @@ msgstr ""
 msgid "Undeafen"
 msgstr ""
 
+#: components/app/menus/EmojiContextMenu.tsx
+msgid "Unfavourite emoji"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+#: components/ui/components/utils/GifEmbed.tsx
+msgid "Unfavourite Gif"
+msgstr ""
+
 #: components/ui/components/design/LoadingScreen.tsx
 msgid "Unknown"
 msgstr ""
@@ -3746,6 +3974,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Use the graphics card to improve performance."
+msgstr ""
+
+#: components/modal/modals/AdvancedLoginModal.tsx
+msgid "Use this option to connect to a <0>self-hosted</0> or <1>on-premise</1> instance."
 msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
@@ -3951,6 +4183,10 @@ msgstr "新機能"
 msgid "What's New"
 msgstr "新機能"
 
+#: components/modal/modals/QuickSwitch.tsx
+msgid "Where would you like to go?"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
 msgstr ""
@@ -4065,7 +4301,11 @@ msgstr "この操作は元に戻せません。"
 
 #. placeholder {0}: props.display
 #: components/modal/modals/LinkWarning.tsx
-msgid "You clicked on \"{0}\""
+#~ msgid "You clicked on \"{0}\""
+#~ msgstr ""
+
+#: components/modal/modals/LinkWarning.tsx
+msgid "You clicked on \"{dispStr}\""
 msgstr ""
 
 #: components/i18n/errors.tsx
@@ -4153,6 +4393,10 @@ msgstr ""
 #. placeholder {0}: err.max
 #: components/i18n/errors.tsx
 msgid "You've sent too many friend requests, the maximum is {0}"
+msgstr ""
+
+#: components/app/interface/settings/InstallInstructions.tsx
+msgid "You've successfully installed Stoat!"
 msgstr ""
 
 #. placeholder {0}: props.discoverable instanceof Bot ? "bot" : "server"
